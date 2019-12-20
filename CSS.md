@@ -243,3 +243,98 @@ HTML文档在解析的过程当中，如果遇到link标签，则会立即发起
     //grid-column-gap: 32px;
     //grid-row-gap: 24px;;
 ```
+
+- css实现自适应的正方形
+- css实现单行截取，多行截取
+- 关于css3里阴影的一些知识
+- 列出 display 的值，并说明他们的作用
+- 怎么样使一个 div 居中于浏览器中间
+- rem与em的区别
+
+``` 
+rem是根据根的font-size变化，而em是根据父级的font-size变化
+
+rem：相对于根元素html的font-size，假如html为font-size：12px，那么，在其当中的div设置为font-size：2rem,就是当中的div为24px
+em：相对于父元素计算，假如某个p元素为font-size:12px,在它内部有个span标签，设置font-size：2em,那么，这时候的span字体大小为：12*2=24px
+```
+- css常用选择器
+  
+```
+通配符：*
+ID选择器：#ID
+类选择器：.class
+元素选择器：p、a    等
+后代选择器：p span、div a   等
+伪类选择器：a:hover 等
+属性选择器：input[type="text"]  等
+
+
+!important > 行内样式 > ID选择器 > 类选择器 > 标签选择器 > 通配符选择器
+
+内联样式，权值为1000
+ID选择器，权值为0100
+类，伪类和属性选择器，权值为0010
+标签选择器和伪元素选择器，权值为0001
+通配符、子选择器、相邻选择器等，权值为0000
+继承的样式没有权值
+```
+
+
+- CSS3新特性
+  
+```
+transition：过渡
+transform：旋转、缩放、移动或者倾斜
+animation：动画
+gradient：渐变
+shadow：阴影
+border-radius：圆角
+```
+
+CSS3中transition和animation的属性分别有哪些
+
+```
+transition 过渡动画：
+(1) transition-property：属性名称
+(2) transition-duration: 间隔时间
+(3) transition-timing-function: 动画曲线
+(4) transition-delay: 延迟
+animation 关键帧动画：
+(1) animation-name：动画名称
+(2) animation-duration: 间隔时间
+(3) animation-timing-function: 动画曲线
+(4) animation-delay: 延迟
+(5) animation-iteration-count：动画次数
+(6) animation-direction: 方向
+(7) animation-fill-mode: 禁止模式
+```
+
+- 如何实现一个最大的正方形
+
+```
+ section {
+    width:100%;
+    padding-bottom: 100%;
+    background: #333;
+}
+```
+- 手写半圆，园、三角形、梯形
+
+- css禁用鼠标事件
+```
+cursor: not-allow;
+```
+- css禁止选中
+```
+user-select: none;
+```
+- 渐变
+```
+background-image: linear-gradient(rgba(0,0,0,.2) 50%, transparent 0);
+
+```
+
+- CSS实现宽度自适应100%，宽高16:9的比例的矩形。
+- 手写图片瀑布流效果
+- 使用纯CSS实现曲线运动（贝塞尔曲线）
+- 画一条0.5px的直线

@@ -1,3 +1,19 @@
+- call、apply、bind 实现
+- new 实现
+- class 实现继承
+- async/await 实现
+- reduce 实现
+- 实现一个双向数据绑定
+- instanceof 实现
+- Array.isArray 实现
+- Object.create 的基本实现原理
+- getOwnPropertyNames 实现
+- promise 实现
+- 手写一个防抖/节流函数
+- 柯里化函数的实现
+- 手写一个深拷贝
+
+- 手写代码实现事件委托和闭包
 - js的event loop机制
 - 手写实现inherit函数
 - 手写实现throttle函数
@@ -13,3 +29,174 @@
 - 对新技术的了解
 - 对MVC MVP MVVM的了解
 - 手写代码实现一下Array.prototype.trim 这个函数，并写个测试用例跑给我看下
+- 说一下对bind，call，apply三个函数的认识，自己实现一下bind方法。
+- 请实现一个 call 函数
+- 如何实现一个 apply 函数？
+- 怎么判断对象类型？
+- generator 原理
+- async、await 的优缺点
+- 说说你对闭包的理解
+- 数组降维
+- 请实现一个深拷贝
+- typeof 于 instanceof 区别
+-  怎么判断页面是否加载完成？
+-  说说你对Service worker的理解
+-  defer和async区别
+
+-  说说浏览器缓存机制
+-  怎样选择合适的缓存策略
+-  说说重绘（Repaint）和回流（Reflow）
+-  页面首屏渲染性能优化方案有哪些
+-  浏览器性能问题-使用 Webpack 优化项目
+
+-  实现一个JSON.stringify
+-  实现一个JSON.parse
+-  手写一个继承
+-  手写防抖(Debouncing)和节流(Throttling)
+-  数组中的forEach和map的区别
+-  for in和for of,forEach的区别
+
+```
+for in 一般常用来遍历对象或json
+
+for of数组对象都可以遍历，遍历对象需要通过和Object.keys()
+
+for in循环出的是key，for of循环出的是value
+```
+- Set、Map的区别
+```
+应用场景Set用于数据重组，Map用于数据储存
+
+Set：
+1，成员不能重复
+2，只有键值没有键名，类似数组
+3，可以遍历，方法有add, delete,has
+
+Map:
+1，本质上是健值对的集合，类似集合
+2，可以遍历，可以跟各种数据格式转换
+```
+
+-   常见的继承的几种方法
+
+
+- 前端的requestAnimationFrame了解吗？有使用过吗？说一下使用场景。  
+- 可以手写一些Promise么？不是写Promise怎么用哦，让你实现一下Promise。  
+```
+var promise = new Promise((resolve,reject) => {
+    if (操作成功) {
+        resolve(value)
+    } else {
+        reject(error)
+    }
+})
+promise.then(function (value) {
+    // success
+},function (value) {
+    // failure
+})
+
+
+```
+- 闭包为什么会造成内存泄漏？
+- JS宏任务和微任务的理解
+- 深拷贝和浅拷贝的实现方式分别有哪些？
+
+```
+浅拷贝：(1) Object.assign的方式 (2) 通过对象扩展运算符 (3) 通过数组的slice方法 (4) 通过数组的concat方法。
+深拷贝：(1) 通过JSON.stringify来序列化对象 (2) 手动实现递归的方式。
+```
+
+- javascript的垃圾回收机制讲一下
+- new 操作符具体做了什么？
+- 1.document.ready和onload的区别？
+```
+页面加载完成有两种事件，一是ready，表示文档结构已经加载完成（不包含图片等非文字媒体文件），二是onload，指示页 面包含图片等文件在内的所有元素都加载完成。(可以说：ready 在onload 前加载！！！)我的理解： 一般样式控制的，比如图片大小控制放在onload 里面加载;              而：jS事件触发的方法，可以在ready 里面加载;
+```
+
+- 组件化和模块化
+```
+ 为什么要组件化开发
+
+有时候页面代码量太大，逻辑太多或者同一个功能组件在许多页面均有使用，维护起来相当复杂，这个时候，就需要组件化开发来进行功能拆分、组件封装，已达到组件通用性，增强代码可读性，维护成本也能大大降低
+
+为什么要模块化
+早期的javascript版本没有块级作用域、没有类、没有包、也没有模块，这样会带来一些问题，如复用、依赖、冲突、代码组织混乱等，随着前端的膨胀，模块化显得非常迫切
+模块化的好处
+
+
+避免变量污染，命名冲突
+
+
+提高代码复用率
+
+
+提高了可维护性
+
+
+方便依赖关系管理
+
+```
+
+- mouseover和mouseenter的区别
+  
+```
+mouseover：当鼠标移入元素或其子元素都会触发事件，所以有一个重复触发，冒泡的过程。对应的移除事件是mouseout
+
+mouseenter：当鼠标移除元素本身（不包含元素的子元素）会触发事件，也就是不会冒泡，对应的移除事件是mouseleave
+```
+
+- 理解Eventloop
+- 如何准确判断一个变量是否是数组类型
+- 写一个能遍历对象和数组的通用forEach函数
+
+```
+function forEach(obj,fn){
+	var key
+	if(obj instanceof Array){
+    	//准备判断是不是数组
+    	obj.forEach(function(item,index){
+    		fn(index,item)
+    	})
+	}else{
+    	//不是数组就是对象
+    	for(key in obj){
+    		fn(key,obj[k])
+    	}
+	}
+}
+
+```
+
+
+- 阻止事件冒泡
+
+```
+e.stopPropatation() 
+```
+
+- 手写ajax
+  
+```
+var xhr = new XMLHttpRequest()
+
+xhr.open("GET","/api",false)
+
+xhr.onreadystatechange = function(){
+    //这里的函数异步执行，可参考之前JS基础中的异步模块
+    if(xhr.readyState == 4){
+        if(xhr.status == 200){
+            alert(xhr.responseText)
+        }
+    }
+}
+
+xhr.send(null)
+```
+- setTimeout、setInterval和requestAnimationFrame；
+- 数组map、filter、reduce相关；
+- Map和Set；
+- 说一下对闭包的理解，以及你在什么场景下会用到闭包？
+- promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
+- 写一个方法遍历所有文档树所有节点(考察递归)；
+- 手写 Proxy / Object.defineProperty
