@@ -1,5 +1,6 @@
 
-1. CSS盒模型
+- CSS盒模型
+```
 CSS盒模型就是在网页设计中经常用到的CSS技术所使用的一种思维模型。CSS 假定所有的HTML 文档元素都生成了一个描述该元素在HTML文档布局中所占空间的矩形元素框，可以形象地将其看作是一个盒子。CSS 围绕这些盒子产生了一种“盒子模型”概念，通过定义一系列与盒子相关的属性，可以极大地丰富和促进各个盒子乃至整个HTML文档的表现效果和布局结构。
 CSS盒模型可以看成是由从内到外的四个部分构成，即内容区（content）、内边距(padding)、边框(border)和外边距(margin)。内容区是盒子模型的中心，呈现盒子的主要信息内容；内边距是内容区和边框之间的空间；边框是环绕内容区和内边距的边界；外边距位于盒子的最外围，是添加在边框外周围的空间。
 
@@ -7,22 +8,29 @@ CSS盒模型可以看成是由从内到外的四个部分构成，即内容区�
 
 content-box：W3C标准盒模型
 border-box：IE盒模型
-
-https://user-gold-cdn.xitu.io/2019/11/22/16e930e04e31efa6?imageView2/0/w/1280/h/960/format/webp/ignore-error/1
+```
+![](https://user-gold-cdn.xitu.io/2019/11/22/16e930e04e31efa6?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
 区别：
+
+```
 W3C标准盒模型：width(宽度) = content(内容宽度)
+```
+```
 IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + border(边框)
+```
 
-2.BFC
+- BFC
 
 
-3.CSS3中transition和animation的属性
+- CSS3中transition和animation的属性
     transition(过渡动画)
     animation(关键帧动画)
 
 
-4.清除浮动的方式及优缺点
+- 清除浮动的方式及优缺点
+
+``` 
 额外标签法(在最后一个浮动元素的后面新加一个标签如<div class="clear"></div>，并在其CSS样式中设置clear: both;)
 
 
@@ -64,9 +72,10 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
 优点：符合闭合浮动思想，结构语义化正确
 缺点：代码量多，因为IE6-7下不支持after伪元素，需要额外写zoom:1来触发hasLayout
 
+```
 
-
-5.水平居中
++ 水平居中
+```
 若是行内元素，则直接给其父元素设置text-align: center即可
 若是块级元素，则直接给该元素设置margin: 0 auto即可
 
@@ -104,10 +113,11 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
     margin: 0 auto;
     width: 200px; // 假定宽度为200px
 }
+```
 
 
-
-6.垂直居中
+- 垂直居中
+```
 若元素是单行文本，则直接给该元素设置line-height等于其父元素的高度
 若元素是行内块级元素，可以配合使用display:inline-block;vertical-align:middle和一个伪元素来让内容块居中
 
@@ -146,9 +156,10 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
     margin: auto 0;
     height: 200px; // 假定高度为200px
 }
+```
 
-
-7.水平垂直居中
+- 水平垂直居中
+```
 使用flex布局的方式同样可以轻松实现水平垂直居中
 
 // flex 2012年版本写法
@@ -186,16 +197,18 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
     height: 100px; // 假定高度为100px
 }
 
+```
 
-
-8.三栏布局
+- 三栏布局
+```
 绝对定位的方式
 flex布局的方式
 双飞翼布局
 圣杯布局
+```
 
-
-9.实现一个朝左的三角形
+- 实现一个朝左的三角形
+```
 
 .content {
 width:0;
@@ -204,11 +217,29 @@ height:0;
   border-color: transparent #3366ff transparent transparent;
 }
 
+```
 
-
-link与@import的区别
+- link与@import的区别
+```
 从属关系区别：
 @import是CSS提供的语法规则，只有导入样式表的作用；link是HTML提供的标签，不仅可以加载 CSS 文件，还可以定义 RSS，Rel连接属性，设置浏览器资源提示符preload、prefetch等。
 
 加载顺序区别：
 HTML文档在解析的过程当中，如果遇到link标签，则会立即发起获取CSS文件资源的请求；@import引入的CSS将在页面加载完毕后才会被加载。
+```
+
+- 实现左右两边贴边的九宫格
+
+```
+.card:nth-child(3n+3) {
+      margin-right: 0
+    }
+    .card:not(:nth-child(3n+3)) {
+      margin: 24px 32px 0 0;
+    }
+    // 考虑兼容性，使用nth-child的方式。
+    //display: grid;
+    //grid-template-columns: repeat(auto-fill, 226px);
+    //grid-column-gap: 32px;
+    //grid-row-gap: 24px;;
+```
