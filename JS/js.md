@@ -12,6 +12,15 @@
 - 手写一个防抖/节流函数
 - 柯里化函数的实现
 - 手写一个深拷贝
+- 实现一个new操作符
+- 手写jsonp实现
+- js实现css的:hover效果
+实现一个JSON.stringify
+实现一个JSON.parse
+实现一个Function.bind
+实现一个继承
+实现一个JS函数柯里化
+
 
 - 手写代码实现事件委托和闭包
 - js的event loop机制
@@ -200,3 +209,77 @@ xhr.send(null)
 - promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
 - 写一个方法遍历所有文档树所有节点(考察递归)；
 - 手写 Proxy / Object.defineProperty
+- 写一个函数，可以控制最大并发数
+- 实现instanceof
+- 实现继承
+- lazyMan
+- 说说js的垃圾回收(GC)
+- Async/Await 如何通过同步的方式实现异步
+- 实现懒加载
+```
+let imgs =  document.querySelectorAll('img')
+// 可视区高度
+let clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+function lazyLoad () {
+  // 滚动卷去的高度
+  let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+  for (let i = 0; i < imgs.length; i ++) {
+    // 图片在可视区冒出的高度
+    let x = clientHeight + scrollTop - imgs[i].offsetTop
+    // 图片在可视区内
+    if (x > 0 && x < clientHeight+imgs[i].height) {
+      imgs[i].src = imgs[i].getAttribute('data')
+    } 
+  }      
+}
+// addEventListener('scroll', lazyLoad) or setInterval(lazyLoad, 1000)
+```
+- div中两个button，div上事件代理，如何判断点击的是哪个button
+- 实现拖拽的功能，自己的思路，pc的思路和移动端思路
+- 你能实现一下双向绑定吗
+
+```
+<body>
+    <div id="app">
+        <input type="text" id="txt">
+        <p id="show-txt"></p>
+    </div>
+    <script>
+        var obj = {}
+        Object.defineProperty(obj, 'txt', {
+            get: function () {
+                return obj
+            },
+            set: function (newValue) {
+                document.getElementById('txt').value = newValue
+                document.getElementById('show-txt').innerHTML = newValue
+            }
+        })
+        document.addEventListener('keyup', function (e) {
+            obj.txt = e.target.value
+        })
+    </script>
+</body>
+
+```
+- 20、offsetWidth/offsetHeight,clientWidth/clientHeight与scrollWidth/scrollHeight的区别
+- 21、javascript有哪些方法定义对象
+- 怎么从十万个节点中找到想要的节点，怎么快速在某个节点前插入一个节点？
+- 怎么用原生js实现一个轮播图，以及滚动滑动
+- 怎么实现上传下载的功能
+- 跨标签页通讯
+- 如何让事件先冒泡后捕获
+- 介绍下浏览器事件循环
+- 哪些是宏任务，哪些是微任务
+- 浏览器事件循环和 node事件循环有什么差别
+- setTimetout 到期时间是怎么计算的，比如有1000个定时器
+- react setstate 机制，事务机制
+- 介绍下 redux，以及和 mobx 区别是什么
+- 实现 promise.all 并发限制，每次只能并发5个请求
+- css 盒模型
+- node 错误监控怎么做的
+- rn 有没有搞过？
+- react 生态都用过什么。
+- 介绍下 fiber
+- 介绍下 hooks
+- 数组哪些方法有副作用

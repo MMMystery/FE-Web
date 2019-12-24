@@ -1,3 +1,13 @@
+ - ES6更新的内容主要分为以下几点
+```
+表达式：声明、解构赋值
+内置对象：字符串扩展、数值扩展、对象扩展、数组扩展、函数扩展、正则扩展、Symbol、Set、Map、Proxy、Reflect
+语句与运算：Class、Module、Iterator
+异步编程：Promise、Generator、Async
+```
+
+
+
 1. let/const
 
 let有局部作用域，var存在变量提升。 const定义常量，数组元素可以push添加
@@ -74,11 +84,15 @@ console.log(name);  // Bingo
 console.log(rest);  // ["Iris", "Alex"]
 
 
-12.promise
+- promise
 
 Promise 的三种状态：
 
 unresolved：等待任务完成；
 resolved：任务完成并且没有任何问题；
 rejected：任务完成，但是出现问题。
+
+
+- 实现promise.all
+- 实现promise.retry
 
