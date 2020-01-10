@@ -95,4 +95,5 @@ rejected：任务完成，但是出现问题。
 
 - 实现promise.all
 - 实现promise.retry
+- promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
 

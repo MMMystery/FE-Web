@@ -283,3 +283,8 @@ function lazyLoad () {
 - 介绍下 fiber
 - 介绍下 hooks
 - 数组哪些方法有副作用
+- 请分别用深度优先思想和广度优先思想实现一个拷贝函数？
+- 表单可以跨域吗
+- 说一下对闭包的理解，以及你在什么场景下会用到闭包？
+- 最常见是在 Array、String prototype 上写一个函数。比如 'abcd'.f() => 'd-c-b-a'
+- 还有一些常用的函数，比如 bind (好多家都考……)，throttle, debounce 等

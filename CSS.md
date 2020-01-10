@@ -338,3 +338,4 @@ background-image: linear-gradient(rgba(0,0,0,.2) 50%, transparent 0);
 - 手写图片瀑布流效果
 - 使用纯CSS实现曲线运动（贝塞尔曲线）
 - 画一条0.5px的直线
+- 介绍css3中position:sticky
