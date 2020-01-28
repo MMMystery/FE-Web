@@ -22,37 +22,74 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
 
 - BFC
 
+```
+todo
+
+```
+
 
 - CSS3中transition和animation的属性
+
+```
     transition(过渡动画)
+        transition-property: 设定哪个css属性来过渡
+        transition-duration:设定过渡时长
+        transition-timing-function:设定速度曲线
+        transition-delay:设定何时开始
     animation(关键帧动画)
+        animation-name	指定要绑定到选择器的关键帧的名称(关键帧另外定义)
+        animation-duration	动画指定需要多少秒或毫秒完成
+        animation-timing-function	设置动画将如何完成一个周期
+        animation-delay	设置动画在启动前的延迟间隔。
+        animation-iteration-count	定义动画的播放次数。
+        animation-direction	方向
+        
+```
+
+CSS3中transition和animation的属性分别有哪些
+
+```
+transition 过渡动画：
+(1) transition-property：属性名称
+(2) transition-duration: 间隔时间
+(3) transition-timing-function: 动画曲线
+(4) transition-delay: 延迟
+animation 关键帧动画：
+(1) animation-name：动画名称
+(2) animation-duration: 间隔时间
+(3) animation-timing-function: 动画曲线
+(4) animation-delay: 延迟
+(5) animation-iteration-count：动画次数
+(6) animation-direction: 方向
+(7) animation-fill-mode: 禁止模式
+```
 
 
 - 清除浮动的方式及优缺点
 
 ``` 
-额外标签法(在最后一个浮动元素的后面新加一个标签如<div class="clear"></div>，并在其CSS样式中设置clear: both;)
+1.额外标签法(在最后一个浮动元素的后面新加一个标签如<div class="clear"></div>，并在其CSS样式中设置clear: both;)
 
 
 优点：简单，通俗易懂，写少量代码，兼容性好
 缺点：额外增加无语义html元素，代码语义化差，后期维护成本大
 
 
-给父级设置高度
+2.给父级设置高度
 
 
 优点：简单，写少量代码，容易掌握
 缺点：不够灵活，只适用于高度固定的布局
 
 
-触发父级BFC(如给父元素设置overflow:hidden，特别注意的是：在IE6中还需要触发hasLayout，例如给父元素设置zoom:1。原理是触发父级BFC后，父元素在计算高度时，浮动的子元素也会参与计算)
+3.触发父级BFC(如给父元素设置overflow:hidden，例如给父元素设置zoom:1。原理是触发父级BFC后，父元素在计算高度时，浮动的子元素也会参与计算)
 
 
 优点：简单，代码简洁
 缺点：设置overflow:hidden容易造成不会自动换行导致超出的尺寸被隐藏掉，无法显示要溢出的元素
 
 
-使用after伪元素，常见的写法如下：
+4.使用after伪元素，常见的写法如下：
 
  .clearfix::after {
     content: ".";
@@ -68,34 +105,33 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
     // 注意此处是为了兼容IE6和IE7浏览器，即触发hasLayout
     zoom: 1;
  }
-复制代码
-优点：符合闭合浮动思想，结构语义化正确
-缺点：代码量多，因为IE6-7下不支持after伪元素，需要额外写zoom:1来触发hasLayout
 
 ```
 
-+ 水平居中
+- 水平居中
+
 ```
+1.常用：
 若是行内元素，则直接给其父元素设置text-align: center即可
 若是块级元素，则直接给该元素设置margin: 0 auto即可
 
 
-使用flex布局的方式，可以轻松实现水平居中，即使子元素中存在浮动元素也同样适用
+2.使用flex布局的方式，可以轻松实现水平居中，即使子元素中存在浮动元素也同样适用
 .parent {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
-使用绝对定位的方式，再配合CSS3新增的transform属性
+3.使用绝对定位的方式，再配合CSS3新增的transform属性
 
 .child {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
 }
-复制代码
-使用绝对定位的方式，再配合负值的margin-left(此方法需要固定宽度)
+
+4.使用绝对定位的方式，再配合负值的margin-left(此方法需要固定宽度)
 
 .child {
     position: absolute;
@@ -103,8 +139,7 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
     width: 200px; // 假定宽度为200px
     margin-left: -100px; // 负值的绝对值为宽度的一半
 }
-复制代码
-使用绝对定位的方式，再配合left:0;right:0;margin:0 auto;(此方法需要固定宽度)
+5.使用绝对定位的方式，再配合left:0;right:0;margin:0 auto;(此方法需要固定宽度)
 
 .child {
     position: absolute;
@@ -118,10 +153,11 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
 
 - 垂直居中
 ```
+1.常用：
 若元素是单行文本，则直接给该元素设置line-height等于其父元素的高度
 若元素是行内块级元素，可以配合使用display:inline-block;vertical-align:middle和一个伪元素来让内容块居中
 
-使用flex布局的方式，可以轻松实现垂直居中，即使子元素中存在浮动元素也同样适用
+2.使用flex布局的方式，可以轻松实现垂直居中，即使子元素中存在浮动元素也同样适用
 
 
 .parent {
@@ -129,16 +165,14 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
     align-items: center;
 }
 
-复制代码
-使用绝对定位的方式，再配合CSS3新增的transform属性
+3.使用绝对定位的方式，再配合CSS3新增的transform属性
 
 .child {
     position: absolute;
     top: 50%;
     transform: translate(0, -50%);
 }
-复制代码
-使用绝对定位的方式，再配合负值的margin-top(此方法需要固定高度)
+4.使用绝对定位的方式，再配合负值的margin-top(此方法需要固定高度)
 
 .child {
     position: absolute;
@@ -146,8 +180,7 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
     height: 200px; // 假定高度为200px
     margin-top: -100px; // 负值的绝对值为高度的一半
 }
-复制代码
-使用绝对定位的方式，再配合top:0;bottom:0;margin:auto 0;(此方法需要固定高度)
+5.使用绝对定位的方式，再配合top:0;bottom:0;margin:auto 0;(此方法需要固定高度)
 
 .child {
     position: absolute;
@@ -160,23 +193,15 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
 
 - 水平垂直居中
 ```
-使用flex布局的方式同样可以轻松实现水平垂直居中
+1.使用flex布局的方式同样可以轻松实现水平垂直居中
 
-// flex 2012年版本写法
 .parent {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-// flex 2009年版本写法
-.parent {
-    display: box;
-    box-pack: center;
-    box-align: center;
-}
-复制代码
-使用绝对定位的方式，再配合CSS3新增的transform属性
+2.使用绝对定位的方式，再配合CSS3新增的transform属性
 
 .child {
     position: absolute;
@@ -185,7 +210,7 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
     transform: translate(-50%, -50%);
 }
 
-使用绝对定位的方式，再配合使用负值的margin-top和负值的margin-left(此方法需要同时固定宽度和高度)
+3.使用绝对定位的方式，再配合使用负值的margin-top和负值的margin-left(此方法需要同时固定宽度和高度)
 
 .child {
     position: absolute;
@@ -205,17 +230,9 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
 flex布局的方式
 双飞翼布局
 圣杯布局
+
 ```
 
-- 实现一个朝左的三角形
-```
-
-.content {
-width:0;
-height:0;
-  border:10px;
-  border-color: transparent #3366ff transparent transparent;
-}
 
 ```
 
@@ -244,15 +261,70 @@ HTML文档在解析的过程当中，如果遇到link标签，则会立即发起
     //grid-row-gap: 24px;;
 ```
 
-- css实现自适应的正方形
+
 - css实现单行截取，多行截取
+
+```
+单行：
+div{
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+
+}
+
+多行：
+div {
+ overflow: hidden;
+ text-overflow:ellipsis;
+
+ display: -webkit-box;
+ -webkit-line-clamp: 2;
+ -webkit-box-orient: vertical;
+
+}
+
+```
+
+
 - 关于css3里阴影的一些知识
+
+```
+box-shadow:阴影水平偏移值（可取正负值）； 阴影垂直偏移值（可取正负值）；阴影模糊值；阴影颜色
+box-shadow:2px 2px 5px #333333
+
+```
+
+
 - 列出 display 的值，并说明他们的作用
+
+``` 
+none
+line
+line-block
+block
+table // 作为块级表格来显示
+line-table
+table-cell 作为一个表格单元格显示（类似 <td> 和 <th>）
+inherit // 从父元素继承
+等等一些其他不常用的
+```
 - 怎么样使一个 div 居中于浏览器中间
+
+``` 
+    div{
+    
+    position: absolute;   
+    top: 50%;   
+    left: 50%;   
+    transform: translate(-50%, -50%);  
+     }
+```
+
 - rem与em的区别
 
 ``` 
-rem是根据根的font-size变化，而em是根据父级的font-size变化
+rem是根据根元素htmlfont-size计算，而em是根据父级的font-size计算
 
 rem：相对于根元素html的font-size，假如html为font-size：12px，那么，在其当中的div设置为font-size：2rem,就是当中的div为24px
 em：相对于父元素计算，假如某个p元素为font-size:12px,在它内部有个span标签，设置font-size：2em,那么，这时候的span字体大小为：12*2=24px
@@ -271,7 +343,7 @@ ID选择器：#ID
 
 !important > 行内样式 > ID选择器 > 类选择器 > 标签选择器 > 通配符选择器
 
-内联样式，权值为1000
+行内样式，权值为1000
 ID选择器，权值为0100
 类，伪类和属性选择器，权值为0010
 标签选择器和伪元素选择器，权值为0001
@@ -283,31 +355,15 @@ ID选择器，权值为0100
 - CSS3新特性
   
 ```
-transition：过渡
+transition：过渡动画
+animation：帧动画
+
 transform：旋转、缩放、移动或者倾斜
-animation：动画
 gradient：渐变
 shadow：阴影
 border-radius：圆角
 ```
 
-CSS3中transition和animation的属性分别有哪些
-
-```
-transition 过渡动画：
-(1) transition-property：属性名称
-(2) transition-duration: 间隔时间
-(3) transition-timing-function: 动画曲线
-(4) transition-delay: 延迟
-animation 关键帧动画：
-(1) animation-name：动画名称
-(2) animation-duration: 间隔时间
-(3) animation-timing-function: 动画曲线
-(4) animation-delay: 延迟
-(5) animation-iteration-count：动画次数
-(6) animation-direction: 方向
-(7) animation-fill-mode: 禁止模式
-```
 
 - 如何实现一个最大的正方形
 
@@ -318,7 +374,88 @@ animation 关键帧动画：
     background: #333;
 }
 ```
-- 手写半圆，园、三角形、梯形
+
+
+- 手写圆、半圆、三角形、梯形、平行四边形、椭圆形、扇形、贪吃蛇蛇头
+
+  .div{
+  width:100px;
+  height:100px
+  border-radius: 50px
+  background: red;
+  }
+  
+  // 左半圆
+  .div{
+    width:100px;
+    height:100px
+    border-radius: 50px 0 0 50px;
+    background: red;
+    }
+    
+    .div {
+      width:0;
+      height:0;
+      border-top: 50px solid transparent;
+        border-bottom: 50px solid transparent;
+        border-right: 50px solid red;
+    }
+    
+    // 梯形
+    {
+        width: 120px;
+        height: 0px;
+        border-bottom:120px solid red ;
+        border-right: 60px solid transparent;
+        border-left: 60px solid transparent;
+    }
+    
+    // 平行四边形
+    {
+            width: 0px;
+            height: 0px;
+            border:100px solid red ;
+            transform: skew(30deg);
+    }
+    // 椭圆形
+    {
+        width: 200px;
+        height: 50px;
+        border:1px solid red;
+        border-radius:100px;
+        }
+        
+        // 扇形
+        
+        {
+                width: 0px;
+                height: 0px;
+                border-radius: 50%;
+                border :140px solid transparent; 
+                border-bottom:140px solid red;
+        }
+        
+      // 贪吃蛇蛇头
+      {
+              width: 0px;
+              height: 0px;
+              border-radius: 50%;
+              border:140px solid red;
+              border-right :140px solid transparent; 
+      }
+      
+  
+  ```
+  - 实现一个朝左的三角形
+  ```
+  
+  .content {
+      width:0;
+      height:0;
+      border:10px;
+      border-color: transparent #3366ff transparent transparent;
+  }
+```
 
 - css禁用鼠标事件
 ```
@@ -334,8 +471,91 @@ background-image: linear-gradient(rgba(0,0,0,.2) 50%, transparent 0);
 
 ```
 
-- CSS实现宽度自适应100%，宽高16:9的比例的矩形。
+- css实现自适应的正方形
+
+```
+1.
+    .div {
+        width: 100%;
+        height: 100vw;
+        background: red;
+       }
+2.
+    .div {
+     width: 100%;
+     height: 0;
+     padding-bottom: 100%; // 用padding-top也行，不过会把文字挤出去
+     }
+3.  
+.placeholder {
+  width: 100%;
+  overflow: hidden; // 关键触发BFC不然折叠了
+}
+
+.placeholder:after {
+  content: '';
+  display: block;
+  margin-top: 100%; /* margin 百分比相对父元素宽度计算 */
+}
+
+```
+- CSS实现宽度自适应100%，宽高16:9的比例的矩形。（和画自适应的正方形很像）
+
+``` 
+div{
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  background-color: red;
+}
+```
 - 手写图片瀑布流效果
+
+``` 
+TODO
+
+```
 - 使用纯CSS实现曲线运动（贝塞尔曲线）
+
+``` 
+transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000);
+用animation也可以
+
+```
 - 画一条0.5px的直线
-- 介绍css3中position:sticky
+
+```  
+
+1. meta viewport 方式（这样的话原来的1px就变成0.5px了，只在移动端才能看到效果）
+
+<meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5"/>
+
+
+2. 采用transform: scale()的方式
+
+height: 1px;
+transform: scaleY(0.5); 缩放
+
+3. 采用阴影
+height: 1px;
+  background: none;
+  box-shadow: 0 0.5px 0 #000;
+  
+4. 采用order-image的方式，需要自己制作一个0.5px的图片
+
+5. 利用hr标签，设置元素属性为0.5px
+
+```
+- 介绍css3中position有哪些属性
+
+```  
+relative
+absolute
+fixed
+static // 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明
+sticky // 粘性定位 结合了 position:relative 和 position:fixed 两种定位功能于一体的特殊定位，适用于一些特殊场景，它的行为就像 position:relative; 而当页面滚动超出目标区域时，它的表现就像 position:fixed;，它会固定在目标位置。
+适用于滚动吸顶
+inherit // 规定应该从父元素继承 position 属性的值。
+
+
+```
