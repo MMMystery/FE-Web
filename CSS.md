@@ -23,7 +23,20 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
 - BFC
 
 ```
-todo
+
+BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素
+因为BFC内部的元素和外部的元素绝对不会互相影响，因此， 当BFC外部存在浮动时，它不应该影响BFC内部Box的布局，BFC会通过变窄，而不与浮动有重叠。同样的，当BFC内部有浮动时，为了不影响外部元素的布局，BFC计算高度时会包括浮动的高度。
+
+如何创建BFC
+1、float的值不是none。
+2、position的值不是static或者relative。
+3、display的值是inline-block、table-cell、flex、table-caption或者inline-flex
+4、overflow的值不是visible
+
+用处：1.利用BFC避免margin重叠 2.清除浮动 3.用于处理布局
+
+属于同一个BFC的两个相邻的Box会发生margin重叠，所以我们可以设置，两个不同的BFC，也就是我们可以让把第二个p用div包起来，然后激活它使其成为一个BFC
+
 
 ```
 
@@ -537,7 +550,7 @@ height: 1px;
 transform: scaleY(0.5); 缩放
 
 3. 采用阴影
-height: 1px;
+  height: 1px;
   background: none;
   box-shadow: 0 0.5px 0 #000;
   
