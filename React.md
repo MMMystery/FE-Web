@@ -97,19 +97,77 @@ Redux三大原则
 
 
 - react setState 机制
+```  
+
+在一个事件handler函数中，不管setState()被调用多少次，他们也会在函数执行结束以后，被归结为一次重新渲染, 可以优化性能, 这个等到最后一起执行的行为被称为batching。
+//假设现在this.state.value = 0;
+ 
+function eventHandler(){
+    this.setState({value:this.state.value + 1});
+    this.setState({value:this.state.value + 1});
+    this.setState({value:this.state.value + 1});
+}
+ 
+//最后this.state.value仍然会是1，不是3;
+
+
+如果想实现这样的效果，应该传一个函数给setState。这个函数有两个参数，第一个为previous state，第二个为props。这里的例子和props无关，只需要第一个参数
+// 假设 this.state = { value: 0 };
+ 
+function eventHandler(){
+    this.setState((state) => ({ value: state.value + 1}));
+    this.setState((state) => ({ value: state.value + 1}));
+    this.setState((state) => ({ value: state.value + 1}));
+}
+ 
+//现在this.state.value === 3;
+到这里我们得到结论，setState是异步执行的。
+
+
+但是当setState()不在事件Handler函数中，如在使用ajax的时候，这种batching的异步表现又不会发生。
+
+ 
+promise.then(() => {
+  // 不在事件函数中，所以setState立刻执行
+  this.setState({a: true}); // 重新渲染 {a: true, b: false }
+  this.setState({b: true}); // 重新渲染 {a: true, b: true }
+});
+```
 - React V16 生命周期函数用法
+```   
+链接：http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
+
+```
 
 - 说说对React Hooks的理解
 - React Hooks当中的useEffect是如何区分生命周期钩子的
+
+
 - 什么是高阶组件(HOC)
 
 ```
 高阶组件(Higher Order Componennt)本身其实不是组件，而是一个函数，这个函数接收一个元组件作为参数，然后返回一个新的增强组件，高阶组件的出现本身也是为了逻辑复用
 ```
-- 如何避免组件的重新渲染？
+- react如何提高性能
+
+```  
+1.setState
+setState机制在正常运行时，由于批更新策略，已经降低了update过程的触发次数。
+2.父组件render
+
+重写shouldComponentUpdate来避免不必要的dom操作。（新版react提供的PureComponent就解决了没必要的重新渲染。）
+使用key来帮助React识别列表中所有子组件的最小变化。
+
+3.正确使用diff算法
+key值的设定
+
+```
+
+- 如何避免组件的重新渲染，react性能优化？
 
 ``` 
 React.memo():这可以防止不必要地重新渲染函数组件
+// React.memo()是一个高阶函数，它与 React.PureComponent类似，但是它是一个函数组件而非一个类
 
 
 PureComponent:这可以防止不必要地重新渲染类组件
@@ -121,7 +179,11 @@ PureComponent:这可以防止不必要地重新渲染类组件
 
 
 
-如何更新状态和不更新状态
+- 如何更新状态和不更新状态
+```
+setState就是更新状态啊
+
+```
 
 - 如何在React中应用样式
 
@@ -129,9 +191,16 @@ PureComponent:这可以防止不必要地重新渲染类组件
 <div className="App">
 <div style={{backgroundColor:'orange'}}>
 ```
-什么是Redux及其工作原理
-什么是React路由器及其工作原理
-什么是错误边界
+
+
+- 什么是错误边界
+
+```  
+部分 UI 的 JavaScript 错误不应该导致整个应用崩溃，为了解决这个问题，React 16 引入了一个新的概念 —— 错误边界。
+
+错误边界是一种 React 组件，这种组件可以捕获并打印发生在其子组件树任何位置的 JavaScript 错误，并且，它会渲染出备用 UI，而不是渲染那些崩溃了的子组件树。
+
+```
 - 什么是 Fragments
 ```
 // With Fragments   
@@ -153,12 +222,39 @@ PureComponent:这可以防止不必要地重新渲染类组件
   )
 
 ```
-什么是传送门(Portals)
+什么是传送门(react Portals)
+
+```  
+使得组件可以脱离父组件层级挂载在DOM树的任何位置
+
+render() {
+  // React does *not* create a new div. It renders the children into `domNode`.
+  // `domNode` is any valid DOM node, regardless of its location in the DOM.
+  return ReactDOM.createPortal(
+    this.props.children,
+    domNode
+  );
+}
+
+```
 什么是 Context
-什么是 Hooks
-如何提高性能
+
 如何在重新加载页面时保留数据
-如何从React中调用API
+``` 
+存储在 redux 中。
+
+存储在最外层 component 的 context 中
+
+```
+- 如何从React中调用API
+``` 
+没理解，是问调用服务端api？
+
+```
+
+
+
+- 什么是Redux及其工作原理
 
 - redux中的reducer（纯函数）
 
