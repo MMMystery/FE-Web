@@ -15,11 +15,11 @@
 - 实现一个new操作符
 - 手写jsonp实现
 - js实现css的:hover效果
-实现一个JSON.stringify
-实现一个JSON.parse
-实现一个Function.bind
-实现一个继承
-实现一个JS函数柯里化
+- 实现一个JSON.stringify
+- 实现一个JSON.parse
+- 实现一个Function.bind
+- 实现一个继承
+- 实现一个JS函数柯里化
 
 
 - 手写代码实现事件委托和闭包
@@ -30,33 +30,29 @@
 - 实现一个repeat函数，主要是闭包的应用
 - 请解释XSS与CSRF分别是什么，两者有什么联系？如何防御？
 - js原型链
-- 手写代码实现（其实就是树的遍历，递归和非递归实现）
-- 性能优化
-- http缓存
-- 前端安全防范措施
-- 对http2的了解
-- 对新技术的了解
+
+
+
+
+
 - 对MVC MVP MVVM的了解
 - 手写代码实现一下Array.prototype.trim 这个函数，并写个测试用例跑给我看下
 - 说一下对bind，call，apply三个函数的认识，自己实现一下bind方法。
-- 请实现一个 call 函数
-- 如何实现一个 apply 函数？
+
 - 怎么判断对象类型？
 - generator 原理
 - async、await 的优缺点
 - 说说你对闭包的理解
-- 数组降维
+
 - 请实现一个深拷贝
 - typeof 于 instanceof 区别
 -  怎么判断页面是否加载完成？
 -  说说你对Service worker的理解
 -  defer和async区别
 
--  说说浏览器缓存机制
--  怎样选择合适的缓存策略
+
+
 -  说说重绘（Repaint）和回流（Reflow）
--  页面首屏渲染性能优化方案有哪些
--  浏览器性能问题-使用 Webpack 优化项目
 
 -  实现一个JSON.stringify
 -  实现一个JSON.parse
@@ -133,16 +129,9 @@ promise.then(function (value) {
 早期的javascript版本没有块级作用域、没有类、没有包、也没有模块，这样会带来一些问题，如复用、依赖、冲突、代码组织混乱等，随着前端的膨胀，模块化显得非常迫切
 模块化的好处
 
-
 避免变量污染，命名冲突
-
-
 提高代码复用率
-
-
 提高了可维护性
-
-
 方便依赖关系管理
 
 ```
@@ -206,7 +195,6 @@ xhr.send(null)
 - 数组map、filter、reduce相关；
 - Map和Set；
 - 说一下对闭包的理解，以及你在什么场景下会用到闭包？
-- promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
 - 写一个方法遍历所有文档树所有节点(考察递归)；
 - 手写 Proxy / Object.defineProperty
 - 写一个函数，可以控制最大并发数
@@ -262,8 +250,8 @@ function lazyLoad () {
 </body>
 
 ```
-- 20、offsetWidth/offsetHeight,clientWidth/clientHeight与scrollWidth/scrollHeight的区别
-- 21、javascript有哪些方法定义对象
+- offsetWidth/offsetHeight,clientWidth/clientHeight与scrollWidth/scrollHeight的区别
+- javascript有哪些方法定义对象
 - 怎么从十万个节点中找到想要的节点，怎么快速在某个节点前插入一个节点？
 - 怎么用原生js实现一个轮播图，以及滚动滑动
 - 怎么实现上传下载的功能
@@ -273,21 +261,21 @@ function lazyLoad () {
 - 哪些是宏任务，哪些是微任务
 - 浏览器事件循环和 node事件循环有什么差别
 - setTimetout 到期时间是怎么计算的，比如有1000个定时器
-- react setstate 机制，事务机制
-- 介绍下 redux，以及和 mobx 区别是什么
+
+
 - 实现 promise.all 并发限制，每次只能并发5个请求
-- css 盒模型
 - node 错误监控怎么做的
-- rn 有没有搞过？
-- react 生态都用过什么。
+
 - 介绍下 fiber
 - 介绍下 hooks
-- 数组哪些方法有副作用
+
 - 请分别用深度优先思想和广度优先思想实现一个拷贝函数？
 - 表单可以跨域吗
 - 说一下对闭包的理解，以及你在什么场景下会用到闭包？
 - 最常见是在 Array、String prototype 上写一个函数。比如 'abcd'.f() => 'd-c-b-a'
 - 还有一些常用的函数，比如 bind (好多家都考……)，throttle, debounce 等
+
+
 
 - 文件上传如何做断点续传
 

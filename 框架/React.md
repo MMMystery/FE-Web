@@ -274,3 +274,6 @@ redux中间件redux-saga
 redux-saga相当于在Redux原有数据流中多了一层，通过对Action进行监听，从而捕获到监听的Action，然后可以派生一个新的任务对state进行维护（这个看项目本身的需求），通过更改的state驱动View的变更。
 
 ```
+
+- react 生态都用过什么。
+- 介绍下 redux，以及和 mobx 区别是什么
