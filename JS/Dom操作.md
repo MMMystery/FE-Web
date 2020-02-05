@@ -68,3 +68,4 @@ ele.style.styleName = styleValue;设置ele元素的CSS样式
 
 ```
 
+- DOM事件中target和currentTarget的区别

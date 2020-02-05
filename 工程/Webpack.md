@@ -100,3 +100,22 @@ plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后�
 ```
 
 
+- webpack里面的插件是怎么实现的
+- 多个入口怎么分割
+- css 浏览器兼容在 webpack 里怎么配
+- webpack配置用到webpack.optimize.UglifyJsPlugin这个插件，有没有觉得压缩速度很慢，有什么办法提升速度
+
+- babel 原理 babel 的编译原理，抽象语法树，babel把ES6转成ES5或者ES3之类的原理是什么，有没有去研究。
+
+- css moduler配置
+
+- source-map
+
+```
+在开发环境中我们使用：cheap-module-source-map
+在生产环境中我们使用：false（不需要map包）。
+
+```
+
+
+

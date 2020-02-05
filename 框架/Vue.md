@@ -21,3 +21,5 @@ vue编译Compile的过程主要分以下几步
 parse(生成AST)=> optimize(优化静态节点) => generate(生成render function)
 
 ```
+
+- vue的双向绑定如何实现

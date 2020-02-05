@@ -67,3 +67,78 @@ url:代表当前PC页所对应的手机页URL，两者必须是一一对应关�
 用百度打开网页可能会对其进行转码（比如贴广告），避免转码可添加如下meta。
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 ```
+
+-  async, defer以及何时使用data-*。
+
+```
+async和defer
+	1	<script src="script.js"></script> 没有 defer 或 async，浏览器会立即加载并执行指定的脚本，“立即”指的是在渲染该 script 标签之下的文档元素之前，也就是说不等待后续载入的文档元素，读到就加载并执行。
+	2	<script async src="script.js"></script> 有 async，加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步）。
+	3	<script defer src="myscript.js"></script> 有 defer，加载后续文档元素的过程将和 script.js 的加载并行进行（异步），但是 script.js 的执行要在所有元素解析完成之后，DOMContentLoaded 事件触发之前完成。
+如果有多个defer脚本，会按照顺序下载解析。而多个async脚本下载与解析的顺序是不一定的，所以如果脚本之间有依赖关系不要用async
+
+
+
+
+```
+
+
+- 网页内容高度
+
+
+``` 
+页可见区域宽： document.body.clientWidth;
+网页可见区域高： document.body.clientHeight;
+网页可见区域宽： document.body.offsetWidth (包括边线的宽);
+网页可见区域高： document.body.offsetHeight (包括边线的宽);
+网页正文全文宽： document.body.scrollWidth;
+网页正文全文高： document.body.scrollHeight;
+网页被卷去的高： document.body.scrollTop;
+网页被卷去的左： document.body.scrollLeft;
+网页正文部分上： window.screenTop;
+网页正文部分左： window.screenLeft;
+屏幕分辨率的高： window.screen.height;
+屏幕分辨率的宽： window.screen.width;
+屏幕可用工作区高度： window.screen.availHeight;
+浏览器可视高区域高度：window.innerHeight
+
+
+```
+
+
+window.onload: 
+当页面全部加载完成（包括所有资源）
+document.onload: 
+当整个html文档加载的时候就触发了，也就是在body元素加载之前就开始执行了
+DOMContentLoaded: 
+当页面的DOM树解析好并且需要等待JS执行完才触发 
+DOMContentLoaded事件不直接等待CSS文件、图片的加载完成
+onreadytstatechange: 
+当对象状态变更时触发这个事件，一旦document的readyState属性发生变化就会触发
+
+
+link和@import的区别
+
+
+```
+1）link属于XHTML标签，除了加载CSS外，还能用于定义RSS, 定义rel连接属性等作用；而@import是CSS提供的，只能用于加载CSS;
+
+	（2）页面被加载的时，link会同时被加载，而@import引用的CSS会等到页面被加载完再加载;
+
+	（3）import是CSS2.1 提出的，只在IE5以上才能被识别，而link是XHTML标签，无兼容问题;
+
+
+```
+
+
+- Label的作用是什么？是怎么用的？
+``` 
+
+label标签来定义表单控制间的关系,当用户选择该标签时，浏览器会自动将焦点转到和标签相关的表单控件上。
+
+<label for="Name">Number:</label>
+<input type=“text“name="Name" id="Name"/>
+
+<label>Date:<input type="text" name="B"/></label>
+
+```

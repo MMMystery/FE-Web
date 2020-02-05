@@ -1,65 +1,537 @@
+- JavaScript有⼏种类型的值
+``` 
+
+栈：原始数据类型（ Undefined ， Null ， Boolean ， Number 、 String  ）
+堆：引⽤数据类型（对象、数组和函数）
+两种类型的区别是：存储位置不同
+
+原始数据类型直接存储在栈( stack )中的简单数据段，占据空间⼩、⼤⼩固定，属于被频 繁使⽤数据，所以放⼊栈中存储；
+引⽤数据类型存储在堆( heap )中的对象,占据空间⼤、⼤⼩不固定,如果存储在栈中，将会 影响程序运⾏的性能；引⽤数据类型在栈中存储了指针，该指针指向堆中该实体的起始地 址。当解释器寻找引⽤值时，会⾸先检索其 在栈中的地址，取得地址后从堆中获得实体
+
+```
+- 你认为js 和这些语言的不同点在哪里
+- js类型判断方式有哪些
+分别为 typeof、instanceof 、constructor和Object.prototype.toString.call()
+
+- console.log(typeof null, typeof [])等等类型判断
+
+```  
+基本类型有6种: number, string, null, undefined, symbol, bool
+typeof可以返回7种: number, string, object, undefined, function, boolean, symbol
+一些面试题：
+typeof null => object, 
+typeof undefined => undefined,
+typeof NaN => number
+NaN == undefined => false
+NaN == NaN => false
+
+```
+
+- js空值判断
+- 如何清除不使用的变量
+- 全局的函数声明是否占内存
+- 手写一个基于hash路由函数
+- js阻止冒泡事件
+```  
+ev.stopPropagation()
+
+```
+- js写一个事件委托
+```  
+
+
+
+
+```
+- 怎么判断 script 或 img 是否加载完成
+- require 和 import 区别
+- window.onclick 和 jquery 的 ready 有什么区别
+
+- 宏任务与微任务
+- $nextTrick原理   
+- settimeout promise requestAnimationFrame 三个任务的时机 以及区别
+- 如何在不使用`%`模运算符的情况下检查一个数字是否是偶数？
+
+``` 
+function isEven(num) {
+  if (num & 1) {
+    return false
+  } else {
+    return true
+  }
+}
+
+```
+
+- universal link是什么，它是如何实现的？
+- router分为hash和history，它们有什么区别？
+- 多个子站点部署，如何同步cooike信息，如何优化性能？
+- 什么是NaN？以及如何检查值是否为 NaN？
+- 如何检查对象中是否存在某个属性
+
+
 - call、apply、bind 实现
-- new 实现
-- class 实现继承
-- async/await 实现
-- reduce 实现
-- 实现一个双向数据绑定
+
+```  
+call
+// 思路：将要改变this指向的方法挂到目标this上执行并返回
+Function.prototype.mycall = function (context) {
+  if (typeof this !== 'function') {
+    throw new TypeError('not funciton')
+  }
+  context = context || window
+  context.fn = this
+  let arg = [...arguments].slice(1)
+  let result = context.fn(...arg)
+  delete context.fn
+  return result
+} 
+
+
+apply
+
+// 思路：将要改变this指向的方法挂到目标this上执行并返回
+Function.prototype.myapply = function (context) {
+  if (typeof this !== 'function') {
+    throw new TypeError('not funciton')
+  }
+  context = context || window
+  context.fn = this
+  let result
+  if (arguments[1]) {
+    result = context.fn(...arguments[1])
+  } else {
+    result = context.fn()
+  }
+  delete context.fn
+  return result
+}
+
+
+bind
+
+// 思路：类似call，但返回的是函数
+Function.prototype.mybind = function (context) {
+  if (typeof this !== 'function') {
+    throw new TypeError('Error')
+  }
+  let _this = this
+  let arg = [...arguments].slice(1)
+  return function F() {
+    // 处理函数使用new的情况
+    if (this instanceof F) {
+      return new _this(...arg, ...arguments)
+    } else {
+      return _this.apply(context, arg.concat(...arguments))
+    }
+  }
+}
+
+
+
+
+```
+- 说一下对bind，call，apply三个函数的认识，自己实现一下bind方法。
+
+- 对象的几种创建方式
 - instanceof 实现
-- Array.isArray 实现
+```  
+// 思路：右边变量的原型存在于左边变量的原型链上
+function instanceOf(left, right) {
+  let leftValue = left.__proto__
+  let rightValue = right.prototype
+  while (true) {
+    if (leftValue === null) {
+      return false
+    }
+    if (leftValue === rightValue) {
+      return true
+    }
+    leftValue = leftValue.__proto__
+  }
+}
+
+```
+
 - Object.create 的基本实现原理
-- getOwnPropertyNames 实现
+``` 
+
+// 思路：将传入的对象作为原型
+function create(obj) {
+  function F() {}
+  F.prototype = obj
+  return new F()
+}
+```
+
+- new 实现
+``` 
+
+function myNew (fun) {
+  return function () {
+    // 创建一个新对象且将其隐式原型指向构造函数原型
+    let obj = {
+      __proto__ : fun.prototype
+    }
+    // 执行构造函数
+    fun.call(obj, ...arguments)
+    // 返回该对象
+    return obj
+  }
+}
+
+function person(name, age) {
+  this.name = name
+  this.age = age
+}
+let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
+
+
+```
 - promise 实现
+
+- 深拷贝和浅拷贝的实现方式分别有哪些？
+```
+浅拷贝：(1) Object.assign的方式 (2) 通过对象扩展运算符 (3) 通过数组的slice方法 (4) 通过数组的concat方法。
+
+// 1. ...实现
+let copy1 = {...{x:1}}
+
+// 2. Object.assign实现
+
+let copy2 = Object.assign({}, {x:1})
+
+
+
+
+深拷贝：(1) 通过JSON.stringify来序列化对象 (2) 手动实现递归的方式。
+
+// 1. JOSN.stringify()/JSON.parse()
+let obj = {a: 1, b: {x: 3}}
+JSON.parse(JSON.stringify(obj))
+
+// 2. 递归拷贝
+function deepClone(obj) {
+  let copy = obj instanceof Array ? [] : {}
+  for (let i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      copy[i] = typeof obj[i] === 'object' ? deepClone(obj[i]) : obj[i]
+    }
+  }
+  return copy
+}
+
+
+```
+
+
+- 使用setTimeout模拟setInterval
+
+``` 
+// 可避免setInterval因执行时间导致的间隔执行时间不一致
+setTimeout (function () {
+  // do something
+  setTimeout (arguments.callee, 500)
+}, 500)
+
+
+```
+- js实现一个继承方法
+- 实现一个基本的Event Bus
+- 实现一个双向数据绑定
+
+```
+
+let obj = {}
+let input = document.getElementById('input')
+let span = document.getElementById('span')
+// 数据劫持，这个是关键
+Object.defineProperty(obj, 'text', {
+  configurable: true,
+  enumerable: true,
+  get() {
+    console.log('获取数据了')
+  },
+  set(newVal) {
+    console.log('数据更新了')
+    input.value = newVal
+    span.innerHTML = newVal
+  }
+})
+// 输入监听
+input.addEventListener('keyup', function(e) {
+  obj.text = e.target.value
+})
+
+
+```
+- 实现一个简单路由
+
+``` 
+todo
+
+```
+- 实现懒加载
+
+``` 
+
+let imgs =  document.querySelectorAll('img')
+// 可视区高度
+let clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+function lazyLoad () {
+  // 滚动卷去的高度
+  let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+  for (let i = 0; i < imgs.length; i ++) {
+    // 图片在可视区冒出的高度
+    let x = clientHeight + scrollTop - imgs[i].offsetTop
+    // 图片在可视区内
+    if (x > 0 && x < clientHeight+imgs[i].height) {
+      imgs[i].src = imgs[i].getAttribute('data')
+    } 
+  }      
+}
+// addEventListener('scroll', lazyLoad) or setInterval(lazyLoad, 1000)
+
+
+```
+- 手写AJAX
+  
+```
+var xhr = new XMLHttpRequest()
+// 初始化
+xhr.open("GET","/api",false)
+
+// 发送请求
+xhr.send(data)
+
+xhr.onreadystatechange = function(){
+    //这里的函数异步执行，可参考之前JS基础中的异步模块
+    if(xhr.readyState == 4){
+        if(xhr.status == 200){
+            alert(xhr.responseText)
+        }
+    }
+}
+
+xhr.send(null)
+```
+- 实现拖拽
+
+``` 
+todo
+
+```
 - 手写一个防抖/节流函数
+
+``` 
+// 防抖函数 生存环境请用lodash.debounce
+const debounce = (fn, delay) => {
+  let timer = null;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
+};
+
+// 节流函数
+const throttle = (fn, delay = 500) => {
+  let flag = true;
+  return (...args) => {
+    if (!flag) return;
+    flag = false;
+    setTimeout(() => {
+      fn.apply(this, args);
+      flag = true;
+    }, delay);
+  };
+};
+
+```
+
+
+
+- Array.isArray实现
+- getOwnPropertyNames 实现
 - 柯里化函数的实现
-- 手写一个深拷贝
-- 实现一个new操作符
 - 手写jsonp实现
+``` 
+function handleResponse(response){
+    alert(“You’re at IP address ” + response.ip + ”, which is in ” + response.city + ”, ” + response.region_name);
+}
+var script = document.createElement(“script”);
+script.src = “http://freegeoip.net/json/?callback=handleResponse”;
+document.body.insertBefore(script, document.body.firstChild);
+
+
+```
 - js实现css的:hover效果
+
+``` 
+$("el").onmouseover = function() {
+  //
+}
+$("el").onmouseout = function() {
+  //
+}
+
+```
 - 实现一个JSON.stringify
+``` 
+todo
+
+```
 - 实现一个JSON.parse
-- 实现一个Function.bind
-- 实现一个继承
+```  
+var jsonStr = '{"name":"cxk", "age":25}';
+var obj = eval("(" + json + ")");
+```
+- js实现继承的几种方式
+
+``` 
+连接：https://www.jianshu.com/p/9cfe30d1a967
+
+```
+
+- class 实现继承
+``` 
+class Son entends Father {
+  constructor(name){
+    super(name);
+    this.name = name;
+  
+  }
+}
+var s = new Son('son');
+console.log(s.name); // son
+console.log(s instanceof Father); // true
+console.log(s instanceof Son); // true
+```
+
 - 实现一个JS函数柯里化
 
 
-- 手写代码实现事件委托和闭包
-- js的event loop机制
-- 手写实现inherit函数
-- 手写实现throttle函数
+- async/await 实现
+- async await原理
+- reduce 实现
+
+- 手写一个懒加载函数
+
+- 手写代码实现事件委托
+``` 
+ <ul id="list">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+ </ul>
+
+let ul = document.querySelector('#list');
+
+ul.addEventListener('click', function(e){
+    let target = e.target;
+
+    while( target.tagName !== 'LI' ){
+           if ( target.tagName === 'UL' ){
+                target = null;
+                break;
+           }
+
+           target = target.parentNode;
+    }
+
+    if ( target ){
+        console.log('你点击了ui里的li')
+    }
+})
+
+```
+
+- 手写代码实现闭包
+``` 
+
+
+```
+- 说一下对闭包的理解，以及你在什么场景下会用到闭包？JS 没有闭包的话会怎么样？
+``` 
+闭包就是能够读取其他函数内部变量的函数
+闭包是指有权访问另⼀个函数作⽤域中变量的函数，创建闭包的最常⻅的⽅式就是在⼀个
+函数内创建另⼀个函数，通过另⼀个函数访问这个函数的局部变量,利⽤闭包可以突破作⽤链域
+闭包的特性：
+
+函数内再嵌套函数
+内部函数可以引⽤外层的参数和变量
+参数和变量不会被垃圾回收机制回收
+
+```
+- 说说你对闭包的理解,闭包为什么会造成内存泄漏？
 
 - 实现一个repeat函数，主要是闭包的应用
-- 请解释XSS与CSRF分别是什么，两者有什么联系？如何防御？
+
+
+
+- js的event loop机制,单线程、EventLoop、宏队列、微队列
+
+- 内存泄漏
+- 面向对象理解
+- 函数式编程理解
+
+
+
+
+
+
+- rem基本设置
+
+``` 
+// 原始配置
+function setRem () {
+  let doc = document.documentElement
+  let width = doc.getBoundingClientRect().width
+  let rem = width / 75
+  doc.style.fontSize = rem + 'px'
+}
+// 监听窗口变化
+addEventListener("resize", setRem)
+
+
+
+```
+- 手写代码实现一下Array.prototype.trim这个函数，并写个测试用例跑给我看下
+
+
+- 获取URL上的值
+
+- 转换驼峰命名
+```  
+var s1 = "get-element-by-id" // 转化为 getElementById
+
+var f = function(s) {
+    return s.replace(/-\w/g, function(x) {
+        return x.slice(1).toUpperCase();
+    })
+}
+
+```
+
+
 - js原型链
-
-
-
-
-
-- 对MVC MVP MVVM的了解
-- 手写代码实现一下Array.prototype.trim 这个函数，并写个测试用例跑给我看下
-- 说一下对bind，call，apply三个函数的认识，自己实现一下bind方法。
-
 - 怎么判断对象类型？
 - generator 原理
 - async、await 的优缺点
-- 说说你对闭包的理解
 
-- 请实现一个深拷贝
+
 - typeof 于 instanceof 区别
--  怎么判断页面是否加载完成？
--  说说你对Service worker的理解
--  defer和async区别
+- 怎么判断页面是否加载完成？
+- 说说你对Service worker的理解
+- defer和async区别
+- 说说重绘（Repaint）和回流（Reflow）
+- 常见的继承的几种方法
 
-
-
--  说说重绘（Repaint）和回流（Reflow）
-
--  实现一个JSON.stringify
--  实现一个JSON.parse
--  手写一个继承
--  手写防抖(Debouncing)和节流(Throttling)
--  数组中的forEach和map的区别
--  for in和for of,forEach的区别
+- 前端的requestAnimationFrame了解吗？有使用过吗？说一下使用场景。 
+- 数组中的forEach和map的区别
+- for in和for of,forEach的区别
 
 ```
 for in 一般常用来遍历对象或json
@@ -69,6 +541,7 @@ for of数组对象都可以遍历，遍历对象需要通过和Object.keys()
 for in循环出的是key，for of循环出的是value
 ```
 - Set、Map的区别
+
 ```
 应用场景Set用于数据重组，Map用于数据储存
 
@@ -80,13 +553,14 @@ Set：
 Map:
 1，本质上是健值对的集合，类似集合
 2，可以遍历，可以跟各种数据格式转换
+
 ```
 
--   常见的继承的几种方法
 
 
-- 前端的requestAnimationFrame了解吗？有使用过吗？说一下使用场景。  
+ 
 - 可以手写一些Promise么？不是写Promise怎么用哦，让你实现一下Promise。  
+
 ```
 var promise = new Promise((resolve,reject) => {
     if (操作成功) {
@@ -101,19 +575,17 @@ promise.then(function (value) {
     // failure
 })
 
-
 ```
-- 闭包为什么会造成内存泄漏？
+
 - JS宏任务和微任务的理解
-- 深拷贝和浅拷贝的实现方式分别有哪些？
-
-```
-浅拷贝：(1) Object.assign的方式 (2) 通过对象扩展运算符 (3) 通过数组的slice方法 (4) 通过数组的concat方法。
-深拷贝：(1) 通过JSON.stringify来序列化对象 (2) 手动实现递归的方式。
-```
 
 - javascript的垃圾回收机制讲一下
 - new 操作符具体做了什么？
+
+``` 
+
+创建一个新的对象， 将该构造函数内的this指向自身，返回该对象。
+```
 - 1.document.ready和onload的区别？
 ```
 页面加载完成有两种事件，一是ready，表示文档结构已经加载完成（不包含图片等非文字媒体文件），二是onload，指示页 面包含图片等文件在内的所有元素都加载完成。(可以说：ready 在onload 前加载！！！)我的理解： 一般样式控制的，比如图片大小控制放在onload 里面加载;              而：jS事件触发的方法，可以在ready 里面加载;
@@ -144,8 +616,24 @@ mouseover：当鼠标移入元素或其子元素都会触发事件，所以有�
 mouseenter：当鼠标移除元素本身（不包含元素的子元素）会触发事件，也就是不会冒泡，对应的移除事件是mouseleave
 ```
 
-- 理解Eventloop
 - 如何准确判断一个变量是否是数组类型
+
+``` 
+1.instanceof
+
+var a = []
+a instanceof Array
+
+2.数组方法 isArray()
+Array.isArray(a)
+
+
+3.利用构造函数constructor
+var arr = [1,2,3];
+arr.constructor === Array
+
+
+```
 - 写一个能遍历对象和数组的通用forEach函数
 
 ```
@@ -173,28 +661,9 @@ function forEach(obj,fn){
 e.stopPropatation() 
 ```
 
-- 手写ajax
-  
-```
-var xhr = new XMLHttpRequest()
-
-xhr.open("GET","/api",false)
-
-xhr.onreadystatechange = function(){
-    //这里的函数异步执行，可参考之前JS基础中的异步模块
-    if(xhr.readyState == 4){
-        if(xhr.status == 200){
-            alert(xhr.responseText)
-        }
-    }
-}
-
-xhr.send(null)
-```
 - setTimeout、setInterval和requestAnimationFrame；
-- 数组map、filter、reduce相关；
 - Map和Set；
-- 说一下对闭包的理解，以及你在什么场景下会用到闭包？
+
 - 写一个方法遍历所有文档树所有节点(考察递归)；
 - 手写 Proxy / Object.defineProperty
 - 写一个函数，可以控制最大并发数
@@ -250,6 +719,12 @@ function lazyLoad () {
 </body>
 
 ```
+
+
+
+
+
+
 - offsetWidth/offsetHeight,clientWidth/clientHeight与scrollWidth/scrollHeight的区别
 - javascript有哪些方法定义对象
 - 怎么从十万个节点中找到想要的节点，怎么快速在某个节点前插入一个节点？
@@ -262,26 +737,123 @@ function lazyLoad () {
 - 浏览器事件循环和 node事件循环有什么差别
 - setTimetout 到期时间是怎么计算的，比如有1000个定时器
 
-
-- 实现 promise.all 并发限制，每次只能并发5个请求
-- node 错误监控怎么做的
-
-- 介绍下 fiber
-- 介绍下 hooks
-
 - 请分别用深度优先思想和广度优先思想实现一个拷贝函数？
 - 表单可以跨域吗
+``` 
+原页面用 form 提交到另一个域名之后，原页面的脚本无法获取新页面中的内容，所以浏览器认为这是安全的。
+
+因为浏览器安全策略限制的是脚本，而并不限制src，form提交之类的请求。form表单提交不存在跨域
+另外ajax是提交了的（调试工具中很容易看到请求已经发出），只是脚本无法获得结果。
+
+```
 - 说一下对闭包的理解，以及你在什么场景下会用到闭包？
-- 最常见是在 Array、String prototype 上写一个函数。比如 'abcd'.f() => 'd-c-b-a'
-- 还有一些常用的函数，比如 bind (好多家都考……)，throttle, debounce 等
+
+```  
 
 
+```
 
+- 最常见是在Array、String prototype 上写一个函数。比如 'abcd'.f() => 'd-c-b-a'
+
+- 实现 promise.all 并发限制，每次只能并发5个请求
+
+- 介绍defineProperty方法，什么时候需要用到
+
+- 实现Storage，使得该对象为单例，并对localStorage进行封装设置值setItem(key,value)和getItem(key)
+``` 
+
+
+```
+- Object.getPrototypeOf()这个方法
+- Object.assign()
 - 文件上传如何做断点续传
 
 ```  
 思路很简单，拿到文件，保存文件唯一性标识，切割文件，分段上传，每次上传一段，根据唯一性标识判断文件上传进度，直到文件的全部片段上传完毕。
 
 原理就是查询服务器上同文件已经上传了多少字节，然后设置从这个字节大小开始再次上传。
+
+```
+
+
+- 手写原生 DOM 拖拽和大数相加
+- canvas 的一个问题， 一个球从一个角飞到另一个角。 现在用鼠标画一条线。 只要是穿过这个球，球就停止。  说一下实现，不会实现就说思路。
+- Canvas绘制波浪线。
+- 比如 'abcd'.f() => 'd-c-b-a'
+
+- fragment 缓存DOM操作片段，解决性能问题：在网页之前插入1000个li标签
+``` 
+// 普通性能较差版本
+const ui = document.createElement('ul');
+New Array(1000).fill(0).forEach(items => {
+	const li = document.createElement('li');
+	ul.appendChild(li);
+});
+document.body.insertBefore(ul, document.body.children[0]);
+
+// 使用fragment缓存版
+var fragment = document.createDocumentFragment();
+New Array(1000).fill(0).forEach(items => {
+	const li = document.createElement('li');
+	ul.appendChild(li);
+	fragment.appendChild(ul);
+});
+document.body.insertBefore(fragment, document.body.children[0]);
+
+```
+
+- event.preventDefault() 和 event.stopPropagation()方法之间有什么区别？
+``` 
+event.preventDefault() 方法可防止元素的默认行为。 如果在表单元素中使用，它将阻止其提交。 如果在锚元素中使用，它将阻止其导航。 如果在上下文菜单中使用，它将阻止其显示或显示。 event.stopPropagation()方法用于阻止捕获和冒泡阶段中当前事件的进一步传播。
+
+```
+- setTimout promise等异步方案的加载顺序
+
+``` 
+
+
+Promise和setTimeout，process.nextTick, setImmediate的调用顺序：
+
+new Promise > (和promise同级的) console.log() > process.nextTick() > promise.then() > setTimeout() > setImmediate
+
+```
+
+- 异步编程的实现⽅式
+
+``` 
+回调函数
+
+优点：简单、容易理解
+缺点：不利于维护，代码耦合⾼
+
+
+事件监听(采⽤时间驱动模式，取决于某个事件是否发⽣)：
+
+优点：容易理解，可以绑定多个事件，每个事件可以指定多个回调函数
+缺点：事件驱动型，流程不够清晰
+
+
+发布/订阅(观察者模式)
+
+类似于事件监听，但是可以通过‘消息中⼼ʼ，了解现在有多少发布者，多少订阅者
+
+
+Promise对象
+
+优点：可以利⽤then⽅法，进⾏链式写法；可以书写错误时的回调函数；
+缺点：编写和理解，相对⽐较难
+
+
+Generator函数
+
+优点：函数体内外的数据交换、错误处理机制
+缺点：流程管理不⽅便
+
+
+async函数
+
+优点：内置执⾏器、更好的语义、更⼴的适⽤性、返回的是Promise、结构清晰。
+缺点：错误处理机制
+
 
 ```

@@ -77,6 +77,9 @@ let colors2 = ["blue", "white", "green"];
 
 let totalColors = ["black", ...colors1, ...colors2];
 console.log(totalColors);  // ["black", "red", "orange", "blue", "white", "green"]
+
+
+展开运算符和Rest运算符有什么区别？
 ```
 
 7.解构
@@ -140,6 +143,18 @@ const myPromiseAll = (arr)=>{
 TODO
 
 ```
+- ES6的异步编程：promise generator async/await
 
+``` 
+generator的例子， 然后问我怎么用promise 实现
+```
 
 - promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
+
+
+- S模块化Commonjs,UMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义
+``` 
+
+
+```
+

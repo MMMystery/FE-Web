@@ -273,7 +273,7 @@ HTML文档在解析的过程当中，如果遇到link标签，则会立即发起
 ```
 
 
-- css实现单行截取，多行截取
+- css实现单行截取，多行截取，省略标记(...
 
 ```
 单行：
@@ -319,6 +319,7 @@ line-table
 table-cell 作为一个表格单元格显示（类似 <td> 和 <th>）
 inherit // 从父元素继承
 等等一些其他不常用的
+
 ```
 - 怎么样使一个 div 居中于浏览器中间
 
@@ -568,6 +569,56 @@ static // 默认值。没有定位，元素出现在正常的流中（忽略 top
 sticky // 粘性定位 结合了 position:relative 和 position:fixed 两种定位功能于一体的特殊定位，适用于一些特殊场景，它的行为就像 position:relative; 而当页面滚动超出目标区域时，它的表现就像 position:fixed;，它会固定在目标位置。
 适用于滚动吸顶
 inherit // 规定应该从父元素继承 position 属性的值。
+
+
+```
+基本样式去除：
+*{
+margin：0；
+padding：0；
+}
+
+a标签下划线去除：
+text-decoration：none
+
+关于行内元素的基线，顶线，底线
+
+在网页中的应该使用奇数还是偶数的字体？为什么呢？
+怎么让Chrome支持小于12px 的文字？
+让页面里的字体变清晰，变细用CSS怎么做？（-webkit-font-smoothing: antialiased;）
+
+
+- 什么是CSS 预处理器 / 后处理器？
+
+``` 
+
+
+预处理器例如：LESS、Sass、Stylus，用来预编译Sass或less，增强了css代码的复用性，
+  还有层级、mixin、变量、循环、函数等，具有很方便的UI组件模块化开发能力，极大的提高工作效率。
+
+后处理器例如：PostCSS，通常被视为在完成的样式表中根据CSS规范处理CSS，让其更有效；目前最常做的
+  是给CSS属性添加浏览器私有前缀，实现跨浏览器兼容性的问题。
+  
+```
+
+- retina屏幕兼容（用retina.js）
+```
+写法：
+#logo {
+  .at2x('/images/my_image.png', 200px, 100px);
+}
+
+会编译成：
+#logo {
+  background-image: url('/images/my_image.png');
+}
+
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  #logo {
+    background-image: url('/images/my_image@2x.png');
+    background-size: 200px 100px;
+  }
+}
 
 
 ```

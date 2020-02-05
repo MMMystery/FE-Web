@@ -1,20 +1,24 @@
 - http状态码
 ``` 
-100 客户端应当继续发送请求。这个临时响应是用来通知客户端它的部分请求已经被服务器接收，且仍未被拒绝。
-101 服务器已经理解了客户端的请求，并将通过Upgrade 消息头通知客户端采用不同的协议来完成这个请求。在发送完这个响应最后的空行后，服务器将会切换到在Upgrade 消息头中定义的那些协议。 　　只有在切换新的协议更有好处的时候才应该采取类似措施。
-102 处理将被继续执行。
-200 成功
-301 永久重定向
-302 临时重定向
-304 服务端已经执行了请求，但文件未变化。可以从缓存中获取所请求的资源
-当浏览器请求某一文件时，发现自己缓存的文件有Last-Modified，就会在httpRequest里面添加消息头If-Modified-Since 和If-Non-Match，服务器在收到reqeust时，和服务器本地文件对比，如果没有更新，则仅仅返回一个响应头Head（状态码304，而没有响应体），客户端在收到这个响应时，就会从本地缓存加载请求的资源。
-400 服务器端无法理解客户端发送的请求，请求报文中可能存在语法错误。
-401 当前请求需要身份验证。
-403 不允许访问那个资源
-500 服务器故障
+100  Continue   继续，一般在发送post请求时，已发送了http header之后服务端将返回此信息，表示确认，之后发送具体参数信息
+200  OK         正常返回信息
+201  Created    请求成功并且服务器创建了新的资源
+202  Accepted   服务器已接受请求，但尚未处理
+301  Moved Permanently  请求的网页已永久移动到新位置。
+302 Found       临时性重定向。
+304  Not Modified 自从上次请求后，请求的网页未修改过。
+
+400 Bad Request  服务器无法理解请求的格式，客户端不应当尝试再次使用相同的内容发起请求。
+401 Unauthorized 请求未授权。
+403 Forbidden   禁止访问。
+404 Not Found   找不到如何与 URI 相匹配的资源。
+
+500 Internal Server Error  最常见的服务器端错误。
+503 Service Unavailable 服务器端暂时无法处理请求（可能是过载或维护）。
 504 请求超时
 
 ```
+
 - 说一下https的工作原理，里面涉及到的加密算法都有哪些？
 ```   
 HTTPS其实是有两部分组成：HTTP + SSL / TLS，也就是在HTTP上又加了一层处理加密信息的模块。服务端和客户端的信息传输都会通过TLS进行加密，所以传输的数据都是加密后的数据。
@@ -148,4 +152,46 @@ HTTP协议对应于应用层，tcp、udp协议对应于传输层，IP协议对�
 
 
 -fetch和xhr的区别
+
+``` 
+Ajax 技术的核心是XMLHttpRequest 对象（简称XHR）。XHR 为向服务器发送请求和解析服务器响应提供了流畅的接口。能够以异步方式从服务器取得更多信息，意味着用户单击后，可以不必刷新页面也能取得新数据。
+// 原生XHR
+var xhr = new XMLHttpRequest();
+xhr.open('GET', url);
+xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log(xhr.responseText)   // 从服务器获取数据
+    }
+}
+xhr.send()
+
+
+
+fetch号称是ajax的替代品，它的API是基于Promise设计的，旧版本的浏览器不支持Promise，需要使用polyfill es6-promise
+fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+    })
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
+
+
+```
+
+
+- 你觉得http的下一代要解决什么问题？
+
+- http1.1时如何复用tcp连接
+
+
+scheme://host.domain:port/path/filename
+各部分解释如下：
+scheme - 定义因特网服务的类型。常见的协议有 http、https、ftp、file，其中最常见的类型是 http，而 https 则是进行加密的网络传输。
+host - 定义域主机（http 的默认主机是 www）
+domain - 定义因特网域名，比如 w3school.com.cn
+port - 定义主机上的端口号（http 的默认端口号是 80）
+path - 定义服务器上的路径（如果省略，则文档必须位于网站的根目录中）。
+filename - 定义文档/资源的名称
 
