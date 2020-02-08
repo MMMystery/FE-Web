@@ -75,9 +75,7 @@ async和defer
 	1	<script src="script.js"></script> 没有 defer 或 async，浏览器会立即加载并执行指定的脚本，“立即”指的是在渲染该 script 标签之下的文档元素之前，也就是说不等待后续载入的文档元素，读到就加载并执行。
 	2	<script async src="script.js"></script> 有 async，加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步）。
 	3	<script defer src="myscript.js"></script> 有 defer，加载后续文档元素的过程将和 script.js 的加载并行进行（异步），但是 script.js 的执行要在所有元素解析完成之后，DOMContentLoaded 事件触发之前完成。
-如果有多个defer脚本，会按照顺序下载解析。而多个async脚本下载与解析的顺序是不一定的，所以如果脚本之间有依赖关系不要用async
-
-
+    如果有多个defer脚本，会按照顺序下载解析。而多个async脚本下载与解析的顺序是不一定的，所以如果脚本之间有依赖关系不要用async
 
 
 ```
@@ -105,29 +103,21 @@ async和defer
 
 ```
 
-
-window.onload: 
-当页面全部加载完成（包括所有资源）
-document.onload: 
-当整个html文档加载的时候就触发了，也就是在body元素加载之前就开始执行了
-DOMContentLoaded: 
-当页面的DOM树解析好并且需要等待JS执行完才触发 
-DOMContentLoaded事件不直接等待CSS文件、图片的加载完成
-onreadytstatechange: 
-当对象状态变更时触发这个事件，一旦document的readyState属性发生变化就会触发
-
-
-link和@import的区别
-
+- 加载流程
+```
+document.ready：表示文档结构已经加载完成（不包含图片等非文字媒体文件）
+window.onload：表示页面包含图片等文件在内的所有元素都加载完成
 
 ```
-1）link属于XHTML标签，除了加载CSS外，还能用于定义RSS, 定义rel连接属性等作用；而@import是CSS提供的，只能用于加载CSS;
-
-	（2）页面被加载的时，link会同时被加载，而@import引用的CSS会等到页面被加载完再加载;
-
-	（3）import是CSS2.1 提出的，只在IE5以上才能被识别，而link是XHTML标签，无兼容问题;
 
 
+- link与@import的区别
+```
+从属关系区别：
+@import是CSS提供的语法规则，只有导入样式表的作用；link是HTML提供的标签，不仅可以加载 CSS 文件，还可以定义 RSS，Rel连接属性，设置浏览器资源提示符preload、prefetch等。
+
+加载顺序区别：
+HTML文档在解析的过程当中，如果遇到link标签，则会立即发起获取CSS文件资源的请求；@import引入的CSS将在页面加载完毕后才会被加载。
 ```
 
 

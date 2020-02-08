@@ -2,16 +2,41 @@
 ``` 
 
 栈：原始数据类型（ Undefined ， Null ， Boolean ， Number 、 String  ）
-堆：引⽤数据类型（对象、数组和函数）
+堆：引⽤数据类型（对象、数组和函数,Data,RegExp）
 两种类型的区别是：存储位置不同
 
 原始数据类型直接存储在栈( stack )中的简单数据段，占据空间⼩、⼤⼩固定，属于被频 繁使⽤数据，所以放⼊栈中存储；
 引⽤数据类型存储在堆( heap )中的对象,占据空间⼤、⼤⼩不固定,如果存储在栈中，将会 影响程序运⾏的性能；引⽤数据类型在栈中存储了指针，该指针指向堆中该实体的起始地 址。当解释器寻找引⽤值时，会⾸先检索其 在栈中的地址，取得地址后从堆中获得实体
 
 ```
+- 定义函数的方式
+```
+1.函数声明
+function demo (){}
+function (){} // 匿名函数
+
+()=>{} // ES6
+
+2.函数表达式
+
+var demo = function(){}
+let demo = ()=>{} // es6
+
+3.构造函数
+const demo = new Function("a", "b")
+
+
+```
 - 你认为js 和这些语言的不同点在哪里
 - js类型判断方式有哪些
-分别为 typeof、instanceof 、constructor和Object.prototype.toString.call()
+``` 
+1.typeof
+2.instanceof
+3.constructor
+4.Object.prototype.toString.call()  （这种方式最精准）
+
+```
+
 
 - console.log(typeof null, typeof [])等等类型判断
 
@@ -69,7 +94,7 @@ function isEven(num) {
 - 什么是NaN？以及如何检查值是否为 NaN？
 - 如何检查对象中是否存在某个属性
 
-
+- call、apply、bind的区别
 - call、apply、bind 实现
 
 ```  
@@ -153,7 +178,7 @@ function instanceOf(left, right) {
 
 ```
 
-- Object.create 的基本实现原理
+- Object.create 的基本实现
 ``` 
 
 // 思路：将传入的对象作为原型
@@ -236,7 +261,6 @@ setTimeout (function () {
 
 
 ```
-- js实现一个继承方法
 - 实现一个基本的Event Bus
 - 实现一个双向数据绑定
 
@@ -271,29 +295,7 @@ input.addEventListener('keyup', function(e) {
 todo
 
 ```
-- 实现懒加载
 
-``` 
-
-let imgs =  document.querySelectorAll('img')
-// 可视区高度
-let clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-function lazyLoad () {
-  // 滚动卷去的高度
-  let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-  for (let i = 0; i < imgs.length; i ++) {
-    // 图片在可视区冒出的高度
-    let x = clientHeight + scrollTop - imgs[i].offsetTop
-    // 图片在可视区内
-    if (x > 0 && x < clientHeight+imgs[i].height) {
-      imgs[i].src = imgs[i].getAttribute('data')
-    } 
-  }      
-}
-// addEventListener('scroll', lazyLoad) or setInterval(lazyLoad, 1000)
-
-
-```
 - 手写AJAX
   
 ```
@@ -324,7 +326,7 @@ todo
 - 手写一个防抖/节流函数
 
 ``` 
-// 防抖函数 生存环境请用lodash.debounce
+// 防抖函数 生存环境请用lodash.debounce， 防止连续频发操作，触发多次。只触发最后一次。
 const debounce = (fn, delay) => {
   let timer = null;
   return (...args) => {
@@ -335,7 +337,7 @@ const debounce = (fn, delay) => {
   };
 };
 
-// 节流函数
+// 节流函数  间隔一段时间内触发一次。
 const throttle = (fn, delay = 500) => {
   let flag = true;
   return (...args) => {
@@ -354,7 +356,6 @@ const throttle = (fn, delay = 500) => {
 
 - Array.isArray实现
 - getOwnPropertyNames 实现
-- 柯里化函数的实现
 - 手写jsonp实现
 ``` 
 function handleResponse(response){
@@ -416,7 +417,6 @@ console.log(s instanceof Son); // true
 - async await原理
 - reduce 实现
 
-- 手写一个懒加载函数
 
 - 手写代码实现事件委托
 ``` 
@@ -527,7 +527,6 @@ var f = function(s) {
 - 说说你对Service worker的理解
 - defer和async区别
 - 说说重绘（Repaint）和回流（Reflow）
-- 常见的继承的几种方法
 
 - 前端的requestAnimationFrame了解吗？有使用过吗？说一下使用场景。 
 - 数组中的forEach和map的区别
@@ -672,8 +671,10 @@ e.stopPropatation()
 - lazyMan
 - 说说js的垃圾回收(GC)
 - Async/Await 如何通过同步的方式实现异步
+
 - 实现懒加载
 ```
+方案一：直接计算
 let imgs =  document.querySelectorAll('img')
 // 可视区高度
 let clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
@@ -690,6 +691,10 @@ function lazyLoad () {
   }      
 }
 // addEventListener('scroll', lazyLoad) or setInterval(lazyLoad, 1000)
+
+方案二：getBoundingClientRect
+方案三：IntersectionObserver // 浏览器api，能直接判断是否在视口中。
+
 ```
 - div中两个button，div上事件代理，如何判断点击的是哪个button
 - 实现拖拽的功能，自己的思路，pc的思路和移动端思路
@@ -730,7 +735,6 @@ function lazyLoad () {
 - 怎么从十万个节点中找到想要的节点，怎么快速在某个节点前插入一个节点？
 - 怎么用原生js实现一个轮播图，以及滚动滑动
 - 怎么实现上传下载的功能
-- 跨标签页通讯
 - 如何让事件先冒泡后捕获
 - 介绍下浏览器事件循环
 - 哪些是宏任务，哪些是微任务
@@ -856,4 +860,45 @@ async函数
 缺点：错误处理机制
 
 
+```
+
+- 内存泄露和内存溢出
+
+
+- 数组操作
+```
+// 检测数值ES5方法
+Array.isArray(value)  // 检测值是否为数组
+// 转换方法
+toString() 将数组转化为以逗号分隔的字符串
+valueOf() 返回的还是数组
+// 栈方法
+push() 可以接收任意数量的参数，把他们逐个添加到数组的末尾，返回修改后数组的长度
+pop() 从数组末尾移除最后一项，返回移除的项
+// 队列方法
+shift() 移除数组的第一项并返回该项
+unshift() 向数组前端添加任意个项并返回新数组的长度
+// 排序
+sort(compare)
+compare函数接收两个参数,如果返回负数，则第一个参数位于第二个参数前面；如果返回零，则两个参数相等；如果返回正数，第一个参数位于第二个参数后面
+// 降序，升序相反
+(a,b) => (b-a)
+// 操作方法
+concat(数组 | 一个或多个元素) // 合并数组，返回新数组
+slice(起始位置 ，[结束位置]) // 切分数组，返回新数组，新数组不包含结束位置的项
+splice(起始位置，删除的个数，[插入的元素]) // 删除|插入|替换数组，返回删除的元素组成的数组，会修改原数组
+// 位置方法
+indexOf(查找的项，[查找起点位置]) // 使用全等操作符，严格相等
+lastIndexOf()
+// 迭代方法，都接收两个参数，一个是要在每一项上运行的函数，一个是作用域（可选）
+1.every 对数组中每一项运行给定函数，如果函数对每一项都返回true,则返回true
+        every(fn(value,index,array){return ...},[this])
+2.some 对数组中每一项运行给定函数，如果函数对任一项都返回true,则返回true
+3.filter 对数组中每一项运行给定函数，返回该函数会返回true的项组成的数组
+4.forEach 对数组每一项运行给定函数，无返回值
+5.map 对数组每一项运行给定函数，返回每次函数调用返回结果组成的数组
+// 归并方法 reduce和reduceRight(和前者遍历的方向相反),构建一个最终返回的值
+reduce(fn(prev,cur,index,array){ return ... },initValue)
+1.fn返回的值会作为第一个参数传递给下一项
+2.initValue做为归并基础的初始值
 ```

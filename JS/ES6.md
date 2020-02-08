@@ -110,51 +110,23 @@ resolved：任务完成并且没有任何问题；
 rejected：任务完成，但是出现问题。
 
 ```
--实现promise
 
-- 实现promise.all
-
-``` 
-function isPromise(obj) {       // 这个方法是为了判断不是promise的时候直接返回。
-    return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';  
-}
-
-const myPromiseAll = (arr)=>{
-    let result = [];
-    return new Promise((resolve,reject)=>{
-        for(let i = 0;i < arr.length;i++){
-            if(isPromise(arr[i])){
-                arr[i].then((data)=>{
-                    result[i] = data;
-                    if(result.length === arr.length){
-                        resolve(result)
-                    }
-                },reject)
-            }else{
-                result[i] = arr[i];
-            }
-        }    
-    })
-}
-
-```
-- 实现promise.retry
-``` 
-TODO
-
-```
 - ES6的异步编程：promise generator async/await
 
 ``` 
 generator的例子， 然后问我怎么用promise 实现
+
 ```
 
 - promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
 
-
-- S模块化Commonjs,UMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义
 ``` 
 
+```
+
+- 模块化Commonjs,UMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义
+
+``` 
 
 ```
 

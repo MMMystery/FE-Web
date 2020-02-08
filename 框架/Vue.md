@@ -23,3 +23,5 @@ parse(生成AST)=> optimize(优化静态节点) => generate(生成render functio
 ```
 
 - vue的双向绑定如何实现
+- scoped // 防止样式污染
+- computer和watch区别

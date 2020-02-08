@@ -69,3 +69,12 @@ ele.style.styleName = styleValue;设置ele元素的CSS样式
 ```
 
 - DOM事件中target和currentTarget的区别
+``` 
+主要看事件绑定在父元素身上还是目标元素身上。
+
+相等的时候：
+当事件处理程序直接绑定在目标元素上，此时e.target===e.currentTarget，e.target ===this
+
+不相等的时候：
+当事件处理程序绑定在目标元素的父节点上时，currentTarget会指向绑定的父元素，而target依旧指向目标元素
+```

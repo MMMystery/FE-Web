@@ -247,14 +247,6 @@ flex布局的方式
 ```
 
 
-- link与@import的区别
-```
-从属关系区别：
-@import是CSS提供的语法规则，只有导入样式表的作用；link是HTML提供的标签，不仅可以加载 CSS 文件，还可以定义 RSS，Rel连接属性，设置浏览器资源提示符preload、prefetch等。
-
-加载顺序区别：
-HTML文档在解析的过程当中，如果遇到link标签，则会立即发起获取CSS文件资源的请求；@import引入的CSS将在页面加载完毕后才会被加载。
-```
 
 - 实现左右两边贴边的九宫格
 
@@ -459,14 +451,14 @@ border-radius：圆角
       
   
   ```
-  - 实现一个朝左的三角形
-  ```
-  
-  .content {
-      width:0;
-      height:0;
-      border:10px;
-      border-color: transparent #3366ff transparent transparent;
+- 实现一个朝左的三角形
+```
+
+.content {
+  width:0;
+  height:0;
+  border:10px;
+  border-color: transparent #3366ff transparent transparent;
   }
 ```
 
@@ -559,6 +551,16 @@ transform: scaleY(0.5); 缩放
 5. 利用hr标签，设置元素属性为0.5px
 
 ```
+- 伪元素和伪类
+
+``` 
+伪类像类选择器一样给已存在某个元素添加额外的样式；伪元素则是给自己虚拟的元素添加样式。
+伪类和选择器之间用一个冒号隔开，伪元素则是两个冒号隔
+
+伪类： :hover :active :visited
+伪元素： ::afer  ::before
+
+```
 - 介绍css3中position有哪些属性
 
 ```  
@@ -572,20 +574,41 @@ inherit // 规定应该从父元素继承 position 属性的值。
 
 
 ```
-基本样式去除：
+- 基本样式去除：
+``` 
 *{
 margin：0；
 padding：0；
 }
+```
 
-a标签下划线去除：
+
+- a标签下划线去除：
+``` 
 text-decoration：none
 
-关于行内元素的基线，顶线，底线
+```
+- flex布局
+- grid布局
+- 关于行内元素的基线，顶线，底线
 
-在网页中的应该使用奇数还是偶数的字体？为什么呢？
-怎么让Chrome支持小于12px 的文字？
-让页面里的字体变清晰，变细用CSS怎么做？（-webkit-font-smoothing: antialiased;）
+- 在网页中的应该使用奇数还是偶数的字体？为什么呢？
+``` 
+偶数字号相对更容易和 web 设计的其他部分构成比例关系
+为了对称的字体用偶数显得更均衡
+
+```
+- 怎么让Chrome支持小于12px 的文字？
+``` 
+transform:scale(0.8)进行缩放或者使用图片
+```
+
+- 让页面里的字体变清晰，变细用CSS怎么做？
+
+``` 
+-webkit-font-smoothing: antialiased;
+```
+
 
 
 - 什么是CSS 预处理器 / 后处理器？
@@ -619,6 +642,5 @@ text-decoration：none
     background-size: 200px 100px;
   }
 }
-
 
 ```

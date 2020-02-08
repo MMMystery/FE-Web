@@ -335,3 +335,6 @@ react-router里的<Link>标签和<a>标签有什么区别
 - react异步渲染的概念,介绍Time Slicing 和 Suspense
 
 - react-thunk 异步redux解决方案
+
+- refs的使用
+- react如何调用api
