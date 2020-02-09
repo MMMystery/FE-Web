@@ -106,7 +106,14 @@ plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后�
 - webpack配置用到webpack.optimize.UglifyJsPlugin这个插件，有没有觉得压缩速度很慢，有什么办法提升速度
 
 - babel 原理 babel 的编译原理，抽象语法树，babel把ES6转成ES5或者ES3之类的原理是什么，有没有去研究。
+- babel编译原理
 
+```
+babylon 将 ES6/ES7 代码解析成 AST
+babel-traverse 对 AST 进行遍历转译，得到新的 AST
+新 AST 通过 babel-generator 转换成 ES5
+
+```
 - css moduler配置
 
 - source-map
