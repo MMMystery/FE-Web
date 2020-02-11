@@ -514,12 +514,7 @@ div{
   background-color: red;
 }
 ```
-- 手写图片瀑布流效果
 
-``` 
-TODO
-
-```
 - 使用纯CSS实现曲线运动（贝塞尔曲线）
 
 ``` 
@@ -588,9 +583,25 @@ padding：0；
 text-decoration：none
 
 ```
-- flex布局
-- grid布局
-- 关于行内元素的基线，顶线，底线
+
+- 关于行内元素的顶线，中线，基线，底线
+``` 
+顶线：中文汉字的的上端沿；
+中线：横过英文字母x的中间的线；
+基线（base line）并不是汉字文字的下端沿，而是英文字母“x”的下端沿；
+底线：中文汉字的下端沿；
+
+vertical-align有下面这些值
+
+baseline： 基线对齐；
+sub： 下标显示；
+super： 上标显示；
+top： 顶端对齐；
+text-top： 文本的顶端对齐；
+middle： 中部对齐；  //没有研究透的属性
+bottom： 底端对齐；
+text-bottom：   文本的底端对齐；
+```
 
 - 在网页中的应该使用奇数还是偶数的字体？为什么呢？
 ``` 
@@ -610,12 +621,9 @@ transform:scale(0.8)进行缩放或者使用图片
 ```
 
 
-
 - 什么是CSS 预处理器 / 后处理器？
 
 ``` 
-
-
 预处理器例如：LESS、Sass、Stylus，用来预编译Sass或less，增强了css代码的复用性，
   还有层级、mixin、变量、循环、函数等，具有很方便的UI组件模块化开发能力，极大的提高工作效率。
 
@@ -642,5 +650,24 @@ transform:scale(0.8)进行缩放或者使用图片
     background-size: 200px 100px;
   }
 }
+
+```
+
+- flex布局
+
+``` 
+flex-direction //主轴方向
+flex-wrap // 轴线如何换行
+flex-flow //上述两者的简写
+justify-content  //主轴的对齐方式
+align-items // 交叉轴的对齐方式
+align-content // 定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用
+
+```
+- grid布局
+- 手写图片瀑布流效果
+
+``` 
+TODO
 
 ```

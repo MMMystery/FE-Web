@@ -167,9 +167,36 @@ componentwillUnMount
 - React Hooks当中的useEffect是如何区分生命周期钩子的
 
 - 介绍下 React Fiber 架构
+``` 
+Fiber 可以提升复杂React 应用的可响应性和性能。Fiber 即是React新的调度算法
+
+旧版：旧版 React 通过递归的方式进行渲染，使用的是 JS 引擎自身的函数调用栈，它会一直执行到栈空为止
+
+新版：Fiber实现了自己的组件调用栈，它以链表的形式遍历组件树，可以灵活的暂停、继续和丢弃执行的任务。实现方式是使用了浏览器的requestIdleCallback这一 API。
+
+
+每次有 state 的变化 React 重新计算，如果计算量过大，浏览器主线程来不及做其他的事情，比如 rerender 或者 layout，那例如动画就会出现卡顿现象。
+React 制定了一种名为 Fiber 的数据结构，加上新的算法，使得大量的计算可以被拆解，异步化，浏览器主线程得以释放，保证了渲染的帧率。从而提高响应性。
+```
 
 - react的单向数据流是什么
+``` 
+React是单向数据流，数据主要从父节点传递到子节点
+
+```
 - react怎么实现的，原理
+
+``` 
+react是用于构建用户界面的JS框架。因此react只负责解决view层的渲染
+
+Virtual Dom模型
+生命周期管理
+setState机制
+diff算法
+React patch、事件系统
+react的 Virtual Dom模型
+```
+
 - 什么是高阶组件(HOC)
 
 ```
@@ -302,7 +329,6 @@ redux-saga相当于在Redux原有数据流中多了一层，通过对Action进�
 
 ```
 
-- react 生态都用过什么。
 - 介绍下 redux，以及和 mobx 区别是什么
 
 
@@ -328,9 +354,9 @@ JSX 是 JavaScript XML 的简写。这是 React 使用的一种文件类型，�
 - 多个组件之间如何拆分各自的state，每块小的组件有自己的状态，它们之间还有一些公共的状态需要维护，如何思考这块
 - React组件中怎么做事件代理
 
-react-router怎么实现路由切换
-react-router里的<Link>标签和<a>标签有什么区别
-<a>标签默认事件禁掉之后做了什么才实现了跳转
+- react-router怎么实现路由切换
+- react-router里的<Link>标签和<a>标签有什么区别
+- <a>标签默认事件禁掉之后做了什么才实现了跳转
 
 - react异步渲染的概念,介绍Time Slicing 和 Suspense
 

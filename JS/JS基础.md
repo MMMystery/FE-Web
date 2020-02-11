@@ -27,7 +27,7 @@ const demo = new Function("a", "b")
 
 
 ```
-- 你认为js 和这些语言的不同点在哪里
+
 - js类型判断方式有哪些
 ``` 
 1.typeof
@@ -53,9 +53,29 @@ NaN == NaN => false
 ```
 
 - js空值判断
+``` 
+判断undefined
+if (typeof(exp) == undefined)
+
+判断null
+var exp = null; 
+if (!exp && typeof(exp)!=”undefined” && exp!=0) 
+{ 
+alert(“is null”); 
+}　
+
+```
 - 如何清除不使用的变量
+``` 
+布局变量再函数执行完后就销毁了。
+全局变量，你可以设置为null，
+对象属性的删除用delete obj.name;
+```
 - 全局的函数声明是否占内存
-- 手写一个基于hash路由函数
+``` 
+函数声明未被调用说明未被编译是不占内存的。
+```
+
 - js阻止冒泡事件
 ```  
 ev.stopPropagation()
@@ -68,13 +88,42 @@ ev.stopPropagation()
 
 
 ```
+- 手写一个基于hash路由函数
+
 - 怎么判断 script 或 img 是否加载完成
+``` 
+$('img').onload事件
+readystatechange事件，然后用document.readyState == “complete”
+img的complete属性
+```
 - require 和 import 区别
-- window.onclick 和 jquery 的 ready 有什么区别
+``` 
+import 是 ES6 的模块化语法，require() 在好几种模块规范中都有使用
+
+–require是运行时调用，所以require理论上可以运用在代码的任何地方
+–import是编译时调用，所以必须放在文件开头
+
+–require是赋值过程，其实require的结果就是对象、数字、字符串、函数等，再把require的结果赋值给某个变量
+–import是解构过程，但是目前所有的引擎都还没有实现import，我们在node中使用babel支持ES6，也仅仅是将ES6转码为ES5再执行，import语法会被转码为require
+```
+
+- window.onload 和 jquery的ready有什么区别
+
+``` 
+ onload
+ 必须等待网页全部加载完毕（包括图片等），然后再执行JS代码
+ 只能执行一次，如果第二次，那么第一次的执行会被覆盖
+ 
+ ready
+ 只需要等待网页中的DOM结构加载完毕
+ 可以执行多次，N次都不会被覆盖
+```
 
 - 宏任务与微任务
 - $nextTrick原理   
 - settimeout promise requestAnimationFrame 三个任务的时机 以及区别
+
+
 - 如何在不使用`%`模运算符的情况下检查一个数字是否是偶数？
 
 ``` 
@@ -88,7 +137,6 @@ function isEven(num) {
 
 ```
 
-- universal link是什么，它是如何实现的？
 - router分为hash和history，它们有什么区别？
 - 多个子站点部署，如何同步cooike信息，如何优化性能？
 - 什么是NaN？以及如何检查值是否为 NaN？
@@ -448,13 +496,24 @@ ul.addEventListener('click', function(e){
 
 ```
 
-- 手写代码实现闭包
+- 手写一个闭包
 ``` 
+function fn1(){
+ var count = 0;
+ 
+ return (){
+   return count++;
+ }
+}
 
+var a = fn1();
+a()  // 1
+a()  // 2
 
 ```
 - 说一下对闭包的理解，以及你在什么场景下会用到闭包？JS 没有闭包的话会怎么样？
 ``` 
+匿名自执行函数的时候用到
 闭包就是能够读取其他函数内部变量的函数
 闭包是指有权访问另⼀个函数作⽤域中变量的函数，创建闭包的最常⻅的⽅式就是在⼀个
 函数内创建另⼀个函数，通过另⼀个函数访问这个函数的局部变量,利⽤闭包可以突破作⽤链域
@@ -472,15 +531,20 @@ ul.addEventListener('click', function(e){
 
 
 - js的event loop机制,单线程、EventLoop、宏队列、微队列
+``` 
+JS的本质是单线：
 
-- 内存泄漏
+1. 一般来说，非阻塞性的任务采取同步的方式，直接在主线程的执行栈完成。
+
+2. 一般来说，阻塞性的任务都会采用异步来执行，异步的工作一般会交给其他线程完成，然后回调函数会放到事件队列中。
+
+https://www.cnblogs.com/amiezhang/p/11349450.html
+
+```
+
 - 面向对象理解
+
 - 函数式编程理解
-
-
-
-
-
 
 - rem基本设置
 
@@ -697,7 +761,14 @@ function lazyLoad () {
 
 ```
 - div中两个button，div上事件代理，如何判断点击的是哪个button
+
+``` 
+$(docuement).on('click',function(e){
+      e.target// 就能看出点击的是哪个
+})
+```
 - 实现拖拽的功能，自己的思路，pc的思路和移动端思路
+
 - 你能实现一下双向绑定吗
 
 ```
@@ -736,9 +807,15 @@ function lazyLoad () {
 - 怎么用原生js实现一个轮播图，以及滚动滑动
 - 怎么实现上传下载的功能
 - 如何让事件先冒泡后捕获
+``` 
+
+若要实现先冒泡后捕获，给一个元素绑定两个addEventListener，其中一个第三个参数设置为false（即冒泡），另一个第三个参数设置为true（即捕获），调整它们的代码顺序，将设置为false的监听事件放在设置为true的监听事件前面即可。
+
+```
 - 介绍下浏览器事件循环
-- 哪些是宏任务，哪些是微任务
 - 浏览器事件循环和 node事件循环有什么差别
+
+- 哪些是宏任务，哪些是微任务
 - setTimetout 到期时间是怎么计算的，比如有1000个定时器
 
 - 请分别用深度优先思想和广度优先思想实现一个拷贝函数？
@@ -750,12 +827,7 @@ function lazyLoad () {
 另外ajax是提交了的（调试工具中很容易看到请求已经发出），只是脚本无法获得结果。
 
 ```
-- 说一下对闭包的理解，以及你在什么场景下会用到闭包？
 
-```  
-
-
-```
 
 - 最常见是在Array、String prototype 上写一个函数。比如 'abcd'.f() => 'd-c-b-a'
 
@@ -863,7 +935,12 @@ async函数
 ```
 
 - 内存泄露和内存溢出
+``` 
+内存泄漏是资源未释放，内存溢出是满出来了。
+1、内存泄漏memory leak :是指程序在申请内存后，无法释放已申请的内存空间，一次内存泄漏似乎不会有大的影响，但内存泄漏堆积后的后果就是内存溢出。 
+2、内存溢出 out of memory :指程序申请内存时，没有足够的内存供申请者使用
 
+```
 
 - 数组操作
 ```
@@ -902,3 +979,4 @@ reduce(fn(prev,cur,index,array){ return ... },initValue)
 1.fn返回的值会作为第一个参数传递给下一项
 2.initValue做为归并基础的初始值
 ```
+- 你认为js和其他语言的不同点在哪里

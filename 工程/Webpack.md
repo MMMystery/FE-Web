@@ -77,18 +77,12 @@ plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后�
 ```
 
 
-
-
-
-
 - loader的执行顺序为什么是后写的先执行
 
 ```  
 其实为啥是从右往左，而不从左往右，只是Webpack选择了compose方式，而不是pipe的方式而已
 函数式编程中有组合的概念
 ```
-
-
 
 
 - webpack执行的过程
@@ -102,7 +96,10 @@ plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后�
 
 - webpack里面的插件是怎么实现的
 - 多个入口怎么分割
-- css 浏览器兼容在 webpack 里怎么配
+- css浏览器兼容在webpack里怎么配
+``` 
+//postcss-loader autoprefixer postcss 处理浏览器兼容
+```
 - webpack配置用到webpack.optimize.UglifyJsPlugin这个插件，有没有觉得压缩速度很慢，有什么办法提升速度
 
 - babel 原理 babel 的编译原理，抽象语法树，babel把ES6转成ES5或者ES3之类的原理是什么，有没有去研究。
@@ -114,7 +111,6 @@ babel-traverse 对 AST 进行遍历转译，得到新的 AST
 新 AST 通过 babel-generator 转换成 ES5
 
 ```
-- css moduler配置
 
 - source-map
 

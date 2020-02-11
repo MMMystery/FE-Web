@@ -105,7 +105,7 @@ console.log(rest);  // ["Iris", "Alex"]
 ``` 
 Promise 的三种状态：
 
-unresolved：等待任务完成；
+pending：等待任务完成；
 resolved：任务完成并且没有任何问题；
 rejected：任务完成，但是出现问题。
 
@@ -121,12 +121,68 @@ generator的例子， 然后问我怎么用promise 实现
 - promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
 
 ``` 
+reject 是用来抛出异常的，catch 才是用来处理异常的
 
 ```
 
-- 模块化Commonjs,UMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义
+- 模块化Commonjs,AMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义
 
 ``` 
+Commonjs
 
+暴露模块：module.exports = value或exports.xxx = value；
+
+引入模块：require(xxx), 如果是第三方模块，xxx 为模块名；如果是自定义模块，xxx 为模块文件路径
+
+AMD--非同步加载模块
+
+// 定义没有依赖的模块
+define(function(){
+   return 模块
+})
+ 
+// 定义有依赖的模块
+define(['module1', 'module2'], function(m1, m2){
+   return 模块
+})
+ 
+//引入使用模块：
+ 
+require(['module1', 'module2'], function(m1, m2){
+   使用 m1/m2
+})
+
+CMD--专门用于浏览器端，模块的加载是异步的，模块使用时才会加载执行。整合了 CommonJS 和 AMD 规范的特点
+/ 定义没有依赖的模块
+define(function(require, exports, module){
+  exports.xxx = value
+  module.exports = value
+})
+ 
+ 
+// 定义有依赖的模块
+define(function(require, exports, module){
+  // 引入依赖模块 (同步)
+  var module2 = require('./module2')
+  // 引入依赖模块 (异步)
+    require.async('./module3', function (m3) {
+    })
+  // 暴露模块
+  exports.xxx = value
+})
+ 
+ 
+//引入模块	
+define(function (require) {
+  var m1 = require('./module1')
+  var m4 = require('./module4')
+  m1.show()
+  m4.show()
+})
+
+
+ES6 模块化
+1，设计思想：静态化
+2，在编译时就能确定模块的依赖关系，以及输入和输出的变量
 ```
 
