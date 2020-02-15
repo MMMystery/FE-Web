@@ -36,8 +36,107 @@ const demo = new Function("a", "b")
 4.Object.prototype.toString.call()  （这种方式最精准）
 
 ```
+- js的变量提升
+```  
+JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量(函数也是变量)，然后再一行一行地运行。这造成的结果，就是所有的变量的声明语句，都会被提升到代码的头部，这就叫做变量提升（hoisting）。
+
+例如：
+console.log(a);
+var a =1;
+
+实际是：
+var a;
+console.log(a);
+a =1;
+
+js里的function也可看做变量，也存在变量提升情况，比如：
+a();
+
+var a = function(){
+    console.log(1);
+};
+
+// TypeError: a is not a function
+
+实际是：
+var a;
+a();
+a = function(){
+   console.log(1);
+};
 
 
+示例：
+function hah(number){
+
+        var a="show";
+
+        alert(a);//show
+
+        var a=4;
+
+        alert(a);//4
+
+        number--;
+
+    }
+
+ hah(1);
+ 
+实际是：
+function hah(number){
+
+    var a;
+
+    var a;
+
+    a = "show";
+
+    alert(a);//show
+
+    a=4;
+
+    alert(a);//4
+
+    number--;
+
+}
+
+hah(1);
+
+```
+- js的赋值底层逻辑，js传值和传址的区别
+``` 
+
+传值：
+var a = 5,b = a;  // 这里赋值基本数据类型（数字、字符串、布尔值）的值
+b = 8;
+alert( a);  // 5
+
+
+传址：
+var obj1 = {
+      name: '张三',
+      age: 18,
+      sex: '男'
+    }
+    var obj2 = obj1; // 这里是赋值引用类型(对象、数组、函数)的值
+ 
+    console.log('obj2：', obj2) // {name:张三，age:18,sex:男}
+    obj2.age = 22
+    console.log('obj2：', obj2) // {name:张三，age:22,sex:男}
+    console.log('obj1：', obj1) // {name:张三，age:22,sex:男}
+
+赋值是进行了传址操作，赋值的实际上是obj1的数据地址，所以当obj2数据修改的时候，是通过地址进行的修改，所以相同数据地址的obj1也发生了改变
+
+
+重点：根据数据的操作方式不同，可以将数据分为两大类型：基础类型和引用类型
+
+基础类型：number类型、boolean类型和string类型，其操作方式为传值
+
+引用类型：array类型、object类型、function类型，其操作方式为传址
+
+```
 - console.log(typeof null, typeof [])等等类型判断
 
 ```  
@@ -107,19 +206,8 @@ import 是 ES6 的模块化语法，require() 在好几种模块规范中都有�
 –import是解构过程，但是目前所有的引擎都还没有实现import，我们在node中使用babel支持ES6，也仅仅是将ES6转码为ES5再执行，import语法会被转码为require
 ```
 
-- window.onload 和 jquery的ready有什么区别
 
-``` 
- onload
- 必须等待网页全部加载完毕（包括图片等），然后再执行JS代码
- 只能执行一次，如果第二次，那么第一次的执行会被覆盖
- 
- ready
- 只需要等待网页中的DOM结构加载完毕
- 可以执行多次，N次都不会被覆盖
-```
 
-- 宏任务与微任务
 - $nextTrick原理   
 - settimeout promise requestAnimationFrame 三个任务的时机 以及区别
 
@@ -530,7 +618,7 @@ a()  // 2
 
 
 
-- js的event loop机制,单线程、EventLoop、宏队列、微队列
+- js的单线程、EventLoop机制、宏队列、微队列
 ``` 
 JS的本质是单线：
 
@@ -539,6 +627,26 @@ JS的本质是单线：
 2. 一般来说，阻塞性的任务都会采用异步来执行，异步的工作一般会交给其他线程完成，然后回调函数会放到事件队列中。
 
 https://www.cnblogs.com/amiezhang/p/11349450.html
+
+
+- 宏任务与微任务
+宏任务：
+全局Script代码  （包含new Promise）注意：new Promise() 是同步方法，resolve才是异步方法。
+setTimeout
+setInterval
+setImmediate (Node独有)
+requestAnimationFrame (浏览器独有)
+I/O
+UI rendering (浏览器独有)
+
+
+微任务：
+process.nextTick (Node独有)
+Promise
+Object.observe
+MutationObserver
+
+这篇解析的非常好：https://segmentfault.com/a/1190000016278115?utm_source=tag-newest
 
 ```
 
@@ -581,6 +689,11 @@ var f = function(s) {
 
 
 - js原型链
+
+``` 
+文章：https://www.jianshu.com/p/be7c95714586
+
+```
 - 怎么判断对象类型？
 - generator 原理
 - async、await 的优缺点
@@ -640,6 +753,7 @@ promise.then(function (value) {
 
 ```
 
+
 - JS宏任务和微任务的理解
 
 - javascript的垃圾回收机制讲一下
@@ -652,6 +766,16 @@ promise.then(function (value) {
 - 1.document.ready和onload的区别？
 ```
 页面加载完成有两种事件，一是ready，表示文档结构已经加载完成（不包含图片等非文字媒体文件），二是onload，指示页 面包含图片等文件在内的所有元素都加载完成。(可以说：ready 在onload 前加载！！！)我的理解： 一般样式控制的，比如图片大小控制放在onload 里面加载;              而：jS事件触发的方法，可以在ready 里面加载;
+
+
+ onload
+ 必须等待网页全部加载完毕（包括图片等），然后再执行JS代码
+ 只能执行一次，如果第二次，那么第一次的执行会被覆盖
+ 
+ ready
+ 只需要等待网页中的DOM结构加载完毕
+ 可以执行多次，N次都不会被覆盖
+
 ```
 
 - 组件化和模块化
@@ -732,7 +856,72 @@ e.stopPropatation()
 - 写一个函数，可以控制最大并发数
 - 实现instanceof
 - 实现继承
-- lazyMan
+- 实现lazyMan
+
+```
+function _LazyMan(name) {
+    this.tasks = [];   
+    var self = this;
+    var fn =(function(n){
+        var name = n;
+        return function(){
+            console.log("Hi! This is " + name + "!");
+            self.next();
+        }
+    })(name);
+    this.tasks.push(fn);
+    setTimeout(function(){
+        self.next();
+    }, 0); // 在下一个事件循环启动任务
+}
+/* 事件调度函数 */
+_LazyMan.prototype.next = function() { 
+    var fn = this.tasks.shift();
+    fn && fn();
+}
+_LazyMan.prototype.eat = function(name) {
+    var self = this;
+    var fn =(function(name){
+        return function(){
+            console.log("Eat " + name + "~");
+            self.next()
+        }
+    })(name);
+    this.tasks.push(fn);
+    return this; // 实现链式调用
+}
+_LazyMan.prototype.sleep = function(time) {
+    var self = this;
+    var fn = (function(time){
+        return function() {
+            setTimeout(function(){
+                console.log("Wake up after " + time + "s!");
+                self.next();
+            }, time * 1000);
+        }
+    })(time);
+    this.tasks.push(fn);
+   return this;
+}
+_LazyMan.prototype.sleepFirst = function(time) {
+    var self = this;
+    var fn = (function(time) {
+        return function() {
+            setTimeout(function() {
+                console.log("Wake up after " + time + "s!");
+                self.next();
+            }, time * 1000);
+        }
+    })(time);
+    this.tasks.unshift(fn);
+    return this;
+}
+/* 封装 */
+function LazyMan(name){
+    return new _LazyMan(name);
+}
+
+```
 - 说说js的垃圾回收(GC)
 - Async/Await 如何通过同步的方式实现异步
 
@@ -833,6 +1022,8 @@ $(docuement).on('click',function(e){
 
 - 实现 promise.all 并发限制，每次只能并发5个请求
 
+- 写一个函数，每隔1000ms发送一次请求，如果promise未正确返回则继续发送，最多5次。
+
 - 介绍defineProperty方法，什么时候需要用到
 
 - 实现Storage，使得该对象为单例，并对localStorage进行封装设置值setItem(key,value)和getItem(key)
@@ -887,10 +1078,9 @@ event.preventDefault() 方法可防止元素的默认行为。 如果在表单�
 
 ``` 
 
+Promise和setTimeout，process.nextTick, setImmediate的调用优先级：
 
-Promise和setTimeout，process.nextTick, setImmediate的调用顺序：
-
-new Promise > (和promise同级的) console.log() > process.nextTick() > promise.then() > setTimeout() > setImmediate
+script(主程序代码) > process.nextTick() > promise.then() > setTimeout() > setImmediate
 
 ```
 
@@ -980,3 +1170,14 @@ reduce(fn(prev,cur,index,array){ return ... },initValue)
 2.initValue做为归并基础的初始值
 ```
 - 你认为js和其他语言的不同点在哪里
+- try catch只能捕获同步的异常，无法捕获异步
+```  
+try {
+  setTimeout(function(){
+    undefined();  //undefined不是一个方法，会抛出异常
+  }, 500)
+} catch(err){
+  //这里并不能捕获异常
+  console.log(err);
+}
+```

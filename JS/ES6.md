@@ -11,9 +11,9 @@
 1. let/const
 ```    
 
-var存在变量提升
-const定义常量，数组元素可以push添加
-let有局部作用域
+var存在变量提升 
+const定义常量，数组元素可以push添加，对象里的属性也可以修改。
+let块级作用域，let 有暂时死区，不会被提升
 
 const arr = []
 arr.push(1)

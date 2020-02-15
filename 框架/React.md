@@ -71,8 +71,17 @@ element diff
 
 前端路由实现起来其实很简单，本质就是监听 URL 的变化，然后匹配路由规则，显示相应的页面，并且无须刷新。目前单页面使用的路由就只有两种实现方式
 
-hash 模式
-history 模式
+hashHistory 模式
+老浏览器的history: 主要通过hash来实现，对应createHashHistory
+createHashHistory: location.hash=*** location.replace()
+
+
+browserHistory 模式 （路径是真实的URL，会发送request，所以需要服务器端做特殊配置）
+高版本浏览器: 通过html5里面的history，对应createBrowserHistory
+createBrowserHistory: pushState、replaceState
+
+解释一下为什么browserHistory需要服务端配置，因为真实URL其实是指向服务器资源，比如我们经常使用的API接口，也是一个真实URL的资源路径，当通过真实URL访问网站的时候，第一次访问的是网站的域名，这个时候可以正常加载我们的网站js等文件，而用户手动刷新网页时，由于路径是指向服务器的真实路径，服务器端没有做路由配置，就会导致资源不存在，用户访问的资源不存在，返回给用户的是404错误。
+
 
 
 react-router：
@@ -81,8 +90,8 @@ react-router：
 
 看这个链接：https://www.jianshu.com/p/d991a4a55ae1
 
-
 ```
+
 - redux这一类的工具在解决什么问题，它的本质原理详述。
 
 ```   
@@ -94,7 +103,6 @@ Redux三大原则
 数据改变只能通过纯函数来执行
 
 ```
-
 
 - react setState 机制
 ```  
@@ -152,18 +160,51 @@ componentDidMount 1
 componentDidMount 2
 componentDidMount 3
 
+装载过程：
+constructor()
+static getDerivedStateFromProps(nextProps, prevState)
+componentWillMount()(将要废弃)
+render()
+componentDidMount()
+
 更新过程：
-componentWillReceiveProps
-shouldComponentUpdate
-componentWillUpdate
-render
-componentDidUpdate
+componentWillReceiveProps(v17.0中将被弃用) 
+-> static getDerivedStateFromProps(nextProps, prevState)
+-> shouldComponentUpdate 
+-> componentWillUpdate(v17.0中将被弃用) 
+-> render 
+-> getSnapshotBeforeUpdate 
+-> componentDidUpdate
 
 卸载过程
 componentwillUnMount
+
+错误处理(当组件发生错误的时候，用得极少)
+getDerivedStateFromError(v16.6新增) -> componentDidCatch(未来将被废弃)
+
 ```
 
 - 说说对React Hooks的理解
+``` 
+React Hooks 的设计目的，就是加强版函数组件，完全不使用"类"，就能写出一个全功能的组件。
+
+React Hooks 的意思是，组件尽量写成纯函数，如果需要外部功能和副作用，就用钩子把外部代码"钩"进来。
+函数组件的好处：
+不需要声明Class, 也就避免了extends constructor等一系列代码
+不需要显示的声明this，没有声明周期
+不需要维护一个组件内的状态（state）,所有需要的数据都是通过props传进来的
+
+Hooks还有的好处：
+
+函数式的纯组件装配状态与行为。模块化粒度更细了，代码复用度高，也更高内聚松耦合了
+
+四个最常用的钩子：
+useState()
+useContext()
+useReducer()
+useEffect()
+
+```
 - React Hooks当中的useEffect是如何区分生命周期钩子的
 
 - 介绍下 React Fiber 架构
@@ -364,3 +405,50 @@ JSX 是 JavaScript XML 的简写。这是 React 使用的一种文件类型，�
 
 - refs的使用
 - react如何调用api
+
+-connect如何获取store的值的
+
+```  
+通过mapStateToProps和mapDispatchToProps
+
+//需要渲染什么数据
+function mapStateToProps(state) {
+  return {
+      num:state
+  }
+}
+//需要触发什么行为
+function mapDispatchToProps(dispatch) {
+  return {
+      PayIncrease: () => dispatch(jia),
+      PayDecrease: () => dispatch(jian)
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Buy);
+
+
+```
+
+- React.createClass和extends Component的区别
+``` 
+一、语法区别
+二、propType 和 getDefaultProps
+React.createClass：通过proTypes对象和getDefaultProps()方法来设置和获取props.
+React.Component：通过设置两个属性propTypes和defaultProps
+
+三、状态的区别
+通过getInitialState()方法返回一个包含初始值的对象
+通过constructor设置初始状态
+
+四、this区别
+React.createClass：会正确绑定this
+
+```
+
+- 如何启动build后的项目
+
+```  
+npm install -g serve
+serve -s build
+
+```

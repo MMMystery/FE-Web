@@ -209,7 +209,7 @@ animation 关键帧动画：
 1.使用flex布局的方式同样可以轻松实现水平垂直居中
 
 .parent {
-    display: flex;
+    display: flex;f
     justify-content: center;
     align-items: center;
 }
@@ -237,7 +237,7 @@ animation 关键帧动画：
 
 ```
 
-- 三栏布局
+- 三栏布局，并中间的要优先加载
 ```
 绝对定位的方式
 flex布局的方式
@@ -560,10 +560,10 @@ transform: scaleY(0.5); 缩放
 
 ```  
 relative
-absolute
-fixed
+absolute  //相对于 static 定位以外的第一个父元素进行定位。相对于父元素的外边框定位
+fixed // 浏览器窗口进行定位
 static // 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明
-sticky // 粘性定位 结合了 position:relative 和 position:fixed 两种定位功能于一体的特殊定位，适用于一些特殊场景，它的行为就像 position:relative; 而当页面滚动超出目标区域时，它的表现就像 position:fixed;，它会固定在目标位置。
+sticky // 粘性定位 结合了position:relative 和 position:fixed 两种定位功能于一体的特殊定位，适用于一些特殊场景，它的行为就像 position:relative; 而当页面滚动超出目标区域时，它的表现就像 position:fixed;，它会固定在目标位置。
 适用于滚动吸顶
 inherit // 规定应该从父元素继承 position 属性的值。
 
