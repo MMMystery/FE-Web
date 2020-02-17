@@ -185,7 +185,7 @@ module.exports={
     //配置webpack开发服务功能
     devServer:{}
 }
-bable
+
 
 
 微前端
@@ -197,6 +197,10 @@ bable
 
 webpcak HMR原理
 打包优化
+webpack 优化
+用过什么webpack的loader和plugin
+webpack的loader和plugin的原理
+bable原理
 获取页面所有图片的src，得注意css部分的获取，有个dom方法，但我当时没想到说按行读文件
 
 

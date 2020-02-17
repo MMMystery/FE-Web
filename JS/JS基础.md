@@ -41,7 +41,8 @@ const demo = new Function("a", "b")
 
 
 ```
-
+- 类数组与数组的区别与转换
+- Array.sort()方法与实现机制
 - js类型判断方式有哪些
 ``` 
 1.typeof
@@ -50,7 +51,9 @@ const demo = new Function("a", "b")
 4.Object.prototype.toString.call()  （这种方式最精准）
 
 ```
-- js的变量提升
+- Reflect对象
+- 循环语法比较及使用场景（for、forEach、for...in、for...of）
+- js的变量提升和暂时性死区
 ```  
 JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量(函数也是变量)，然后再一行一行地运行。这造成的结果，就是所有的变量的声明语句，都会被提升到代码的头部，这就叫做变量提升（hoisting）。
 
@@ -195,13 +198,9 @@ alert(“is null”);
 ev.stopPropagation()
 
 ```
-- js写一个事件委托
-```  
-
-
-
-
-```
+- setTimeout用作倒计时为何会产生误差
+- Object.assign和Object.create相关
+- new和Object.create的区别
 - 手写一个基于hash路由函数
 
 - 怎么判断 script 或 img 是否加载完成
@@ -401,7 +400,7 @@ function deepClone(obj) {
 ```
 
 
-- 使用setTimeout模拟setInterval
+- 使用setTimeout实现setInterval
 
 ``` 
 // 可避免setInterval因执行时间导致的间隔执行时间不一致
@@ -549,6 +548,7 @@ var obj = eval("(" + json + ")");
 ```
 - es5的继承 实现一下
 - 实现extend函数
+- 组合继承和寄生组合继承的优缺点
 - class 实现继承
 ``` 
 class Son entends Father {
@@ -564,12 +564,7 @@ console.log(s instanceof Father); // true
 console.log(s instanceof Son); // true
 ```
 
-- 实现一个JS函数柯里化
 
-
-- async/await 实现
-- async await原理
-- reduce 实现
 
 
 - 手写代码实现事件委托
@@ -714,7 +709,10 @@ var f = function(s) {
 ```
 - 怎么判断对象类型？
 - generator 原理
-- async、await 的优缺点
+- async、await 原理和优缺点
+``` 
+Async、await运行的时候会解析成什么样来运行
+```
 
 
 - typeof 于 instanceof 区别
@@ -1246,6 +1244,11 @@ fn2()
 - 怎么会产生内存泄漏
 
 JSON.stringify(obj)==JSON.stringify(obj2);//true
+
+
+- class编译和构造函数编译有什么区别
+
+-sort函数实现排序原理
+``` 
+数组长度<=22时采用插入排序，大于22用快排。
 ```
-
-

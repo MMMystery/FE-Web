@@ -98,7 +98,10 @@ react-router：
 看这个链接：https://www.jianshu.com/p/d991a4a55ae1
 
 ```
+- react-router4.0与3.0区别
+``` 
 
+```
 - redux这一类的工具在解决什么问题，它的本质原理详述。
 
 ```   
@@ -111,7 +114,7 @@ Redux三大原则
 
 ```
 
-- react setState 机制
+- react setState 机制（setState什么时候异步、什么时候同步）
 ```  
 
 在一个事件handler函数中，不管setState()被调用多少次，他们也会在函数执行结束以后，被归结为一次重新渲染, 可以优化性能, 这个等到最后一起执行的行为被称为batching。
@@ -249,6 +252,8 @@ react的 Virtual Dom模型
 
 ```
 高阶组件(Higher Order Componennt)本身其实不是组件，而是一个函数，这个函数接收一个元组件作为参数，然后返回一个新的增强组件，高阶组件的出现本身也是为了逻辑复用
+
+里层原理，如何实现
 ```
 - react如何提高性能
 
@@ -471,3 +476,6 @@ serve -s build
 ```
 - vue和react的区别
 - React16新特性
+- 组件间的通信方式有哪几种
+- redux简单实现
+- immutable

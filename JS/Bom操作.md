@@ -18,3 +18,5 @@ window.navigator对象：常常用来获取浏览器信息、是否移动端访�
                 language
                 appName
                 appVersion
+
+

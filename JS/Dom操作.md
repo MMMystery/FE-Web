@@ -83,7 +83,7 @@ element.setAttribute( attributeName, attributeValue );给元素增加指定属�
 ele.style.styleName = styleValue;设置ele元素的CSS样式
 
 ```
-
+- innerHTML和innerText的区别
 - DOM事件中target和currentTarget的区别
 ``` 
 主要看事件绑定在父元素身上还是目标元素身上。
