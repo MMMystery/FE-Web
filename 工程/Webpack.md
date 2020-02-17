@@ -103,7 +103,7 @@ plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后�
 
 
 - webpack里面的插件是怎么实现的
-- 多个入口怎么分割
+- webpack的入口文件怎么配置，多个入口怎么分割
 - css浏览器兼容在webpack里怎么配
 ``` 
 //postcss-loader autoprefixer postcss 处理浏览器兼容
@@ -136,7 +136,68 @@ optimize-css-assets-webpack-plugin
 
 
 ```
+- 假如有2个团队，一个团队想用另一个团队的一个类库，并且还是想在用到的时候才加进来，怎么办？
+``` 
+webpack中的externals去配置一个cmd的异步引入
+```
+
+- webpack3.0，4.0区别
+``` 
+1.mode
+
+webpack增加了一个mode配置，只有两种值development | production。对不同的环境他会启用不同的配置。
+
+2.CommonsChunkPlugin
+
+CommonChunksPlugin已经从webpack4中移除。
+可使用optimization.splitChunks进行模块划分（提取公用代码）。
+但是需要注意一个问题，默认配置只会对异步请求的模块进行提取拆分，如果要对entry进行拆分
+需要设置optimization.splitChunks.chunks = 'all'。
+
+3.webpack4使用MiniCssExtractPlugin取代ExtractTextWebpackPlugin。
+
+4.代码分割。
+
+使用动态import，而不是用system.import或者require.ensure
+
+5.vue-loader。
+
+使用vue-loader插件为.vue文件中的各部分使用相对应的loader，比如css-loader等
+
+6.UglifyJsPlugin
+
+现在也不需要使用这个plugin了，只需要使用optimization.minimize为true就行，production mode下面自动为true
+
+optimization.minimizer可以配置你自己的压缩程序
+
+```
 - webpack4.0，5.0做了什么更新
+
+module.exports={
+    //入口文件的配置项
+    entry:{},
+    //出口文件的配置项
+    output:{},
+    //模块：例如解读CSS,图片如何转换，压缩
+    module:{},
+    //插件，用于生产模版和各项功能
+    plugins:[],
+    //配置webpack开发服务功能
+    devServer:{}
+}
+bable
+
+
+微前端
+
+简单描述了一下这几个属性是干什么的。
+描述一下npm run dev / npm run build执行的是哪些文件
+通过配置proxyTable来达到开发环境跨域的问题，然后又可以扩展和他聊聊跨域的产生，如何跨域
+最后可以在聊聊webpack的优化，例如babel-loader的优化，gzip压缩等等
+
+webpcak HMR原理
+打包优化
+获取页面所有图片的src，得注意css部分的获取，有个dom方法，但我当时没想到说按行读文件
 
 
 

@@ -6,8 +6,8 @@ CSS盒模型可以看成是由从内到外的四个部分构成，即内容区�
 
 根据计算宽高的区域我们可以将其分为IE盒模型和W3C标准盒模型，可以通过box-sizing来进行设置：
 
-content-box：W3C标准盒模型
-border-box：IE盒模型
+box-sizing:content-box：W3C标准盒模型
+box-sizing:border-box：IE盒模型
 ```
 ![](https://user-gold-cdn.xitu.io/2019/11/22/16e930e04e31efa6?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
@@ -44,40 +44,31 @@ BFC就是页面上的一个隔离的独立容器，容器里面的子元素不�
 - CSS3中transition和animation的属性
 
 ```
-    transition(过渡动画)
-        transition-property: 设定哪个css属性来过渡
-        transition-duration:设定过渡时长
-        transition-timing-function:设定速度曲线
-        transition-delay:设定何时开始
-    animation(关键帧动画)
-        animation-name	指定要绑定到选择器的关键帧的名称(关键帧另外定义)
-        animation-duration	动画指定需要多少秒或毫秒完成
-        animation-timing-function	设置动画将如何完成一个周期
-        animation-delay	设置动画在启动前的延迟间隔。
-        animation-iteration-count	定义动画的播放次数。
-        animation-direction	方向
+transition(过渡动画)
+    transition-property: 设定哪个css属性来过渡
+    transition-duration:设定过渡时长
+    transition-timing-function:设定速度曲线
+    transition-delay:设定何时开始
+animation(关键帧动画)
+    animation-name	指定要绑定到选择器的关键帧的名称(关键帧另外定义)
+    animation-duration	动画指定需要多少秒或毫秒完成
+    animation-timing-function	设置动画将如何完成一个周期
+    animation-delay	设置动画在启动前的延迟间隔。
+    animation-iteration-count	定义动画的播放次数。
+    animation-direction	方向
+    animation-fill-mode: 禁止模式
         
 ```
 
-CSS3中transition和animation的属性分别有哪些
+- 使用css实现一个持续的动画效果
+``` 
+animation:mymove 5s infinite;
+@keyframes mymove {
+from {top:0px;}
+to {top:200px;}
+}
 
 ```
-transition 过渡动画：
-(1) transition-property：属性名称
-(2) transition-duration: 间隔时间
-(3) transition-timing-function: 动画曲线
-(4) transition-delay: 延迟
-animation 关键帧动画：
-(1) animation-name：动画名称
-(2) animation-duration: 间隔时间
-(3) animation-timing-function: 动画曲线
-(4) animation-delay: 延迟
-(5) animation-iteration-count：动画次数
-(6) animation-direction: 方向
-(7) animation-fill-mode: 禁止模式
-```
-
-
 - 清除浮动的方式及优缺点
 
 ``` 
@@ -165,6 +156,7 @@ animation 关键帧动画：
 
 
 - 垂直居中
+
 ```
 1.常用：
 若元素是单行文本，则直接给该元素设置line-height等于其父元素的高度
@@ -237,12 +229,202 @@ animation 关键帧动画：
 
 ```
 
-- 三栏布局，并中间的要优先加载
+- 三栏布局 (如果要求中间的要优先加载，则把中间div块放在前面的就会优先加载)
+
 ```
-绝对定位的方式
-flex布局的方式
-双飞翼布局
-圣杯布局
+-----------float布局的方式
+缺点：
+1.这种方法要将中间栏放在最后，因为如果将中间栏放在中间，并且没有对自身进行浮动的话，会占据文档中的位置，导致右边栏并不能完全和左边栏平齐。
+2.脱离了文档流，需要父元素设置高度，要么就要清除浮动。不然会有塌陷
+<div class="main">
+    <div class="left">左</div>
+    <div class="right">右</div>
+    <div class="center">中</div>  
+</div>
+.center{
+    margin-left: 300px;
+    margin-right: 300px;
+    background-color: #4990E2;
+}
+.left{
+    float: left;
+    width: 300px;
+    height: 100px;
+    background: #631D9F;
+}
+.right{
+    float: right;
+    width: 300px;
+    height: 100px;
+    background: red;
+}
+
+------------绝对定位的方式（主体内容可以优先加载）
+缺点：脱离了文档流，依赖于left和right的高度，如果两边栏的高度不够，中间的内容区域的高度也会被压缩。
+<div class="main">
+    <div class="center">中</div>  
+    <div class="left">左</div>
+    <div class="right">右</div>
+</div>
+.center{
+    position: absolute;
+    top: 0;
+    bottom:0;
+    left: 300px;
+    right: 300px;
+    background-color: blue;
+}
+.left{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 300px;
+    background-color: red;
+}
+.right{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 300px;
+    background-color: #3A2CAC;
+}
+
+------------flex布局的方式（主体内容可以优先加载）
+<div class="main">
+    <div class="center">中</div>  
+    <div class="left">左</div>
+    <div class="right">右</div>
+</div>
+.main {
+    display: flex;
+    justify-content: space-between;
+}
+.left{
+    order: 1;
+    width: 400px;
+    background-color: red;
+}
+.center{
+    order: 2;
+    flex: 1;
+    background-color: blue;
+}
+.right{
+    order: 3;
+    background-color: red;
+    width: 400px;
+}
+------------table布局
+缺点：中间的center区域不能优先渲染。
+<div class="container">
+    <div class="column left">left</div>
+    <div class="column center">center</div>
+    <div class="column right">right</div>
+  </div>
+.column {
+  display: table-cell;
+  height: 100px;
+  min-height: 100px;
+}
+.left {
+  width: 200px;
+  min-width: 200px;
+  background: #ffbbff;
+}
+.center {
+  width: 100%;
+  background: #bfefff;
+}
+.right {
+  width: 150px;
+  min-width: 150px;
+  background: #eeee00;
+}
+    
+------------grid布局
+缺点：兼容性问题，中间的center区域不能优先渲染。
+1.给container设置为display：grid
+2.设置三栏的高度：grid-template-rows：100px
+3.设置三栏的宽度，中间自适应，两边固定：grid-template-columns：200px auto 200px；
+.container {
+    display: grid;
+    width: 100%;
+    grid-template-rows: 100px;
+    grid-template-columns: 200px auto 200px;
+}
+
+------------圣杯布局（主体内容可以优先加载）
+缺点：缺点是三栏高度不统一，而且center是在container的padding中，宽度小的时候会出现混乱，所以最好给body设置一个最小宽度
+<div class="container">
+    <div class="column center">center</div>
+    <div class="column left">left</div>
+    <div class="column right">right</div>
+</div>
+.container {
+  padding-left: 200px; 
+  padding-right: 150px;
+}
+.column {
+  position: relative;
+  float: left;
+}
+.left {
+  right: 200px;
+  margin-left: -100%;
+  width: 200px;
+  background: #ffbbff;
+}
+.center {
+  width: 100%;
+  background: #bfefff;
+}
+.right {
+  left: 150px;
+  margin-left: -150px;
+  width: 150px;
+  background: #eeee00;
+}
+
+------------双飞翼布局（主体内容可以优先加载）
+优点：主体内容可以优先加载
+<div class="container">
+    <div class="column center">
+        <div class="center-inner">center</div>
+    </div>
+    <div class="column left">left</div>
+    <div class="column right">right</div>
+</div>
+
+.column {
+    float: left;
+}
+.left {
+    margin-left: -100%;
+    width: 200px;
+    background: #ffbbff;
+}
+.center {
+    width: 100%;
+}
+.center-inner {
+    margin-left: 200px;
+    margin-right: 150px;
+    background: #bfefff;
+}
+.right {
+    margin-left: -150px;
+    width: 150px;
+    background: #eeee00;
+}
+  
+
+
+链接：https://www.jianshu.com/p/81ef7e7094e8
+圣杯布局和双飞翼布局的区别：
+
+圣杯布局，为了中间div内容不被遮挡，将中间div设置了左右padding-left和padding-right后，将左右两个div用相对布局position: relative并分别配合right和left属性，以便左右两栏div移动后不遮挡中间div。
+双飞翼布局，为了中间div内容不被遮挡，直接在中间div内部创建子div用于放置内容，在该子div里用margin-left和margin-right为左右两栏div留出位置。
+
 
 ```
 
@@ -325,13 +507,15 @@ inherit // 从父元素继承
      }
 ```
 
-- rem与em的区别
+- rem与em,px的区别
 
 ``` 
-rem是根据根元素htmlfont-size计算，而em是根据父级的font-size计算
+rem是根据根元素html font-size计算，而em是根据父级的font-size计算
 
 rem：相对于根元素html的font-size，假如html为font-size：12px，那么，在其当中的div设置为font-size：2rem,就是当中的div为24px
 em：相对于父元素计算，假如某个p元素为font-size:12px,在它内部有个span标签，设置font-size：2em,那么，这时候的span字体大小为：12*2=24px
+
+物理像素和逻辑像素
 ```
 - css常用选择器
   
@@ -480,17 +664,17 @@ background-image: linear-gradient(rgba(0,0,0,.2) 50%, transparent 0);
 
 ```
 1.
-    .div {
-        width: 100%;
-        height: 100vw;
-        background: red;
-       }
+.div {
+    width: 100%;
+    height: 100vw;
+    background: red;
+}
 2.
-    .div {
-     width: 100%;
-     height: 0;
-     padding-bottom: 100%; // 用padding-top也行，不过会把文字挤出去
-     }
+.div {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%; // 用padding-top也行，不过会把文字挤出去
+}
 3.  
 .placeholder {
   width: 100%;
@@ -665,9 +849,11 @@ align-content // 定义了多根轴线的对齐方式。如果项目只有一根
 
 ```
 - grid布局
+- 栅格实现：flex，grid
 - 手写图片瀑布流效果
 
 ``` 
 TODO
 
 ```
+- 一段字符从后台动态返回，长度不确定，要求显示一行就居中，两行就左对齐，三行就结尾显示'...'

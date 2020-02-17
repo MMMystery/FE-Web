@@ -8,6 +8,20 @@
 原始数据类型直接存储在栈( stack )中的简单数据段，占据空间⼩、⼤⼩固定，属于被频 繁使⽤数据，所以放⼊栈中存储；
 引⽤数据类型存储在堆( heap )中的对象,占据空间⼤、⼤⼩不固定,如果存储在栈中，将会 影响程序运⾏的性能；引⽤数据类型在栈中存储了指针，该指针指向堆中该实体的起始地 址。当解释器寻找引⽤值时，会⾸先检索其 在栈中的地址，取得地址后从堆中获得实体
 
+原始数据类型（是真正的复制一份出来）：
+var a = 10;
+var b = a;
+b = 30;
+console.log(a); // 10值
+console.log(b); // 30值
+
+引用数据类型（复制的只是引用地址，所以其中一个修改，相当于修改最终他们共同指向的对象）：
+var obj1 = new Object();
+var obj2 = obj1;
+obj2.name = "小鹿";
+console.log(obj1.name); // 小鹿
+
+
 ```
 - 定义函数的方式
 ```
@@ -140,7 +154,7 @@ var obj1 = {
 - console.log(typeof null, typeof [])等等类型判断
 
 ```  
-基本类型有6种: number, string, null, undefined, symbol, bool
+基本类型有6种: number, string, null, undefined, bool, symbol
 typeof可以返回7种: number, string, object, undefined, function, boolean, symbol
 一些面试题：
 typeof null => object, 
@@ -149,6 +163,7 @@ typeof NaN => number
 NaN == undefined => false
 NaN == NaN => false
 
+symbol是什么
 ```
 
 - js空值判断
@@ -325,7 +340,7 @@ function create(obj) {
 }
 ```
 
-- new 实现
+- new 实现和new 的过程
 ``` 
 
 function myNew (fun) {
@@ -398,6 +413,7 @@ setTimeout (function () {
 
 ```
 - 实现一个基本的Event Bus
+- 手写一个JSONP的实现
 - 实现一个双向数据绑定
 
 ```
@@ -527,10 +543,12 @@ var obj = eval("(" + json + ")");
 - js实现继承的几种方式
 
 ``` 
+
 连接：https://www.jianshu.com/p/9cfe30d1a967
 
 ```
-
+- es5的继承 实现一下
+- 实现extend函数
 - class 实现继承
 ``` 
 class Son entends Father {
@@ -626,12 +644,10 @@ JS的本质是单线：
 
 2. 一般来说，阻塞性的任务都会采用异步来执行，异步的工作一般会交给其他线程完成，然后回调函数会放到事件队列中。
 
-https://www.cnblogs.com/amiezhang/p/11349450.html
 
-
-- 宏任务与微任务
+- 异步任务里又分为：宏任务与微任务
 宏任务：
-全局Script代码  （包含new Promise）注意：new Promise() 是同步方法，resolve才是异步方法。
+主代码块（包含new Promise）注意：new Promise() 是同步任务，resolve才是异步方法。
 setTimeout
 setInterval
 setImmediate (Node独有)
@@ -646,7 +662,9 @@ Promise
 Object.observe
 MutationObserver
 
-这篇解析的非常好：https://segmentfault.com/a/1190000016278115?utm_source=tag-newest
+看链接；https://juejin.im/post/5e22b391f265da3e204d8c14
+![!流程图](https://user-gold-cdn.xitu.io/2020/1/18/16fb7ae3b678f1ea?imageView2/0/w/1280/h/960/format/webp/ignore-error/1）
+
 
 ```
 
@@ -716,7 +734,7 @@ for of数组对象都可以遍历，遍历对象需要通过和Object.keys()
 
 for in循环出的是key，for of循环出的是value
 ```
-- Set、Map的区别
+- Set、Map和weakset、WeakMap的区别
 
 ```
 应用场景Set用于数据重组，Map用于数据储存
@@ -729,6 +747,11 @@ Set：
 Map:
 1，本质上是健值对的集合，类似集合
 2，可以遍历，可以跟各种数据格式转换
+WeakMap 结构与 Map 结构基本类似，唯一的区别是它只接受对象作为键名（ null 除外），不接受其他类型的值作为键名，而且键名所指向的对象，不计入垃圾回收机制。
+WeakMap 最大的好处是可以避免内存泄漏。一个仅被 WeakMap 作为 key 而引用的对象，会被垃圾回收器回收掉。
+WeakMap 拥有和 Map 类似的 set(key, value) 、get(key)、has(key)、delete(key) 和 clear() 方法, 没有任何与迭代有关的属性和方法。
+
+
 
 ```
 
@@ -756,7 +779,6 @@ promise.then(function (value) {
 
 - JS宏任务和微任务的理解
 
-- javascript的垃圾回收机制讲一下
 - new 操作符具体做了什么？
 
 ``` 
@@ -855,7 +877,6 @@ e.stopPropatation()
 - 手写 Proxy / Object.defineProperty
 - 写一个函数，可以控制最大并发数
 - 实现instanceof
-- 实现继承
 - 实现lazyMan
 
 ```
@@ -1181,3 +1202,50 @@ try {
   console.log(err);
 }
 ```
+
+- 说一下类数组，数据结构是怎么样的，怎么转换为数组
+- 实现一个类，可以on,emit,off,once，注册、调用、取消、注册仅能使用一次的事件
+- 文件上传如何实现？，除了input还有什么别的方法？
+- 浏览器如何预览图片，假设我要上传图片，未上传前我想在浏览器看到我待上传的图片
+- base64 前端如何转化
+- js垃圾回收
+``` 
+标记清除（最常用）
+
+垃圾收集器在运行的时候会给存储在内存中的所有变量都加上标记（可以使用任何标记方式）。然后，它会去掉环境中的变量以及被环境中的变量引用的变量的标记。而在此之后再被加上标记的变量将被视为准备删除的变量，原因是环境中的变量已经无法访问到这些变量了。最后，垃圾收集器完成内存清除工作，销毁那些带标记的值并回收它们所占用的内存空间。
+
+引用计数
+
+引用计数（reference counting）的含义是跟踪记录每个值被引用的次数。当声明了一个变量并将一个引用类型值赋给该变量时，则这个值的引用次数就是1。如果同一个值又被赋给另一个变量，则该值的引用次数加1。相反，如果包含对这个值引用的变量又取得了另外一个值，则这个值的引用次数减1。当这个值的引用次数变成0 时，则说明没有办法再访问这个值了，因而就可以将其占用的内存空间回收回来。这样，当垃圾收集器下次再运行时，它就会释放那些引用次数为零的值所占用的内存。
+导致问题：会导致循环引用的变量和函数无法回收。
+解决：将用完的函数或者变量置为null。
+
+```
+
+- this指向题目
+``` 
+obj = {
+    name: 'a',
+    getName : function () {
+        console.log(this.name);
+    }
+}
+
+var fn = obj.getName
+obj.getName()
+var fn2 = obj.getName()
+fn()
+fn2()
+
+```
+- 怎么判断两个对象相等
+```
+```
+- 0.1+0.2===0.3吗，为什么？
+- Number()的存储空间是多大，如果后台发送了一个超过最大字节的数字怎们办
+- 怎么会产生内存泄漏
+
+JSON.stringify(obj)==JSON.stringify(obj2);//true
+```
+
+

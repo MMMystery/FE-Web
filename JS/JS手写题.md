@@ -30,9 +30,18 @@ const myPromiseAll = (arr)=>{
 }
 
 ```
+- 实现promise.all的polyfill
 - 实现promise.retry
 
 ``` 
 TODO
 
 ```
+- 手写reduce或者filter的polyfill
+- 手写parseInt的实现
+- 用reduce实现map的功能
+- 手写indexOf的实现
+- 手写发布订阅的EventEmitter类
+- new Queue().task(1000,()=>console.log(1)).task(2000,()=>console.log(2)).task(3000,()=>console.log(3)).start()实现该函数，start()后等1秒输出1，再等2秒2，再等3秒3.
+- ab-cd-ef=》ab-Cd-Ef（来个简单的题（你菜给你来个简单的嘤嘤嘤））
+- [1,2,3,4,6,7,9,13,15]=>['1->4',6->7,'9','13','15']实现一下

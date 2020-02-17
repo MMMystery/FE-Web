@@ -75,6 +75,7 @@ async和defer
 	1	<script src="script.js"></script> 没有 defer 或 async，浏览器会立即加载并执行指定的脚本，“立即”指的是在渲染该 script 标签之下的文档元素之前，也就是说不等待后续载入的文档元素，读到就加载并执行。
 	2	<script async src="script.js"></script> 有 async，加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步）。
 	3	<script defer src="myscript.js"></script> 有 defer，加载后续文档元素的过程将和 script.js 的加载并行进行（异步），但是 script.js 的执行要在所有元素解析完成之后，DOMContentLoaded 事件触发之前完成。
+    
     如果有多个defer脚本，会按照顺序下载解析。而多个async脚本下载与解析的顺序是不一定的，所以如果脚本之间有依赖关系不要用async
 
 data-*
@@ -107,7 +108,7 @@ data-*
 
 - 加载流程
 ```
-document.ready：表示文档结构已经加载完成（不包含图片等非文字媒体文件）
+document.ready等价于DOMContentLoaded：表示文档结构已经加载完成（不包含图片等非文字媒体文件）
 window.onload：表示页面包含图片等文件在内的所有元素都加载完成
 
 ```
@@ -134,3 +135,4 @@ label标签来定义表单控制间的关系,当用户选择该标签时，浏�
 <label>Date:<input type="text" name="B"/></label>
 
 ```
+- 实现页面加载进度条

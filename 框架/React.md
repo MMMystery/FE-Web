@@ -1,4 +1,4 @@
-- React的Dom的diff算法描述一下
+- React的Dom的diff算法描述一下，diff算法是对树的深度优先遍历还是广度优先遍历？
 ```  
 ①用JS对象构建一颗虚拟DOM树，然后用虚拟树构建一颗真实的DOM树，然后插入到文档中。
 ②当状态变更时，重新构造一颗新的对象树，然后新树旧树进行比较，记录两树差异。
@@ -87,6 +87,13 @@ createBrowserHistory: pushState、replaceState
 react-router：
 
 实现URL与UI界面的同步。其中在react-router中，URL对应Location对象，而UI是由react components来决定的，这样就转变成location与components之间的同步问题
+
+原理：DOM渲染完成之后，给window添加onhashchange事件监听页面hash的变化，并且在state属性中添加了route属性，代表当前页面的路由。
+具体步骤：
+
+当点击链接，页面hash改变时，触发绑定在 window 上的 onhashchange 事件；
+在 onhashchange 事件中改变组件的 state中的 route 属性，react组件的state属性改变时，自动重新渲染页面；
+页面随着 state 中的route属性改变，自动根据不同的hash给Child变量赋值不同的组件，进行渲染。
 
 看这个链接：https://www.jianshu.com/p/d991a4a55ae1
 
@@ -361,7 +368,7 @@ Redux数据流里，reduces其实是根据之前的状态（previous state）和
 
 
 ```
-- redux主要做什么的，用过redux的一些中间件吗，简单说一下
+- redux主要做什么的，用过redux的一些中间件吗，简单说一下(redux怎么处理异步操作)
 
 ```   
 redux中间件redux-saga
@@ -376,6 +383,7 @@ redux-saga相当于在Redux原有数据流中多了一层，通过对Action进�
 - 用react/vue写一个组件，功能是反馈鼠标在整个页面的的位置
 
 - 如果将绑定事件放入react的render里会发生什么
+- React render做了什么
 - 什么是 JSX？
 
 ``` 
@@ -385,6 +393,11 @@ JSX 是 JavaScript XML 的简写。这是 React 使用的一种文件类型，�
 
 - react-router传递参数的方式
 - pureComponent和FunctionComponent区别
+``` 
+pureComponent会进行一个props，state与之前的状态进行比较，判断是否需要重新渲染。
+
+FunctionComponent无生命周期，不能在里面进行状态的修改。
+```
 - 为什么在 React Router v4 中使用 switch 关键字？
 
 - React和原生事件的执行顺序是什么？可以混用吗？
@@ -406,7 +419,7 @@ JSX 是 JavaScript XML 的简写。这是 React 使用的一种文件类型，�
 - refs的使用
 - react如何调用api
 
--connect如何获取store的值的
+- connect如何获取store的值的
 
 ```  
 通过mapStateToProps和mapDispatchToProps
@@ -452,3 +465,9 @@ npm install -g serve
 serve -s build
 
 ```
+- 为什么需要bind(this)
+``` 
+  作用域的问题，foo() {} 与 const foo = () => {}里面的this作用域不一样，foo() {}里面使用外部成员，需要bind(this)，直接使用的this作用域仅在该方法内部
+```
+- vue和react的区别
+- React16新特性
