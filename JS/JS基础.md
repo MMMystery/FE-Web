@@ -23,6 +23,9 @@ console.log(obj1.name); // 小鹿
 
 
 ```
+- JS的原型
+- 变量作用域链
+- JavaScript 创建构造函数的过程中发生了什么
 - 定义函数的方式
 ```
 1.函数声明
@@ -398,7 +401,7 @@ function deepClone(obj) {
 
 
 ```
-
+- 如何对数组进行深拷贝
 
 - 使用setTimeout实现setInterval
 
@@ -467,6 +470,9 @@ xhr.onreadystatechange = function(){
 }
 
 xhr.send(null)
+
+如何发送同步ajax
+
 ```
 - 实现拖拽
 
@@ -661,8 +667,10 @@ MutationObserver
 ![!流程图](https://user-gold-cdn.xitu.io/2020/1/18/16fb7ae3b678f1ea?imageView2/0/w/1280/h/960/format/webp/ignore-error/1）
 
 
-```
+nexttick实现原理
 
+```
+- 箭头函数可以new吗，可以放argument吗？
 - 面向对象理解
 
 - 函数式编程理解
@@ -721,7 +729,7 @@ Async、await运行的时候会解析成什么样来运行
 - defer和async区别
 - 说说重绘（Repaint）和回流（Reflow）
 
-- 前端的requestAnimationFrame了解吗？有使用过吗？说一下使用场景。 
+ 
 - 数组中的forEach和map的区别
 - for in和for of,forEach的区别
 
@@ -774,8 +782,6 @@ promise.then(function (value) {
 
 ```
 
-
-- JS宏任务和微任务的理解
 
 - new 操作符具体做了什么？
 
@@ -869,12 +875,13 @@ e.stopPropatation()
 ```
 
 - setTimeout、setInterval和requestAnimationFrame；
+- 前端的requestAnimationFrame了解吗？有使用过吗？说一下使用场景。
 - Map和Set；
 
 - 写一个方法遍历所有文档树所有节点(考察递归)；
 - 手写 Proxy / Object.defineProperty
 - 写一个函数，可以控制最大并发数
-- 实现instanceof
+
 - 实现lazyMan
 
 ```
@@ -1023,7 +1030,6 @@ $(docuement).on('click',function(e){
 - 介绍下浏览器事件循环
 - 浏览器事件循环和 node事件循环有什么差别
 
-- 哪些是宏任务，哪些是微任务
 - setTimetout 到期时间是怎么计算的，比如有1000个定时器
 
 - 请分别用深度优先思想和广度优先思想实现一个拷贝函数？
@@ -1200,8 +1206,6 @@ try {
   console.log(err);
 }
 ```
-
-- 说一下类数组，数据结构是怎么样的，怎么转换为数组
 - 实现一个类，可以on,emit,off,once，注册、调用、取消、注册仅能使用一次的事件
 - 文件上传如何实现？，除了input还有什么别的方法？
 - 浏览器如何预览图片，假设我要上传图片，未上传前我想在浏览器看到我待上传的图片
@@ -1252,3 +1256,17 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
 ``` 
 数组长度<=22时采用插入排序，大于22用快排。
 ```
+- set去重原理
+- 阻止相同事件的其他侦听器被调用（stopImmediatePropagation）
+- SON的parse有几个参数
+- b === b + 1?如何实现
+- JS 可以实现多线程吗？
+- 怎么实现this对象的深拷贝
+- 搜索请求中文如何请求
+- for..in 和 object.keys的区别
+- 设计一个栈，不使用数组
+- 实现 memorize once 高阶函数
+- 如何实现属性的监听的
+- 如果js文件加载不成功会发生什么
+- 大整数相减
+- 对JavaScript和Java两者的怎么看

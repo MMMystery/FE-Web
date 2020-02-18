@@ -31,7 +31,7 @@ const myPromiseAll = (arr)=>{
 
 ```
 - 实现一个JS函数柯里化
-
+- sum(2, 3)实现sum(2)(3)的效果
 
 - async/await 实现
 - reduce 实现
@@ -52,6 +52,30 @@ TODO
 - 手写indexOf的实现
 - cookie封装
 - promise封装ajax
+``` 
+var  myNewAjax=function(url){
+  return new Promise(function(resolve,reject){
+      var xhr = new XMLHttpRequest();
+      xhr.open('get',url);
+      xhr.send(data);
+      xhr.onreadystatechange=function(){
+           if(xhr.status==200&&readyState==4){
+                var json=JSON.parse(xhr.responseText);
+                resolve(json)
+           }else if(xhr.readyState==4&&xhr.status!=200){
+                reject('error');
+           }
+      }
+  })
+}
+
+
+```
+- 写一个尾递归
+- 手动实现Array.reduce()
+- 大数相加
+- 纯js写一个动画，5s由快到慢，速度自定义
+- 写一个curry函数，其实就是add(1,2,3) 改成 add(1)(2,3)
 - 手写发布订阅的EventEmitter类
 - new Queue().task(1000,()=>console.log(1)).task(2000,()=>console.log(2)).task(3000,()=>console.log(3)).start()实现该函数，start()后等1秒输出1，再等2秒2，再等3秒3.
 - ab-cd-ef=》ab-Cd-Ef（来个简单的题（你菜给你来个简单的嘤嘤嘤））

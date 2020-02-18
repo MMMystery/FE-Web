@@ -151,6 +151,7 @@ promise.then(() => {
   this.setState({b: true}); // 重新渲染 {a: true, b: true }
 });
 ```
+- react的setState后发生了什么
 - React V16 生命周期函数用法
 ```   
 链接：http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
@@ -229,6 +230,7 @@ Fiber 可以提升复杂React 应用的可响应性和性能。Fiber 即是React
 每次有 state 的变化 React 重新计算，如果计算量过大，浏览器主线程来不及做其他的事情，比如 rerender 或者 layout，那例如动画就会出现卡顿现象。
 React 制定了一种名为 Fiber 的数据结构，加上新的算法，使得大量的计算可以被拆解，异步化，浏览器主线程得以释放，保证了渲染的帧率。从而提高响应性。
 ```
+- 画Fiber渲染树
 
 - react的单向数据流是什么
 ``` 
@@ -424,7 +426,7 @@ FunctionComponent无生命周期，不能在里面进行状态的修改。
 - refs的使用
 - react如何调用api
 
-- connect如何获取store的值的
+- connect如何获取store的值的以及connect原理
 
 ```  
 通过mapStateToProps和mapDispatchToProps
@@ -479,3 +481,15 @@ serve -s build
 - 组件间的通信方式有哪几种
 - redux简单实现
 - immutable
+- 路由的动态加载模块
+- React组件中怎么做事件委托
+- react异步渲染的概念,介绍Time Slicing 和 Suspense
+- react的理念是什么（拿函数式编程来做页面渲染）
+- React、React-Router、Redux、的大致的实现原理
+- Redux在使用的时候，对于状态的越来越臃肿这个问题是怎么解决的？
+- 手写实现一个 Redux 中的 reducer (state, action) => newState
+- Redux 怎么做到每个组件可以访问的 store 的
+- Redux跟全局对象有什么区别？
+- react vs vue区别以及项目选型
+- 父组件state发生改变子组件是否跟着刷新
+- React componentWillMount 做 setState 会干嘛

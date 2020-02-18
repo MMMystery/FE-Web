@@ -4,3 +4,6 @@
 4. Node的内存控制
 5. Node构建网络服务（TCP、HTTP、Web Socket服务等）
 6. Node的进程
+
+
+- 了解node吗？node在表现上和浏览器有什么不一样的地方

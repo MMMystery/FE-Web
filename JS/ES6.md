@@ -188,4 +188,11 @@ ES6 模块化
 1，设计思想：静态化
 2，在编译时就能确定模块的依赖关系，以及输入和输出的变量
 ```
+- promise是怎么实现的
 - Proxy对象能拦截什么
+- Promise和Async处理失败的时候有什么区别
+- Async/await promise 和 generator区别。
+- Iterator（迭代器）、Generator（生成器）的用法？
+
+- ES6的generator函数来进行异步的调用，手写
+- Redux有没有做过封装

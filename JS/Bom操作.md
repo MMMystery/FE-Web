@@ -14,9 +14,10 @@ window.location对象：用于获得当前页面的地址(URL)，并把浏览器
 window.history对象：浏览历史的前进后退等,
 
 window.navigator对象：常常用来获取浏览器信息、是否移动端访问等等
-                userAgent
+                userAgent -- 浏览器版本信息
                 language
                 appName
                 appVersion
+                cookieEnabled -- 返回浏览器是否支持(启用)cookie
 
 

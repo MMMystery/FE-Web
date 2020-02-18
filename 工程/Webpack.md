@@ -188,7 +188,7 @@ module.exports={
 
 
 
-微前端
+
 
 简单描述了一下这几个属性是干什么的。
 描述一下npm run dev / npm run build执行的是哪些文件
@@ -201,7 +201,10 @@ webpack 优化
 用过什么webpack的loader和plugin
 webpack的loader和plugin的原理
 bable原理
-获取页面所有图片的src，得注意css部分的获取，有个dom方法，但我当时没想到说按行读文件
+- webpack如何找到依赖关系的
+- webpack打包的整个过程
+- 抽取公共文件是怎么配置的
+- import { Button } from 'antd'，打包的时候只打包button，分模块加载，是怎么做到的
 
 
 
