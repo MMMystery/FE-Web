@@ -44,8 +44,11 @@ const demo = new Function("a", "b")
 
 
 ```
+- 字符串和new String出来的字符串有啥区别？
 - 类数组与数组的区别与转换
 - Array.sort()方法与实现机制
+- js函数的4种调用方式讲一下
+- 如何实现一个对象的属性无法改变
 - js类型判断方式有哪些
 ``` 
 1.typeof
@@ -53,7 +56,10 @@ const demo = new Function("a", "b")
 3.constructor
 4.Object.prototype.toString.call()  （这种方式最精准）
 
+typeof有什么不好的地方
+
 ```
+- 点击一个文本结点, target会是什么
 - Reflect对象
 - 循环语法比较及使用场景（for、forEach、for...in、for...of）
 - js的变量提升和暂时性死区
@@ -312,6 +318,20 @@ Function.prototype.mybind = function (context) {
 - 说一下对bind，call，apply三个函数的认识，自己实现一下bind方法。
 
 - 对象的几种创建方式
+``` 
+// 第一种：字面量
+var o1 = {name: "o1"}
+var o2 = new Object({name: "o2"})
+// 第二种：通过构造函数
+var M = function(name){this.name = name}
+var o3 = new M("o3")
+// 第三种：Object.create()
+var p = {name: "p"}
+var o4 = Object.create(p)
+
+
+
+```
 - instanceof 实现
 ```  
 // 思路：右边变量的原型存在于左边变量的原型链上
@@ -401,7 +421,7 @@ function deepClone(obj) {
 
 
 ```
-- 如何对数组进行深拷贝
+- 深拷贝(数组，对象，dom元素)
 
 - 使用setTimeout实现setInterval
 
@@ -630,6 +650,14 @@ a()  // 2
 内部函数可以引⽤外层的参数和变量
 参数和变量不会被垃圾回收机制回收
 
+闭包优点
+可以让一个变量保存在内存中，不被垃圾回收机制清除
+可以避免变量的全局污染
+可以定义模块，将操作函数暴露到外部，细节隐藏在模块内部
+闭包缺点
+容易造成内存泄漏
+闭包对性能会产生负面影响，包括处理速度和内存消耗
+
 ```
 - 说说你对闭包的理解,闭包为什么会造成内存泄漏？
 
@@ -663,8 +691,7 @@ Promise
 Object.observe
 MutationObserver
 
-看链接；https://juejin.im/post/5e22b391f265da3e204d8c14
-![!流程图](https://user-gold-cdn.xitu.io/2020/1/18/16fb7ae3b678f1ea?imageView2/0/w/1280/h/960/format/webp/ignore-error/1）
+看链接；https://juejin.im/post/59e85eebf265da430d571f89
 
 
 nexttick实现原理
@@ -1068,7 +1095,7 @@ $(docuement).on('click',function(e){
 ```
 
 
-- 手写原生 DOM 拖拽和大数相加
+- 手写原生 DOM 拖拽
 - canvas 的一个问题， 一个球从一个角飞到另一个角。 现在用鼠标画一条线。 只要是穿过这个球，球就停止。  说一下实现，不会实现就说思路。
 - Canvas绘制波浪线。
 - 比如 'abcd'.f() => 'd-c-b-a'
@@ -1270,3 +1297,7 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
 - 如果js文件加载不成功会发生什么
 - 大整数相减
 - 对JavaScript和Java两者的怎么看
+- JSON.stringify（）会出现什么问题？还有吗？（循环引用，如何解决）
+- document.getElementById()的实现思路；
+- arguments转数组，用call方法要加个参数怎么做
+- compose？

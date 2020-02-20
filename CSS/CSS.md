@@ -28,7 +28,7 @@ IE盒模型：width(宽度) = content(内容宽度) + padding(内边距) + borde
 
 ```
 
-BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素
+BFC就是页面上的一个隔离的独立容器，它是页面中的一块渲染区域，有自己的渲染规则，容器里面的子元素不会影响到外面的元素
 因为BFC内部的元素和外部的元素绝对不会互相影响，因此， 当BFC外部存在浮动时，它不应该影响BFC内部Box的布局，BFC会通过变窄，而不与浮动有重叠。同样的，当BFC内部有浮动时，为了不影响外部元素的布局，BFC计算高度时会包括浮动的高度。
 
 如何创建BFC
@@ -533,6 +533,17 @@ ID选择器：#ID
 伪类选择器：a:hover 等
 属性选择器：input[type="text"]  等
 
+id选择器(#myid)
+类选择器(.myclass)
+标签选择器(div, h1,p)
+相邻选择器（h1 + p）
+子选择器(ul > li)
+后代选择器(li a)
+通配符选择器(*)
+属性选择器(a[rel="external"])
+伪类选择器(a:hover, li:nth-child)
+
+
 
 !important > 行内样式 > ID选择器 > 类选择器 > 标签选择器 > 通配符选择器
 
@@ -853,8 +864,10 @@ transform:scale(0.8)进行缩放或者使用图片
 flex-direction //主轴方向
 flex-wrap // 轴线如何换行
 flex-flow //上述两者的简写
+
 justify-content  //主轴的对齐方式
 align-items // 交叉轴的对齐方式
+
 align-content // 定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用
 
 ```
@@ -873,3 +886,11 @@ TODO
 - calc属性使用
 - z-index 一定是数越大层级越在上面吗
 - 哪些可以导致3d加速
+- CSS里识别是否是retina屏幕
+- Css优先级红蓝色问题
+- visibility:hidden，display:none，opacity（visibility:hidden，opacity点击是否触发事件）
+- 1vw等于多少
+- 实现一个布局，item可以随着容器宽度作出伸缩窗口弹性自适应（item的最小宽度为200px）
+
+css: 图片自适应撑满容器，但不改变比例
+css: 容器自适应宽高，但比例不变

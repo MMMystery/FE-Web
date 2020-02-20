@@ -23,7 +23,12 @@
 
 二、移动设备相关：
 1.viewport
-<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+   initial-scale：初始的缩放比例
+   minimum-scale：允许用户缩放到的最小比例
+   maximum-scale：允许用户缩放到的最大比例
+   user-scalable：用户是否可以手动缩放
+
 
 2.WebApp全屏模式
 <!-- 启用 WebApp 全屏模式 -->
@@ -137,4 +142,5 @@ label标签来定义表单控制间的关系,当用户选择该标签时，浏�
 ```
 - 实现页面加载进度条
 - script标签属性
+- HTML中attribute和property的区别是什么？
 - html一个标签input的type属性，要求十个

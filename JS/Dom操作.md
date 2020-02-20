@@ -100,4 +100,5 @@ ele.style.styleName = styleValue;设置ele元素的CSS样式
 - 获取页面所有图片的src，得注意css部分的获取，有个dom方法，但我当时没想到说按行读文件
 - 输出页面所有标签以及数量
 - 手写dom的深度遍历
+- 如何监听页面所有的点击事件
   

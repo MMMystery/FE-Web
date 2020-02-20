@@ -188,13 +188,13 @@ module.exports={
 
 
 
-
+- webpack加载顺序
 
 简单描述了一下这几个属性是干什么的。
 描述一下npm run dev / npm run build执行的是哪些文件
 通过配置proxyTable来达到开发环境跨域的问题，然后又可以扩展和他聊聊跨域的产生，如何跨域
 最后可以在聊聊webpack的优化，例如babel-loader的优化，gzip压缩等等
-
+webpack 中的 loader 是如何实现的？
 webpcak HMR原理
 打包优化
 webpack 优化
@@ -205,6 +205,10 @@ bable原理
 - webpack打包的整个过程
 - 抽取公共文件是怎么配置的
 - import { Button } from 'antd'，打包的时候只打包button，分模块加载，是怎么做到的
+对webpack有了解吗？chunk、bundle和module有什么区别？
+说说hash、chunkhash和contenthash的区别？
+- babel的stage-1，stage-2，stage-3？
+- webpack.then原理
 
 
 

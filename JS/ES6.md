@@ -54,6 +54,9 @@ const team = {
     }
 }
 console.log(team.teamSummary())
+
+箭头函数与普通函数的区别
+
 ```
 4.增强对象字面量
 
@@ -193,6 +196,11 @@ ES6 模块化
 - Promise和Async处理失败的时候有什么区别
 - Async/await promise 和 generator区别。
 - Iterator（迭代器）、Generator（生成器）的用法？
-
+- 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
 - ES6的generator函数来进行异步的调用，手写
 - Redux有没有做过封装
+- ES7 的 decorator
+``` 
+装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数
+
+```
