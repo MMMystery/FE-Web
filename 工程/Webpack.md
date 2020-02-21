@@ -119,7 +119,7 @@ babel-traverse 对 AST 进行遍历转译，得到新的 AST
 新 AST 通过 babel-generator 转换成 ES5
 
 ```
-
+- async 经过 babel 处理后的代码看过吗
 - source-map
 
 ```
@@ -187,8 +187,9 @@ module.exports={
 }
 
 
-
+- webpack原理
 - webpack加载顺序
+-实现webpack的vconsole的插件
 
 简单描述了一下这几个属性是干什么的。
 描述一下npm run dev / npm run build执行的是哪些文件
@@ -203,12 +204,16 @@ webpack的loader和plugin的原理
 bable原理
 - webpack如何找到依赖关系的
 - webpack打包的整个过程
+- webpack是按照什么进行分chunk打包的？
 - 抽取公共文件是怎么配置的
 - import { Button } from 'antd'，打包的时候只打包button，分模块加载，是怎么做到的
 对webpack有了解吗？chunk、bundle和module有什么区别？
 说说hash、chunkhash和contenthash的区别？
 - babel的stage-1，stage-2，stage-3？
 - webpack.then原理
+- require懒加载啊
+- max-chunk啥的
+- webpack如何优化编译速度
 
 
 

@@ -22,7 +22,7 @@ parse(生成AST)=> optimize(优化静态节点) => generate(生成render functio
 
 ```
 - 除了Object.defineProperty,还有什么能实现数据劫持（双向绑定，proxy和defineProperty对比）
-
+- vue的生命周期
 - vue的双向绑定如何实现
 - scoped // 防止样式污染
 - computer和watch区别

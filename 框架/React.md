@@ -103,6 +103,7 @@ react-router：
 ``` 
 
 ```
+- React 同构
 - redux这一类的工具在解决什么问题，它的本质原理详述。
 
 ```   
@@ -138,14 +139,13 @@ function eventHandler(){
     this.setState((state) => ({ value: state.value + 1}));
     this.setState((state) => ({ value: state.value + 1}));
 }
- 
+
 //现在this.state.value === 3;
 到这里我们得到结论，setState是异步执行的。
 
-
 但是当setState()不在事件Handler函数中，如在使用ajax的时候，这种batching的异步表现又不会发生。
 
- 
+
 promise.then(() => {
   // 不在事件函数中，所以setState立刻执行
   this.setState({a: true}); // 重新渲染 {a: true, b: false }
@@ -219,7 +219,7 @@ useEffect()
 ```
 - React Hooks当中的useEffect是如何区分生命周期钩子的
 
-- 介绍下 React Fiber 架构
+- 介绍下 React Fiber 架构、调度原理(自己讲了下Fiber树中节点的具体数据结构、任务优先级、代码如何断开和重连)
 ``` 
 Fiber 可以提升复杂React 应用的可响应性和性能。Fiber 即是React新的调度算法
 
@@ -422,11 +422,11 @@ FunctionComponent无生命周期，不能在里面进行状态的修改。
 
 - react异步渲染的概念,介绍Time Slicing 和 Suspense
 
-- react-thunk 异步redux解决方案
+- react-thunk 异步redux解决方案，thunk原理
 
 - refs的使用
 - react如何调用api
-
+- React中有几种创建组件的方式
 - connect如何获取store的值的以及connect原理
 
 ```  
@@ -478,9 +478,12 @@ serve -s build
   作用域的问题，foo() {} 与 const foo = () => {}里面的this作用域不一样，foo() {}里面使用外部成员，需要bind(this)，直接使用的this作用域仅在该方法内部
 ```
 - vue和react的区别
+- 路由懒加载原理
+- context本质是什么
 - React16新特性
 - 组件间的通信方式有哪几种
 - redux简单实现
+- 高阶函数和装饰器
 - immutable
 - 路由的动态加载模块
 - React组件中怎么做事件委托
@@ -491,6 +494,22 @@ serve -s build
 - 手写实现一个 Redux 中的 reducer (state, action) => newState
 - Redux 怎么做到每个组件可以访问的 store 的
 - Redux跟全局对象有什么区别？
+- Proxy
 - react vs vue区别以及项目选型
 - 父组件state发生改变子组件是否跟着刷新
 - React componentWillMount 做 setState 会干嘛
+- react在更新了页面的时候，怎么实现将虚拟的DOMjs对象转到真正的DOM上面去呢
+- Class的Constructor调用Super,Class和以前的创建对象方式有啥不同
+- react suspense
+- render phase && commit phase
+-展示组件(Presentational component)和容器组件(Container component)之间有何不同
+``` 
+ 展示组件关心组件看起来是什么。
+ 展示专门通过 props 接受数据和回调，并且几乎不会有自身的状态，但当展示组件拥有自身的状态时，通常也只关心 UI 状态而不是数据的状态。
+ 容器组件则更关心组件是如何运作的。
+ 容器组件会为展示组件或者其它容器组件提供数据和行为(behavior)，它们会调用 Flux actions，并将其作为回调提供给展示组件。容器组件经常是有状态的，因为它们是(其它组件的)数据源。
+
+```
+-手写实现 React 高阶组件
+- forceUpdate经历了哪些生命周期，子组件呢?
+- vue和react谈谈区别和选型考虑

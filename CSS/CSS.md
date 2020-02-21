@@ -862,10 +862,10 @@ transform:scale(0.8)进行缩放或者使用图片
 
 ``` 
 flex-direction //主轴方向
-flex-wrap // 轴线如何换行
+flex-wrap // 轴线如何换行 nowrap|wrap|wrap-reverse|initial|inherit;
 flex-flow //上述两者的简写
 
-justify-content  //主轴的对齐方式
+justify-content  //主轴的对齐方式 flex-start|flex-end|center|space-between|space-around|initial|inherit;
 align-items // 交叉轴的对齐方式
 
 align-content // 定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用
@@ -873,6 +873,7 @@ align-content // 定义了多根轴线的对齐方式。如果项目只有一根
 ```
 - grid布局
 - 栅格实现：flex，grid
+- outline和border的区别
 - 手写图片瀑布流效果
 
 ``` 
@@ -894,3 +895,16 @@ TODO
 
 css: 图片自适应撑满容器，但不改变比例
 css: 容器自适应宽高，但比例不变
+
+- 动画实现div无限旋转
+- querySelector和其他那些选择器的区别
+- display:inline-block元素和父元素上下存在间隙，产生原因及解决方案
+百分比translate是根据什么值计算的
+百分比padding，margin是根据什么值计算的
+- 容器高度是宽度的两倍 多种写法
+- 手撕代码实现 一个带有阴影和高亮的按钮 并且垂直水平居中
+- css:如何在一行上三等分三个盒子
+- 行内元素对齐***作：顶对齐、底对齐
+- 手写css3动画实现从左到右移动30px
+- p元素嵌套div标签
+- css4新特性？

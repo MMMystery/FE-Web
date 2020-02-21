@@ -55,7 +55,8 @@ const team = {
 }
 console.log(team.teamSummary())
 
-箭头函数与普通函数的区别
+键头函数的this指向和普通函数的区别？
+箭头函数特点，除了this
 
 ```
 4.增强对象字面量
@@ -191,16 +192,21 @@ ES6 模块化
 1，设计思想：静态化
 2，在编译时就能确定模块的依赖关系，以及输入和输出的变量
 ```
-- promise是怎么实现的
+- promise是怎么实现的,原理
+- Promise.then里抛出的错误能否被try...catch捕获，为什么
 - Proxy对象能拦截什么
+- 现在有100个请求，怎么实现 Promise 串行化 。就是形如 [fn1, fn2, fn3] 这样， 然后 fn1 返回的是一个 promise ，resolve 之后再去执行 fn2
+- 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
 - Promise和Async处理失败的时候有什么区别
 - Async/await promise 和 generator区别。
 - Iterator（迭代器）、Generator（生成器）的用法？
 - 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
 - ES6的generator函数来进行异步的调用，手写
 - Redux有没有做过封装
+- 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换
 - ES7 的 decorator
 ``` 
 装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数
 
 ```
+- 三个异步函数怎么知道彼此已经结束。不用promise。all

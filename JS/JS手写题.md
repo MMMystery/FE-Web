@@ -3,7 +3,7 @@
 
 
 ```
-
+- 实现instance of
 - 实现promise.all
 
 ``` 
@@ -30,15 +30,15 @@ const myPromiseAll = (arr)=>{
 }
 
 ```
-- 实现一个JS函数柯里化
+- 实现一个JS函数柯里化，函数柯里化使用场景
 - 自己实现一个event类
 - sum(2, 3)实现sum(2)(3)的效果
-
+- 实现Object.assign()函数
 - async/await 实现
 - reduce 实现
 - Iterator遍历器实现
 - Thunk函数实现（结合Generator实现异步）
-
+- 实现一个方法遍历输出Object所有属性
 - 实现promise.all的polyfill
 - 实现promise.retry
 - 实现promise.race
@@ -54,6 +54,7 @@ TODO
 - 手撕代码--前端路由实现（JS原生）
 - 手撕代码--图片懒加载实现（JS原生）
 - cookie封装
+- 实现一个循环监听
 - promise封装ajax
 ``` 
 var  myNewAjax=function(url){
@@ -74,19 +75,60 @@ var  myNewAjax=function(url){
 
 
 ```
+- 手写闭包里怎么用setTimeout
+- 36进制加法，add(string a,string b)
 - 实现一个函数, 奇数次输出1, 偶数次输出2, 不能使用全局变量
 - when('#id).then(success, faild), 结点存在调用success, 不存在调用faild, 实现这样一个when方法
 - 实现一个函数, 能够返回1000-2000的随机值
 - 写一个尾递归
+- 实现一个EventBus，这个好像是头条必面的题
 - 手动实现Array.reduce()
 - 大数相加和大数相减，大数相乘。
 - 求一个对象的层级数（我写完后，又问如果不用递归，只用循环实现呢）
 - 纯js写一个动画，5s由快到慢，速度自定义
 - 写一个curry函数，其实就是add(1,2,3) 改成 add(1)(2,3)
 - 手写发布订阅的EventEmitter类
+- 手写实现观察者模式
+- 写了一个curry函数，其实就是add(1,2,3) 改成 add(1)(2,3)
 - new Queue().task(1000,()=>console.log(1)).task(2000,()=>console.log(2)).task(3000,()=>console.log(3)).start()实现该函数，start()后等1秒输出1，再等2秒2，再等3秒3.
 - ab-cd-ef=》ab-Cd-Ef（来个简单的题（你菜给你来个简单的嘤嘤嘤））
 - [1,2,3,4,6,7,9,13,15]=>['1->4',6->7,'9','13','15']实现一下
+- 手撕代码 实现一个函数接受一个值，输出小于这个数的斐波那契数列的所有项
+- 手撕代码 实现一个自增类 改类有一个id属性，每次实例化时，id都加一
+- 实现一个calendar组件
+- 写一个轮播图，用原生js
+- promise的catch怎么实现？
+- 基于promise实现jsonp
+- 手撕js实现对象变query
+- 手写一个工厂类方法，并在它的基础上给出装饰者模式
+- 实现一个函数，这个函数有两个参数，一个参数是fn 一个是count 要求，参数fn是一个promise函数, 如果执行成功直接返回，如果失败就重试count次数，到达count之后就返回失败
+- 手写实现求两个集合A, B 的差集，<A-B>和<B-A>都要给出
+- 手写函数节流（不使用setTimeOut()和setInterval()）
+``` 
+function throttle(wait, fn) {
+    var prev_time = null;
+    return function (){
+            var now_time = new Date().getTime();
+            if(!prev_time || now_time - prev_time>= wait) {
+                prev_time = now_time;
+                fn().apply(null, arguments);
+            }
+    }
+}
+
+```
+- 实现一个函数，第i次执行输出i
+```
+
+var getNum = (function () {
+    let i = 0;
+    return function() {
+        ++i
+        console.log(i);
+    }
+})();
+
+```
 - 实现以下函数
 ``` 
 
@@ -108,3 +150,23 @@ machine('ygy').waitFirst(5).do('eat').execute();
 // ygy eat
 
 ```
+
+- 手写实现
+``` 
+function ps(n){}
+ps(1) //["()"]
+ps(2) //["(())","()()"]
+```
+
+- 手写实现
+``` 
+var a = "123";
+a.duplicate() // '123123"
+
+答案：
+String.prototype.duplicate = function() {
+    return this+this;   
+}
+```
+-假设现在要实现一个点击发送短信验证码的功能，如何实现它的倒计时？
+- 没有后台服务器和不能Date返回的时间有误的情况下如何获得当前的本地时间？

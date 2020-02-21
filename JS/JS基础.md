@@ -23,7 +23,14 @@ console.log(obj1.name); // 小鹿
 
 
 ```
+- 如何判断对象的属性是原型的还是自己的
+- js的函数式特性（弱类型？函数式的可置换性是什么
 - JS的原型
+- 怎么监听对象属性值的改变
+-对象遍历
+- class继承和原型链继承的区别
+-遍历不可枚举属性
+- setTimeout底层如何实现的
 - 变量作用域链
 - JavaScript 创建构造函数的过程中发生了什么
 - 定义函数的方式
@@ -54,15 +61,35 @@ const demo = new Function("a", "b")
 1.typeof
 2.instanceof
 3.constructor
-4.Object.prototype.toString.call()  （这种方式最精准）
+4.Object.prototype.toString.call() === [object Array]  （这种方式最精准）
 
 typeof有什么不好的地方
 
 ```
+- 如何准确判断一个变量是否是数组类型
+
+``` 
+1.instanceof
+
+var a = []
+a instanceof Array //a是否Array的实例？true or false
+
+2.数组方法 isArray()
+Array.isArray(a)
+
+
+3.利用构造函数constructor
+var arr = [1,2,3];
+arr.constructor === Array // a实例所对应的构造函数是否为Array
+
+4.Object.prototype.toString.call()  （这种方式最精准）
+
+```
+
 - 点击一个文本结点, target会是什么
 - Reflect对象
 - 循环语法比较及使用场景（for、forEach、for...in、for...of）
-- js的变量提升和暂时性死区
+- js的变量提升和函数提升，暂时性死区
 ```  
 JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量(函数也是变量)，然后再一行一行地运行。这造成的结果，就是所有的变量的声明语句，都会被提升到代码的头部，这就叫做变量提升（hoisting）。
 
@@ -315,6 +342,7 @@ Function.prototype.mybind = function (context) {
 
 
 ```
+- 说一下JS的作用域查找过程
 - 说一下对bind，call，apply三个函数的认识，自己实现一下bind方法。
 
 - 对象的几种创建方式
@@ -364,6 +392,10 @@ function create(obj) {
 
 - new 实现和new 的过程
 ``` 
+(1) 创建一个新对象；
+(2) 将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象） ；
+(3) 执行构造函数中的代码（为这个新对象添加属性） ；
+(4) 返回新对象。
 
 function myNew (fun) {
   return function () {
@@ -388,7 +420,7 @@ let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 ```
 - promise 实现
 
-- 深拷贝和浅拷贝的实现方式分别有哪些？
+- 深拷贝和浅拷贝的实现方式分别有哪些？什么时候需要深拷贝
 ```
 浅拷贝：(1) Object.assign的方式 (2) 通过对象扩展运算符 (3) 通过数组的slice方法 (4) 通过数组的concat方法。
 
@@ -422,7 +454,7 @@ function deepClone(obj) {
 
 ```
 - 深拷贝(数组，对象，dom元素)
-
+- var str='abc'和var str=new string('abc')的区别是什么
 - 使用setTimeout实现setInterval
 
 ``` 
@@ -435,7 +467,7 @@ setTimeout (function () {
 
 ```
 - 实现一个基本的Event Bus
-- 手写一个JSONP的实现
+
 - 实现一个双向数据绑定
 
 ```
@@ -659,6 +691,7 @@ a()  // 2
 闭包对性能会产生负面影响，包括处理速度和内存消耗
 
 ```
+- 实际中遇到的闭包问题
 - 说说你对闭包的理解,闭包为什么会造成内存泄漏？
 
 - 实现一个repeat函数，主要是闭包的应用
@@ -856,24 +889,7 @@ mouseover：当鼠标移入元素或其子元素都会触发事件，所以有�
 mouseenter：当鼠标移除元素本身（不包含元素的子元素）会触发事件，也就是不会冒泡，对应的移除事件是mouseleave
 ```
 
-- 如何准确判断一个变量是否是数组类型
 
-``` 
-1.instanceof
-
-var a = []
-a instanceof Array
-
-2.数组方法 isArray()
-Array.isArray(a)
-
-
-3.利用构造函数constructor
-var arr = [1,2,3];
-arr.constructor === Array
-
-
-```
 - 写一个能遍历对象和数组的通用forEach函数
 
 ```
@@ -1295,9 +1311,39 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
 - 实现 memorize once 高阶函数
 - 如何实现属性的监听的
 - 如果js文件加载不成功会发生什么
-- 大整数相减
+- setTimeout底层如何实现的
 - 对JavaScript和Java两者的怎么看
 - JSON.stringify（）会出现什么问题？还有吗？（循环引用，如何解决）
 - document.getElementById()的实现思路；
 - arguments转数组，用call方法要加个参数怎么做
 - compose？
+- 怎么自己用就是原生封装一个组件，比如封装一个弹框，希望能够自定义弹框中的内容，要怎么去做
+- 有这样一个函数，如何让b 访问不到a
+``` 
+ function(){
+  
+  var a=undefined;
+  
+  function b(){
+  
+  }}
+```
+- Es6中class关键字如何定义私有属性
+```
+  如何实现像java中private一样的私有方法。
+  
+  这个我一时间答不出来，面试官提醒我用es6的symbol
+
+```
+- nextTick 的使用场景 ？
+- __proto__怎样修改
+- 讲讲arraybuffer
+-图片懒加载实现的几种方式
+- 2.person的实例     p1.call({})   会怎么样？沿着p1一直问到了object.prototype._ptoto_；
+-js传参是按值传递还是按照地址
+``` 
+按值传递，不然如果是引用数据类型的话，修改了的话把原始数据给改了
+```
+
+  
+ 
