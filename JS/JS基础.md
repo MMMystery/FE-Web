@@ -26,12 +26,23 @@ console.log(obj1.name); // 小鹿
 - 如何判断对象的属性是原型的还是自己的
 - js的函数式特性（弱类型？函数式的可置换性是什么
 - JS的原型
+- attribute 和 property 的区别
+- js this
+```  
+https://www.jianshu.com/p/a2dd59b5302e
+```
+- 构造函数的隐式原型是什么
+- 事件绑定有哪些方法
 - 怎么监听对象属性值的改变
 -对象遍历
+- JavaScript中的arguments
 - class继承和原型链继承的区别
 -遍历不可枚举属性
 - setTimeout底层如何实现的
 - 变量作用域链
+- addEventListener和onClick()的区别
+- new和Object.create的区别
+- 写一个四则运算，输入字符串输入结果，果然有括号呢
 - JavaScript 创建构造函数的过程中发生了什么
 - 定义函数的方式
 ```
@@ -85,9 +96,10 @@ arr.constructor === Array // a实例所对应的构造函数是否为Array
 4.Object.prototype.toString.call()  （这种方式最精准）
 
 ```
-
+- 0.1+0.2等于多少，精度丢失的原因
 - 点击一个文本结点, target会是什么
-- Reflect对象
+
+- stream和同步方式处理文件有什么区别
 - 循环语法比较及使用场景（for、forEach、for...in、for...of）
 - js的变量提升和函数提升，暂时性死区
 ```  
@@ -1108,6 +1120,8 @@ $(docuement).on('click',function(e){
 
 原理就是查询服务器上同文件已经上传了多少字节，然后设置从这个字节大小开始再次上传。
 
+上传文件在请求中怎么实现的，切成小包到服务器怎么还原？
+
 ```
 
 
@@ -1338,12 +1352,50 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
 - nextTick 的使用场景 ？
 - __proto__怎样修改
 - 讲讲arraybuffer
+- Math.round(-7.5),Math.round(-7.6)的结果,考察floor等
+- encodeURI和encodeURIComponent的区别
 -图片懒加载实现的几种方式
 - 2.person的实例     p1.call({})   会怎么样？沿着p1一直问到了object.prototype._ptoto_；
 -js传参是按值传递还是按照地址
 ``` 
 按值传递，不然如果是引用数据类型的话，修改了的话把原始数据给改了
 ```
+单页面应用会出现什么问题？（f5之后会出现404，前端如何解决？）
+
+深拷贝的方式
+
+- 下面两个式子谁改变arr1
+``` 
+ let arr3=Array.prototype.push.apply(arr1,arr2)
+ let arr4=Array.prototype.concat.apply(arr1,arr2)
+
+```
+         
+
+JSON.stringify（）会出现什么问题？还有吗？（循环引用，如何解决）
+- 题目
+```  
+
+var a = {
+
+    name :1,
+    
+    b:function(){
+    
+        this.name++;
+        
+        return this.name
+    
+    }
+
+}
+
+console.log(a.b())
+var c = a.b
+console.log(c())
+```
+
+- canvas优化绘制性能
 
   
  

@@ -32,6 +32,7 @@ const myPromiseAll = (arr)=>{
 ```
 - 实现一个JS函数柯里化，函数柯里化使用场景
 - 自己实现一个event类
+- 实现 memorize once 高阶函数
 - sum(2, 3)实现sum(2)(3)的效果
 - 实现Object.assign()函数
 - async/await 实现
@@ -39,6 +40,10 @@ const myPromiseAll = (arr)=>{
 - Iterator遍历器实现
 - Thunk函数实现（结合Generator实现异步）
 - 实现一个方法遍历输出Object所有属性
+1. Promise（A+规范）、then、all方法
+2. Iterator遍历器实现
+3. Thunk函数实现（结合Generator实现异步）
+4. async实现原理（spawn函数）
 - 实现promise.all的polyfill
 - 实现promise.retry
 - 实现promise.race
@@ -55,6 +60,7 @@ TODO
 - 手撕代码--图片懒加载实现（JS原生）
 - cookie封装
 - 实现一个循环监听
+- 原生js实现filter函数。
 - promise封装ajax
 ``` 
 var  myNewAjax=function(url){
@@ -76,6 +82,7 @@ var  myNewAjax=function(url){
 
 ```
 - 手写闭包里怎么用setTimeout
+- 实现一个斐波那契数列实现输入第n项输出相应的值，优化这个函数，让被查找过的下标值下次再次访问的时候能够立马找到并输出
 - 36进制加法，add(string a,string b)
 - 实现一个函数, 奇数次输出1, 偶数次输出2, 不能使用全局变量
 - when('#id).then(success, faild), 结点存在调用success, 不存在调用faild, 实现这样一个when方法
@@ -170,3 +177,21 @@ String.prototype.duplicate = function() {
 ```
 -假设现在要实现一个点击发送短信验证码的功能，如何实现它的倒计时？
 - 没有后台服务器和不能Date返回的时间有误的情况下如何获得当前的本地时间？
+- 手写一个继承
+``` 
+父类Person, 拥有属性lastname, 方法hello
+子类Student, 拥有属性grade, 方法goSchool
+Student继承与Person
+实现new 一个Student 调用hello 输出lastname 调用goSchool输出grade
+
+```
+
+- 前端路由实现（JS原生）
+- 让spacify（）能接受多个参数，例如spacify（‘hello’，‘world’，‘d’）；
+- 实现log函数
+``` 
+function log(...args){
+    let str = args.join(" ");
+    return "(app)"+str;
+}
+```

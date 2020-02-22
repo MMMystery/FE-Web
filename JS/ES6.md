@@ -195,6 +195,7 @@ ES6 模块化
 - promise是怎么实现的,原理
 - Promise.then里抛出的错误能否被try...catch捕获，为什么
 - Proxy对象能拦截什么
+- promise相关。resolve，reject，then，all，race了解过吗？
 - 现在有100个请求，怎么实现 Promise 串行化 。就是形如 [fn1, fn2, fn3] 这样， 然后 fn1 返回的是一个 promise ，resolve 之后再去执行 fn2
 - 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
 - Promise和Async处理失败的时候有什么区别
@@ -203,6 +204,7 @@ ES6 模块化
 - 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
 - ES6的generator函数来进行异步的调用，手写
 - Redux有没有做过封装
+-写一个封装函数控制1000s访问一次，然后最多5次，直至拿到结果。
 - 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换
 - ES7 的 decorator
 ``` 
@@ -210,3 +212,17 @@ ES6 模块化
 
 ```
 - 三个异步函数怎么知道彼此已经结束。不用promise。all
+- Reflect对象
+- Proxy
+
+- Promise 中抛出异常能否被 catch 捕获？
+```  
+let promise = new Promise((resolve, reject) => {
+  throw new Error()
+  reject()
+})
+promise.catch(err => {
+  console.log(err)
+})
+
+```

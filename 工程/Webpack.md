@@ -189,8 +189,10 @@ module.exports={
 
 - webpack原理
 - webpack加载顺序
+- babel 怎么转化 class extend 的
+- babel 怎么配置
 -实现webpack的vconsole的插件
-
+- CommonJS和ES Module的区别
 简单描述了一下这几个属性是干什么的。
 描述一下npm run dev / npm run build执行的是哪些文件
 通过配置proxyTable来达到开发环境跨域的问题，然后又可以扩展和他聊聊跨域的产生，如何跨域
@@ -214,6 +216,9 @@ bable原理
 - require懒加载啊
 - max-chunk啥的
 - webpack如何优化编译速度
+- Webpack 打包出来的文件如何拆包？
+- 如何编写loaders和plugins
+- webpack用过吗？摇树是什么，什么场景下用过？
 
 
 

@@ -31,6 +31,7 @@ Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。�
 对于列表结构，尽量减少类似将最后一个节点移动到列表首部的操作，当节点数量过大或更新操作过于频繁时，在一定程度上会影响 React 的渲染性能。
 
 ```
+- 虚拟dom的缺点
 
 - diff
 ```
@@ -513,3 +514,9 @@ serve -s build
 -手写实现 React 高阶组件
 - forceUpdate经历了哪些生命周期，子组件呢?
 - vue和react谈谈区别和选型考虑
+- Flux架构模式
+- 手写实现一个 Redux 中的 reducer (state, action) => newState？
+- 了解fiber吗，做了什么优化，描述一个使用fiber优化前后有区别的场景
+-Redux的中间件和node的中间件原理
+- mobx-react如何驱动react组件重渲染
+- this.$refs中元素的排列顺序；

@@ -102,4 +102,9 @@ ele.style.styleName = styleValue;设置ele元素的CSS样式
 - 手写dom的深度遍历
 - 如何监听页面所有的点击事件（有阻止冒泡的怎么办）
 - 创建一个元素，插入到document.body中，然后2秒之后删除这个元素
+- 还问了mouseenter和mouseover的区别.
+- 如果a.js和b.js需要同时运行，而b.js依赖于a.js的结果，你要怎么做？
+- 给ul里的li反转   （下面是面试官给的答案，让我手写代码，突然很慌）
+  const ul = document.querySelector('ul')
+  ul.innerHTML = Array.from(ul.querySelectorAll('li')).reverse().map(item => item.outerHTML).join('')
   

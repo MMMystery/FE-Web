@@ -1,5 +1,7 @@
 window.screen对象：包含有关用户屏幕的信息
 
+- 怎么获取屏幕宽度
+
 window.location对象：用于获得当前页面的地址(URL)，并把浏览器重定向到新的页面
                 origin: "https://www.baidu.com"
                 protocol: "https:"
