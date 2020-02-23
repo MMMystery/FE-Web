@@ -489,6 +489,9 @@ div {
 
 ```
 - 实现控制100个字超出则显示...
+``` 
+s.length > 100 ? "...展开" : "";
+```
 
 - 关于css3里阴影的一些知识
 
@@ -887,6 +890,10 @@ align-content // 定义了多根轴线的对齐方式。如果项目只有一根
 - grid布局
 - 栅格实现：flex，grid
 - outline和border的区别
+```  
+而 outline 是针对链接、表单控件和ImageMap等元素设计，outline 的效果将随元素的 focus 而自动出现，相应的由 blur 而自动消失。
+也就是说是outline就是获取焦点后在周围显示出的轮廓
+```
 - 手写图片瀑布流效果
 
 ``` 
@@ -895,34 +902,137 @@ TODO
 ```
 - 一段字符从后台动态返回，长度不确定，要求显示一行就居中，两行就左对齐，三行就结尾显示'...'
 - 什么css可以减少重绘
+``` 
+改成css对象的形式一次性加入就只触发一次重绘了
+比如：
+.clickStyle
+        {
+            background: red;
+            color: green;
+            font-size: 36px;
+        }
+
+```
 - less和sass区别
 - 写一个媒体查询
 - calc属性使用
 - z-index 一定是数越大层级越在上面吗
+``` 
+一、定义：
+
+z-index 只适用于元素有定位的情况，表示层级 数值越大 层级越高 展示的位置越靠前。
+
+二、用法：
+
+1、同级关系：
+
+    z-index值较大的元素将叠加在z-index值较小的元素之上 （值可以为负数）
+
+    z-index值相同时 按照文档流顺序排列
+
+2、父子关系：
+
+   如果设置了父元素的z-index，那么子元素无论是否设置z-index都和父元素一致，会在父元素上方
+
+3、同级元素下的子元素关系
+
+  同级元素的z-index生效，那么其子元素覆盖关系由父元素决定，
+
+ （父元素z-index值大的覆盖父元素z-index值小的   子元素在各自父元素的上方）
+
+```
 - 哪些可以导致3d加速
-- CSS里识别是否是retina屏幕
+- 识别是否是retina屏幕并适配
+``` 
+1.retian.js
+2.
+  background-image: url('img/logo.jpg');
+  background-image: -webkit-image-set(url(pic.png) 1x, url(pic@2x.png) 2x);
+  background-image: -moz-image-set(url(pic.png) 1x,url(images/pic@2x.png) 2x);
+  background-image: -ms-image-set(url(pic.png) 1x,url(images/pic@2x.png) 2x);
+  background-image: -o-image-set(url(url(pic.png) 1x,url(images/pic@2x.png) 2x);
+3.
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+         only screen and (min--moz-device-pixel-ratio: 1.5), /* 注意这里的写法比较特殊 */
+         only screen and (-o-min-device-pixel-ratio: 3/2),
+         only screen and (min-device-pixel-ratio: 1.5) {
+   .logo {
+           background-image: url('img/logo@2x.jpg');
+           background-size: 400px 200px; width: 400px; height: 200px;
+       }
+  }
+
+```
 - Css优先级红蓝色问题
+``` 
+引用的时候同级的话是同优先级的，真正是看样式表里的一个先手顺序是否。后面的会覆盖前面的。
+```
 - visibility:hidden，display:none，opacity（visibility:hidden，opacity点击是否触发事件）
+``` 
+display:none隐藏后不占据额外空间，它会产生回流和重绘，而visibility:hidden和opacity:0元素虽然隐藏了，但它们仍然占据着空间，它们俩只会引起页面重绘。
+
+值得注意的是：
+visibility:hidden;的元素不会触发绑定的事件。
+opacity:0;的元素会触发绑定的事件，例如点击会触发click函数。
+ 
+
+```
 - 1vw等于多少
+``` 
+在PC端，视口指的是在PC端，指的是浏览器的可视区域；
+
+而在移动端，它涉及3个视口：Layout Viewport（布局视口），Visual Viewport（视觉视口），Ideal Viewport（理想视口）。
+
+1.vw：1vw等于视口宽度的1%。
+
+2.vh：1vh等于视口高度的1%。
+
+3.vmin：选取vw和vh中最小的那个。
+
+4.vmax：选取vw和vh中最大的那个。
+```
 - 实现一个布局，item可以随着容器宽度作出伸缩窗口弹性自适应（item的最小宽度为200px）
 
-css: 图片自适应撑满容器，但不改变比例
-css: 容器自适应宽高，但比例不变
+- css: 图片自适应撑满容器，但不改变比例
+- css: 容器自适应宽高，但比例不变
 
 - 动画实现div无限旋转
-- querySelector和其他那些选择器的区别
+- querySelector和querySelectorAll
+``` 
+querySelector查询出来的是符合条件的第一个
+querySelectorAll查询出来的是一个数组
+```
 - display:inline-block元素和父元素上下存在间隙，产生原因及解决方案
-百分比translate是根据什么值计算的
-百分比padding，margin是根据什么值计算的
+- 百分比padding，margin是根据什么值计算的以及百分比translate是根据什么值计算的
+``` 
+margin、padding的百分比是按照父元素的宽度来计算的
+transform中translate，如果传入百分比参数，计算是分别根据自身的宽高来进行的
+
+```
+
 - 容器高度是宽度的两倍 多种写法
 - 手撕代码实现 一个带有阴影和高亮的按钮 并且垂直水平居中
 - css:如何在一行上三等分三个盒子
+``` 
+flex: 1或者都设置33.33%都行
+```
 - 行内元素对齐***作：顶对齐、底对齐
 - 手写css3动画实现从左到右移动30px
 - p元素嵌套div标签
 - css4新特性？
 - css3 实现幻灯片
 - 背景色会覆盖border吗
+``` 
+会延伸到border。记得设背景图把border圆角给遮挡了。
+背景色外延到边框色，使边框色的灰度无效。
+
+解决方法：
+background-clip: // 规定背景的绘制区域
+    border-box	背景被裁剪到边框盒。
+    padding-box	背景被裁剪到内边距框。
+    content-box	背景被裁剪到内容框。
+
+```
 - 谈谈css预处理器机制
 - postcss配置
 - media-query用过吗？
