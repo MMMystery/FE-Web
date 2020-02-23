@@ -23,3 +23,8 @@ window.navigator对象：常常用来获取浏览器信息、是否移动端访�
                 cookieEnabled -- 返回浏览器是否支持(启用)cookie
 
 
+
+
+- 怎么获取一个元素到视图顶部的距离
+- getBoundingClientRect获取的top和offsetTop获取的top区别
+- ul标签里有五个li标签，把第五个li标签移到第一个li标签和第二个li标签中间，怎么做

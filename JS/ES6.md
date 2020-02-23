@@ -214,7 +214,8 @@ ES6 模块化
 - 三个异步函数怎么知道彼此已经结束。不用promise。all
 - Reflect对象
 - Proxy
-
+- Set和Map数据结构
+- 用es5写promise
 - Promise 中抛出异常能否被 catch 捕获？
 ```  
 let promise = new Promise((resolve, reject) => {
@@ -226,3 +227,5 @@ promise.catch(err => {
 })
 
 ```
+
+- Promise.then里抛出的错误能否被try...catch捕获，为什么。

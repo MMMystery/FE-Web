@@ -187,10 +187,11 @@ module.exports={
 }
 
 
-- webpack原理
+- webpack原理和机制,怎么实现的
 - webpack加载顺序
 - babel 怎么转化 class extend 的
 - babel 怎么配置
+- babel把ES6转成ES5或者ES3之类的原理是什么，有没有去研究。
 -实现webpack的vconsole的插件
 - CommonJS和ES Module的区别
 简单描述了一下这几个属性是干什么的。
@@ -201,6 +202,7 @@ webpack 中的 loader 是如何实现的？
 webpcak HMR原理
 打包优化
 webpack 优化
+- webpack的css-loader原理讲一下
 用过什么webpack的loader和plugin
 webpack的loader和plugin的原理
 bable原理
@@ -219,6 +221,8 @@ bable原理
 - Webpack 打包出来的文件如何拆包？
 - 如何编写loaders和plugins
 - webpack用过吗？摇树是什么，什么场景下用过？
+-  treeshaking是什么
+- 我看到你的webpack配置用到webpack.optimize.UglifyJsPlugin这个插件，有没有觉得压缩速度很慢，有什么办法提升速度。
 
 
 

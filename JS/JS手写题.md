@@ -41,9 +41,11 @@ const myPromiseAll = (arr)=>{
 - Thunk函数实现（结合Generator实现异步）
 - 实现一个方法遍历输出Object所有属性
 1. Promise（A+规范）、then、all方法
-2. Iterator遍历器实现
+
 3. Thunk函数实现（结合Generator实现异步）
 4. async实现原理（spawn函数）
+- 手写一个throttle
+
 - 实现promise.all的polyfill
 - 实现promise.retry
 - 实现promise.race
@@ -54,6 +56,8 @@ TODO
 ```
 - 手写reduce或者filter的polyfill
 - 手写parseInt的实现
+- 自己实现一个event类
+- 自己实现new函数
 - 用reduce实现map的功能
 - 手写indexOf的实现
 - 手撕代码--前端路由实现（JS原生）
@@ -104,6 +108,7 @@ var  myNewAjax=function(url){
 - 手撕代码 实现一个自增类 改类有一个id属性，每次实例化时，id都加一
 - 实现一个calendar组件
 - 写一个轮播图，用原生js
+- 写代码 实现remove函数，删除object的属性
 - promise的catch怎么实现？
 - 基于promise实现jsonp
 - 手撕js实现对象变query
@@ -195,3 +200,5 @@ function log(...args){
     return "(app)"+str;
 }
 ```
+
+- 写一个cookie并定义过期时间为一天

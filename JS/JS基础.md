@@ -1396,6 +1396,7 @@ console.log(c())
 ```
 
 - canvas优化绘制性能
-
+- 给页面注入50万个li怎么做提升性能？
+- fileReader用过吗？base64编码原理？
   
  

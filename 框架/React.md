@@ -32,7 +32,7 @@ Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。�
 
 ```
 - 虚拟dom的缺点
-
+- diff 和patch 的过程
 - diff
 ```
 diff算法比较新旧节点的时候，比较只会在同层级比较，不会跨层级比较
@@ -231,6 +231,10 @@ Fiber 可以提升复杂React 应用的可响应性和性能。Fiber 即是React
 
 每次有 state 的变化 React 重新计算，如果计算量过大，浏览器主线程来不及做其他的事情，比如 rerender 或者 layout，那例如动画就会出现卡顿现象。
 React 制定了一种名为 Fiber 的数据结构，加上新的算法，使得大量的计算可以被拆解，异步化，浏览器主线程得以释放，保证了渲染的帧率。从而提高响应性。
+
+
+
+链表、一次Fiber循环所有节点访问两次、requestIdleCallback
 ```
 - 画Fiber渲染树
 
@@ -503,7 +507,7 @@ serve -s build
 - Class的Constructor调用Super,Class和以前的创建对象方式有啥不同
 - react suspense
 - render phase && commit phase
--展示组件(Presentational component)和容器组件(Container component)之间有何不同
+- 展示组件(Presentational component)和容器组件(Container component)之间有何不同
 ``` 
  展示组件关心组件看起来是什么。
  展示专门通过 props 接受数据和回调，并且几乎不会有自身的状态，但当展示组件拥有自身的状态时，通常也只关心 UI 状态而不是数据的状态。
