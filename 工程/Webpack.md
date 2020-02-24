@@ -92,7 +92,37 @@ plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后�
 
 ```
 
+- webpack4.0，5.0做了什么更新
 
+module.exports={
+    //入口文件的配置项
+    entry:{},
+    //出口文件的配置项
+    output:{},
+    //模块：例如解读CSS,图片如何转换，压缩
+    module:{},
+    //插件，用于生产模版和各项功能
+    plugins:[],
+    //配置webpack开发服务功能
+    devServer:{}
+}
+
+
+- webpack原理和机制,怎么实现的
+``` 
+工作原理概括
+基本概念
+在了解 Webpack 原理前，需要掌握以下几个核心概念，以方便后面的理解：
+
+Entry：入口，Webpack 执行构建的第一步将从 Entry 开始，可抽象成输入。
+Module：模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。
+Chunk：代码块，一个 Chunk 由多个模块组合而成，用于代码合并与分割。
+Loader：模块转换器，用于把模块原内容按照需求转换成新内容。
+Plugin：扩展插件，在 Webpack 构建流程中的特定时机会广播出对应的事件，插件可以监听这些事件的发生，在特定时机做对应的事情。
+
+
+```
+- webpack加载顺序
 - webpack执行的过程
 
 ```
@@ -104,12 +134,28 @@ plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后�
 
 - webpack里面的插件是怎么实现的
 - webpack的入口文件怎么配置，多个入口怎么分割
+```  
+entry: {
+        'index1': './src/index1.js',
+        'index2': './src/index2.js',
+        'index3': './src/index3.js'
+    },
+
+```
 - css浏览器兼容在webpack里怎么配
 ``` 
 //postcss-loader autoprefixer postcss 处理浏览器兼容
 ```
 - webpack配置用到webpack.optimize.UglifyJsPlugin这个插件，有没有觉得压缩速度很慢，有什么办法提升速度
+- webpack的分割配置
+``` 
+SplitChunksPlugin，并通过内置的optimization配置段进行配置
 
+默认只对两种情况进行分割：一是异步加载的module，二是被其他chunk引用次数大于等于2的module
+默认生产chunk最小为30k
+默认有两个cacheGroup，一个为vendors用于处理第三方依赖库；一个是default(处理当module被引用等于或超过2次时情况)
+
+```
 - babel 原理 babel 的编译原理，抽象语法树，babel把ES6转成ES5或者ES3之类的原理是什么，有没有去研究。
 - babel编译原理
 
@@ -171,29 +217,12 @@ CommonChunksPlugin已经从webpack4中移除。
 optimization.minimizer可以配置你自己的压缩程序
 
 ```
-- webpack4.0，5.0做了什么更新
 
-module.exports={
-    //入口文件的配置项
-    entry:{},
-    //出口文件的配置项
-    output:{},
-    //模块：例如解读CSS,图片如何转换，压缩
-    module:{},
-    //插件，用于生产模版和各项功能
-    plugins:[],
-    //配置webpack开发服务功能
-    devServer:{}
-}
-
-
-- webpack原理和机制,怎么实现的
-- webpack加载顺序
 - babel 怎么转化 class extend 的
 - babel 怎么配置
 - babel把ES6转成ES5或者ES3之类的原理是什么，有没有去研究。
--实现webpack的vconsole的插件
-- CommonJS和ES Module的区别
+- 实现webpack的vconsole的插件
+
 简单描述了一下这几个属性是干什么的。
 描述一下npm run dev / npm run build执行的是哪些文件
 通过配置proxyTable来达到开发环境跨域的问题，然后又可以扩展和他聊聊跨域的产生，如何跨域
@@ -205,7 +234,16 @@ webpack 优化
 - webpack的css-loader原理讲一下
 用过什么webpack的loader和plugin
 webpack的loader和plugin的原理
-bable原理
+``` 
+Compiler 和 Compilation
+在开发 Plugin 时最常用的两个对象就是 Compiler 和 Compilation，它们是 Plugin 和 Webpack 之间的桥梁。 Compiler 和 Compilation 的含义如下：
+
+Compiler 对象包含了 Webpack 环境所有的的配置信息，包含 options， loaders， plugins 这些信息，这个对象在 Webpack 启动时候被实例化，它是全局唯一的，可以简单地把它理解为 Webpack 实例；
+Compilation 对象包含了当前的模块资源、编译生成资源、变化的文件等。当 Webpack 以开发模式运行时，每当检测到一个文件变化，一次新的 Compilation 将被创建。Compilation 对象也提供了很多事件回调供插件做扩展。通过 Compilation 也能读取到 Compiler 对象。
+Compiler 和 Compilation 的区别在于：Compiler 代表了整个 Webpack 从启动到关闭的生命周期，而 Compilation 只是代表了一次新的编译。
+
+```
+- bable原理
 - webpack如何找到依赖关系的
 - webpack打包的整个过程
 - webpack是按照什么进行分chunk打包的？
@@ -220,9 +258,30 @@ bable原理
 - webpack如何优化编译速度
 - Webpack 打包出来的文件如何拆包？
 - 如何编写loaders和plugins
-- webpack用过吗？摇树是什么，什么场景下用过？
--  treeshaking是什么
+- webpack用过吗？摇树treeshaking是什么，什么场景下用过？
+``` 
+就是清理无用的代码。
+
+利用ES6模块的特点：
+只能作为模块顶层的语句出现
+import 的模块名只能是字符串常量
+import binding 是 immutable的
+代码擦除：uglify阶段删除无用代码
+使用方法很简单，webpack配置中的wbpack.prod.js中只需要设置
+mode: 'production',
+
+```
 - 我看到你的webpack配置用到webpack.optimize.UglifyJsPlugin这个插件，有没有觉得压缩速度很慢，有什么办法提升速度。
 
+- Loader处理Scss为例子
+``` 
+以处理 SCSS 文件为例：
+
+SCSS 源代码会先交给 sass-loader 把 SCSS 转换成 CSS；
+把 sass-loader 输出的 CSS 交给 css-loader 处理，找出 CSS 中依赖的资源、压缩 CSS 等；
+把 css-loader 输出的 CSS 交给 style-loader 处理，转换成通过脚本加载的 JavaScript 代码；
+可以看出以上的处理过程需要有顺序的链式执行，先 sass-loader 再 css-loader 再 style-loader。
+
+```
 
 

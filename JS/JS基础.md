@@ -409,6 +409,13 @@ function create(obj) {
 (3) 执行构造函数中的代码（为这个新对象添加属性） ；
 (4) 返回新对象。
 
+function myNew() {
+  var constr = Array.prototype.shift.call(arguments);
+  var obj = Object.create(constr.prototype);
+  var result = constr.apply(obj, arguments);
+  return result instanceof Object? result : obj;
+}
+
 function myNew (fun) {
   return function () {
     // 创建一个新对象且将其隐式原型指向构造函数原型
@@ -1198,7 +1205,7 @@ Generator函数
 缺点：流程管理不⽅便
 
 
-async函数
+async函数(async await 是 promise 和 generator 函数组合的一个语法糖)
 
 优点：内置执⾏器、更好的语义、更⼴的适⽤性、返回的是Promise、结构清晰。
 缺点：错误处理机制
@@ -1399,4 +1406,3 @@ console.log(c())
 - 给页面注入50万个li怎么做提升性能？
 - fileReader用过吗？base64编码原理？
   
- 

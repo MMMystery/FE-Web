@@ -524,3 +524,4 @@ serve -s build
 -Redux的中间件和node的中间件原理
 - mobx-react如何驱动react组件重渲染
 - this.$refs中元素的排列顺序；
+- Redux有没有做过封装

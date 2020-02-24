@@ -45,7 +45,7 @@ BFC就是页面上的一个隔离的独立容器，它是页面中的一块渲�
 ```
 - IFC——行内格式化上下文
 
-``` 
+```
 （1）创建方式：
 
 和BFC相比，它的创建方式是被动的、隐式的，是由所包含的子元素来创建：只有在一个区域内仅包含可水平排列的元素时才会生成，这些子元素可以是文本、inline-level元素或inline-block-level元素。
@@ -79,7 +79,7 @@ animation(关键帧动画)
 ```
 
 - 使用css实现一个持续的动画效果
-``` 
+```
 animation:mymove 5s infinite;
 @keyframes mymove {
 from {top:0px;}
@@ -89,7 +89,7 @@ to {top:200px;}
 ```
 - 清除浮动的方式及优缺点
 
-``` 
+```
 1.额外标签法(在最后一个浮动元素的后面新加一个标签如<div class="clear"></div>，并在其CSS样式中设置clear: both;)
 
 
@@ -257,7 +257,7 @@ to {top:200px;}
 <div class="main">
     <div class="left">左</div>
     <div class="right">右</div>
-    <div class="center">中</div>  
+    <div class="center">中</div>
 </div>
 .center{
     margin-left: 300px;
@@ -280,7 +280,7 @@ to {top:200px;}
 ------------绝对定位的方式（主体内容可以优先加载）
 缺点：脱离了文档流，依赖于left和right的高度，如果两边栏的高度不够，中间的内容区域的高度也会被压缩。
 <div class="main">
-    <div class="center">中</div>  
+    <div class="center">中</div>
     <div class="left">左</div>
     <div class="right">右</div>
 </div>
@@ -309,7 +309,7 @@ to {top:200px;}
 
 ------------flex布局的方式（主体内容可以优先加载）
 <div class="main">
-    <div class="center">中</div>  
+    <div class="center">中</div>
     <div class="left">左</div>
     <div class="right">右</div>
 </div>
@@ -358,7 +358,7 @@ to {top:200px;}
   min-width: 150px;
   background: #eeee00;
 }
-    
+
 ------------grid布局
 缺点：兼容性问题，中间的center区域不能优先渲染。
 1.给container设置为display：grid
@@ -379,7 +379,7 @@ to {top:200px;}
     <div class="column right">right</div>
 </div>
 .container {
-  padding-left: 200px; 
+  padding-left: 200px;
   padding-right: 150px;
 }
 .column {
@@ -434,7 +434,7 @@ to {top:200px;}
     width: 150px;
     background: #eeee00;
 }
-  
+
 
 
 链接：https://www.jianshu.com/p/81ef7e7094e8
@@ -489,7 +489,7 @@ div {
 
 ```
 - 实现控制100个字超出则显示...
-``` 
+```
 s.length > 100 ? "...展开" : "";
 ```
 
@@ -504,7 +504,7 @@ box-shadow:2px 2px 5px #333333
 
 - 列出 display 的值，并说明他们的作用
 
-``` 
+```
 none
 line
 line-block
@@ -518,19 +518,19 @@ inherit // 从父元素继承
 ```
 - 怎么样使一个 div 居中于浏览器中间
 
-``` 
+```
     div{
-    
-    position: absolute;   
-    top: 50%;   
-    left: 50%;   
-    transform: translate(-50%, -50%);  
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
      }
 ```
 
 - rem与em,px， dpi，物理像素的区别
 
-``` 
+```
 rem是根据根元素html font-size计算，而em是根据父级的font-size计算
 
 rem：相对于根元素html的font-size，假如html为font-size：12px，那么，在其当中的div设置为font-size：2rem,就是当中的div为24px
@@ -539,7 +539,7 @@ em：相对于父元素计算，假如某个p元素为font-size:12px,在它内�
 物理像素和逻辑像素
 ```
 - css常用选择器
-  
+
 ```
 通配符：*
 ID选择器：#ID
@@ -573,7 +573,7 @@ ID选择器，权值为0100
 
 
 - CSS3新特性
-  
+
 ```
 transition：过渡动画
 animation：帧动画
@@ -605,7 +605,7 @@ border-radius：圆角
   border-radius: 50px
   background: red;
   }
-  
+
   // 左半圆
   .div{
     width:100px;
@@ -613,7 +613,7 @@ border-radius：圆角
     border-radius: 50px 0 0 50px;
     background: red;
     }
-    
+
     .div {
       width:0;
       height:0;
@@ -621,7 +621,7 @@ border-radius：圆角
         border-bottom: 50px solid transparent;
         border-right: 50px solid red;
     }
-    
+
     // 梯形
     {
         width: 120px;
@@ -630,7 +630,7 @@ border-radius：圆角
         border-right: 60px solid transparent;
         border-left: 60px solid transparent;
     }
-    
+
     // 平行四边形
     {
             width: 0px;
@@ -645,27 +645,27 @@ border-radius：圆角
         border:1px solid red;
         border-radius:100px;
         }
-        
+
         // 扇形
-        
+
         {
                 width: 0px;
                 height: 0px;
                 border-radius: 50%;
-                border :140px solid transparent; 
+                border :140px solid transparent;
                 border-bottom:140px solid red;
         }
-        
+
       // 贪吃蛇蛇头
       {
               width: 0px;
               height: 0px;
               border-radius: 50%;
               border:140px solid red;
-              border-right :140px solid transparent; 
+              border-right :140px solid transparent;
       }
-      
-  
+
+
   ```
 - 实现一个朝左的三角形
 ```
@@ -708,7 +708,7 @@ background-image: linear-gradient(rgba(0,0,0,.2) 50%, transparent 0);
     height: 0;
     padding-bottom: 100%; // 用padding-top也行，不过会把文字挤出去
 }
-3.  
+3.
 .placeholder {
   width: 100%;
   overflow: hidden; // 关键触发BFC不然折叠了
@@ -723,7 +723,7 @@ background-image: linear-gradient(rgba(0,0,0,.2) 50%, transparent 0);
 ```
 - CSS实现宽度自适应100%，宽高16:9的比例的矩形。（和画自适应的正方形很像）
 
-``` 
+```
 div{
   width: 100%;
   height: 0;
@@ -734,14 +734,14 @@ div{
 
 - 使用纯CSS实现曲线运动（贝塞尔曲线）
 
-``` 
+```
 transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000);
 用animation也可以
 
 ```
 - 画一条0.5px的直线
 
-```  
+```
 
 1. meta viewport 方式（这样的话原来的1px就变成0.5px了，只在移动端才能看到效果）
 
@@ -757,7 +757,7 @@ transform: scaleY(0.5); 缩放
   height: 1px;
   background: none;
   box-shadow: 0 0.5px 0 #000;
-  
+
 4. 采用order-image的方式，需要自己制作一个0.5px的图片
 
 5. 利用hr标签，设置元素属性为0.5px
@@ -765,17 +765,17 @@ transform: scaleY(0.5); 缩放
 ```
 - 伪元素和伪类
 
-``` 
+```
 伪类像类选择器一样给已存在某个元素添加额外的样式；伪元素则是给自己虚拟的元素添加样式。
 伪类和选择器之间用一个冒号隔开，伪元素则是两个冒号隔
 
 伪类： :hover :active :visited
-伪元素： ::afer  ::before
+伪元素： ::after  ::before
 
 ```
 - 介绍css3中position有哪些属性
 
-```  
+```
 relative
 absolute  //相对于 static 定位以外的第一个父元素进行定位。相对于父元素的外边框定位
 fixed // 浏览器窗口进行定位
@@ -787,7 +787,7 @@ inherit // 规定应该从父元素继承 position 属性的值。
 
 ```
 - 基本样式去除：
-``` 
+```
 *{
 margin：0；
 padding：0；
@@ -796,17 +796,17 @@ padding：0；
 
 
 - a标签下划线去除：
-``` 
+```
 text-decoration：none
 
 ```
 - 实现一个下划线
-``` 
+```
 和text-decoration里的underline不一样，答案：用box-shadow
 ```
 
 - 关于行内元素的顶线，中线，基线，底线
-``` 
+```
 顶线：中文汉字的的上端沿；
 中线：横过英文字母x的中间的线；
 基线（base line）并不是汉字文字的下端沿，而是英文字母“x”的下端沿；
@@ -825,32 +825,32 @@ text-bottom：   文本的底端对齐；
 ```
 
 - 在网页中的应该使用奇数还是偶数的字体？为什么呢？
-``` 
+```
 偶数字号相对更容易和 web 设计的其他部分构成比例关系
 为了对称的字体用偶数显得更均衡
 
 ```
 - 怎么让Chrome支持小于12px 的文字？
-``` 
+```
 transform:scale(0.8)进行缩放或者使用图片
 ```
 
 - 让页面里的字体变清晰，变细用CSS怎么做？
 
-``` 
+```
 -webkit-font-smoothing: antialiased;
 ```
 
 
 - 什么是CSS 预处理器 / 后处理器？
 
-``` 
+```
 预处理器例如：LESS、Sass、Stylus，用来预编译Sass或less，增强了css代码的复用性，
   还有层级、mixin、变量、循环、函数等，具有很方便的UI组件模块化开发能力，极大的提高工作效率。
 
 后处理器例如：PostCSS，通常被视为在完成的样式表中根据CSS规范处理CSS，让其更有效；目前最常做的
   是给CSS属性添加浏览器私有前缀，实现跨浏览器兼容性的问题。
-  
+
 ```
 
 - retina屏幕兼容（用retina.js）
@@ -876,7 +876,7 @@ transform:scale(0.8)进行缩放或者使用图片
 
 - flex布局
 
-``` 
+```
 flex-direction //主轴方向
 flex-wrap // 轴线如何换行 nowrap|wrap|wrap-reverse|initial|inherit;
 flex-flow //上述两者的简写
@@ -890,19 +890,19 @@ align-content // 定义了多根轴线的对齐方式。如果项目只有一根
 - grid布局
 - 栅格实现：flex，grid
 - outline和border的区别
-```  
+```
 而 outline 是针对链接、表单控件和ImageMap等元素设计，outline 的效果将随元素的 focus 而自动出现，相应的由 blur 而自动消失。
 也就是说是outline就是获取焦点后在周围显示出的轮廓
 ```
 - 手写图片瀑布流效果
 
-``` 
+```
 TODO
 
 ```
 - 一段字符从后台动态返回，长度不确定，要求显示一行就居中，两行就左对齐，三行就结尾显示'...'
 - 什么css可以减少重绘
-``` 
+```
 改成css对象的形式一次性加入就只触发一次重绘了
 比如：
 .clickStyle
@@ -917,7 +917,7 @@ TODO
 - 写一个媒体查询
 - calc属性使用
 - z-index 一定是数越大层级越在上面吗
-``` 
+```
 一、定义：
 
 z-index 只适用于元素有定位的情况，表示层级 数值越大 层级越高 展示的位置越靠前。
@@ -943,7 +943,7 @@ z-index 只适用于元素有定位的情况，表示层级 数值越大 层级�
 ```
 - 哪些可以导致3d加速
 - 识别是否是retina屏幕并适配
-``` 
+```
 1.retian.js
 2.
   background-image: url('img/logo.jpg');
@@ -964,21 +964,21 @@ z-index 只适用于元素有定位的情况，表示层级 数值越大 层级�
 
 ```
 - Css优先级红蓝色问题
-``` 
+```
 引用的时候同级的话是同优先级的，真正是看样式表里的一个先手顺序是否。后面的会覆盖前面的。
 ```
 - visibility:hidden，display:none，opacity（visibility:hidden，opacity点击是否触发事件）
-``` 
+```
 display:none隐藏后不占据额外空间，它会产生回流和重绘，而visibility:hidden和opacity:0元素虽然隐藏了，但它们仍然占据着空间，它们俩只会引起页面重绘。
 
 值得注意的是：
 visibility:hidden;的元素不会触发绑定的事件。
 opacity:0;的元素会触发绑定的事件，例如点击会触发click函数。
- 
+
 
 ```
 - 1vw等于多少
-``` 
+```
 在PC端，视口指的是在PC端，指的是浏览器的可视区域；
 
 而在移动端，它涉及3个视口：Layout Viewport（布局视口），Visual Viewport（视觉视口），Ideal Viewport（理想视口）。
@@ -998,13 +998,13 @@ opacity:0;的元素会触发绑定的事件，例如点击会触发click函数�
 
 - 动画实现div无限旋转
 - querySelector和querySelectorAll
-``` 
+```
 querySelector查询出来的是符合条件的第一个
 querySelectorAll查询出来的是一个数组
 ```
 - display:inline-block元素和父元素上下存在间隙，产生原因及解决方案
 - 百分比padding，margin是根据什么值计算的以及百分比translate是根据什么值计算的
-``` 
+```
 margin、padding的百分比是按照父元素的宽度来计算的
 transform中translate，如果传入百分比参数，计算是分别根据自身的宽高来进行的
 
@@ -1013,7 +1013,7 @@ transform中translate，如果传入百分比参数，计算是分别根据自�
 - 容器高度是宽度的两倍 多种写法
 - 手撕代码实现 一个带有阴影和高亮的按钮 并且垂直水平居中
 - css:如何在一行上三等分三个盒子
-``` 
+```
 flex: 1或者都设置33.33%都行
 ```
 - 行内元素对齐***作：顶对齐、底对齐
@@ -1022,7 +1022,7 @@ flex: 1或者都设置33.33%都行
 - css4新特性？
 - css3 实现幻灯片
 - 背景色会覆盖border吗
-``` 
+```
 会延伸到border。记得设背景图把border圆角给遮挡了。
 背景色外延到边框色，使边框色的灰度无效。
 

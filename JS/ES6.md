@@ -114,16 +114,7 @@ resolved：任务完成并且没有任何问题；
 rejected：任务完成，但是出现问题。
 
 ```
-
-- ES6的异步编程：promise generator async/await
-
-``` 
-async await 是 promise 和 generator 函数组合的一个语法糖
-
-generator的例子， 然后问我怎么用promise 实现
-
-
-```
+- 用promise 实现genetator
 
 - promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
 
@@ -200,18 +191,95 @@ ES6 模块化
 - 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
 - Promise和Async处理失败的时候有什么区别
 - Async/await promise 和 generator区别。
-- Iterator（迭代器）、Generator（生成器）的用法？
-- 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
-- ES6的generator函数来进行异步的调用，手写
-- Redux有没有做过封装
 -写一个封装函数控制1000s访问一次，然后最多5次，直至拿到结果。
-- 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换
-- ES7 的 decorator
+- 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
+- 三个异步函数怎么知道彼此已经结束。不用promise.all
+- Promise.then里抛出的错误能否被try...catch捕获，为什么。
+
+
+
+
+- Symbol
 ``` 
-装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数
+创建symbol类型数据
+let s1 = Symbol()
+let s2 = Symbol('another symbol')
+
+每个Symbol实例都是唯一的。因此，当你比较两个Symbol实例的时候，将总会返回false
+
+1.利用Symbol来实现属性的私有化：
+let obj = {
+   [Symbol('name')]: '一斤代码',
+   age: 18,
+   title: 'Engineer'
+}
+Symbol类型的key是不能通过Object.keys()或者for...in来枚举的，它未被包含在对象自身的属性名集合(property names)之中。所以，利用该特性，我们可以把一些不需要对外操作和访问的属性使用Symbol来定义。
+
+2. 使用Symbol来替代常量
+const TYPE_AUDIO = Symbol()
+const TYPE_VIDEO = Symbol()
+const TYPE_IMAGE = Symbol()
+
+3.使用Symbol定义类的私有属性/方法
+const PASSWORD = Symbol()
+
+class Login {
+  constructor(username, password) {
+    this.username = username
+    this[PASSWORD] = password
+  }
+
+  checkPassword(pwd) {
+      return this[PASSWORD] === pwd
+  }
+}
+
+export default Login
+只能在这个a.js里使用，外面是调用不到PASSWORD的
+
+
+4.定义多个window窗口共用的全局Symbol
+let gs1 = Symbol.for('global_symbol_1')  //注册一个全局Symbol
+let gs2 = Symbol.for('global_symbol_1')  //获取全局Symbol
+
+gs1 === gs2  // true
 
 ```
-- 三个异步函数怎么知道彼此已经结束。不用promise。all
+- Iterator（迭代器，遍历器）、Generator（生成器）的用法？
+``` 
+一、Iterator（迭代器），yield表达式在generator中是作为一个暂停标志，当碰到yield时，函数暂停执行，等到下一次next()执行时
+let obj = {
+    name:'zhangsan',
+    age:18,
+    sex:'man'
+}
+obj[Symbol.iterator]=function* (){
+    for(var key in obj){
+        yield obj[key];
+    }
+}
+for(let value of obj){
+    console.log(value);//zhangsan 18 man
+}
+console.log([...obj]);//["zhangsan", 18, "man"]
+
+
+二、Generator（生成器）
+使用function关键字后加*的方式声明一个函数，该函数即为Generator函数
+let tell = function* (){
+    yield 1;
+    yield 2;
+    yield 3;
+}
+let k = tell();
+console.log(k.next());//{value: 1, done: false}
+console.log(k.next());//{value: 2, done: false}
+console.log(k.next());//{value: 3, done: false}
+console.log(k.next());//{value: undefined, done: true}
+
+```
+- ES6的generator函数来进行异步的调用，手写
+- 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换
 - Reflect对象
 - Proxy
 - Set和Map数据结构
@@ -228,4 +296,10 @@ promise.catch(err => {
 
 ```
 
-- Promise.then里抛出的错误能否被try...catch捕获，为什么。
+
+- CommonJS和ES Module的区别
+- ES7 的 decorator
+``` 
+装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数
+
+```

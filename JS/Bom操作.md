@@ -27,4 +27,9 @@ window.navigator对象：常常用来获取浏览器信息、是否移动端访�
 
 - 怎么获取一个元素到视图顶部的距离
 - getBoundingClientRect获取的top和offsetTop获取的top区别
+``` 
+getBoundingClientRect用于获得页面中某个元素的左，上，右和下分别相对浏览器视窗的位置。getBoundingClientRect是DOM元素到浏览器可视范围的距离（不包含文档卷起的部分）
+
+页面中的元素的offsetLeft是离其最近的已经定位的元素，如果没有就相对于body元素计算
+```
 - ul标签里有五个li标签，把第五个li标签移到第一个li标签和第二个li标签中间，怎么做

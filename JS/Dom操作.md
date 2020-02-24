@@ -84,6 +84,18 @@ ele.style.styleName = styleValue;设置ele元素的CSS样式
 
 ```
 - innerHTML和innerText的区别
+``` 
+1、innerHTML:
+　　也就是从对象的起始位置到终止位置的全部内容,包括Html标签。
+
+2、innerText:
+　　从起始位置到终止位置的内容, 但它去除Html标签
+
+1） innerHTML设置或获取标签所包含的HTML+文本信息(从标签起始位置到终止位置全部内容，包括HTML标签，但不包括自身)
+2） outerHTML设置或获取标签自身及其所包含的HTML+文本信息（包括自身）
+3） innerText设置或获取标签所包含的文本信息（从标签起始位置到终止位置的内容，去除HTML标签，但不包括自身）
+4） outerText设置或获取标签自身及其所包含的文本信息（包括自身）
+```
 - DOM事件中target和currentTarget的区别
 ``` 
 主要看事件绑定在父元素身上还是目标元素身上。
@@ -94,9 +106,29 @@ ele.style.styleName = styleValue;设置ele元素的CSS样式
 不相等的时候：
 当事件处理程序绑定在目标元素的父节点上时，currentTarget会指向绑定的父元素，而target依旧指向目标元素
 ```
-- DOM事件的绑定的几种方式
-  说了三种，然后说了一些冒泡，默认事件，以及DOM2，DOM3级的一些标准。
-  
+- DOM事件的绑定的几种方式以及区别
+```  
+1.DOM元素中直接绑定
+鼠标单击事件 onclick
+
+2.JavaScript代码中绑定
+document.getElementById('XX').onclick=function(){};
+
+3.绑定事件监听函数
+obj.addEventListener(event,fn,useCapture);
+
+useCapture →Boolean值 设置事件是事件捕获执行还是事件冒泡执行，一般为事件捕获（值为false）
+
+区别：
+1. DOM元素直接绑定，如果DOM元素绑定两个"onclick" 事件，只会执行第一个；
+2. 通过js脚本中绑定多个事件，只会执行最后一个事件；
+3. 用“addEventListener”绑定多个事件，按照绑定顺序都会执行。
+
+```
+- 解除绑定事件
+``` 
+removeEventListener
+```
 - 获取页面所有图片的src，得注意css部分的获取，有个dom方法，但我当时没想到说按行读文件
 - 输出页面所有标签以及数量
 - 手写dom的深度遍历
@@ -107,4 +139,3 @@ ele.style.styleName = styleValue;设置ele元素的CSS样式
 - 给ul里的li反转   （下面是面试官给的答案，让我手写代码，突然很慌）
   const ul = document.querySelector('ul')
   ul.innerHTML = Array.from(ul.querySelectorAll('li')).reverse().map(item => item.outerHTML).join('')
-  
