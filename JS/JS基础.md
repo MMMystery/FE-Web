@@ -1,3 +1,4 @@
+
 - JavaScript有⼏种类型的值
 ``` 
 
@@ -23,21 +24,78 @@ console.log(obj1.name); // 小鹿
 
 
 ```
-- 如何判断对象的属性是原型的还是自己的
+- 如何判断对象的属性是原型的还是实例的
+``` 
+function isPrototypeAttr(obj,pro) // 检查给定的属性是否存在于当前实例对象中(不包括原型链)
+{
+    return obj.hasOwnProperty(pro) && (pro in obj)
+}
+
+// pro in obj的作用是为了判断该属性是否存在，是必要条件
+```
 - js的函数式特性（弱类型？函数式的可置换性是什么
+
 - JS的原型
+
+
+- js实现before，after这样的钩子函数
+
 - attribute 和 property 的区别
+``` 
+<input id="the-input" type="typo" value="Name:" /> // 在页面加载后,我们在这个input中输入 "Jack"
+
+attribute 是我们在 html 代码中经常看到的键值对
+
+// attribute still remains the original value
+input.getAttribute('id') // the-input
+input.getAttribute('type') // typo
+input.getAttribute('value') // Name:
+
+
+property 是 attribute 对应的 DOM 节点的 对象属性 (Object field)
+// property is a different story
+input.id // the-input
+input.type //  text
+input.value // Jack
+
+
+attribute 会始终保持 html 代码中的初始值, 而 Property 是有可能变化的
+
+```
+
 - js this
 ```  
-https://www.jianshu.com/p/a2dd59b5302e
+this和作用域不一样,作用域是声明的时候就定下来了,this是在调用的时候才确定下来
+
+
+谁最后调用函数，函数this就是谁（this永远指向的是最后调用它的对象，也就是看它执行的时候是谁调用的）
+例子：
+var o = {
+    a:10,
+    b:{
+        a:12,
+        fn:function(){
+            console.log(this.a); //undefined
+            console.log(this); //window
+        }
+    }
+}
+var j = o.b.fn;
+j();
+最后调用的是window，所以this指向window。
+如果是o.b.fn(),那么this指向的就是b。
+
+
+箭头函数 > new > 显式 > 隐式 > 默认绑定
 ```
+
+
 - 构造函数的隐式原型是什么
-- 事件绑定有哪些方法
 - 怎么监听对象属性值的改变
--对象遍历
+- 对象遍历
 - JavaScript中的arguments
 - class继承和原型链继承的区别
--遍历不可枚举属性
+- 遍历不可枚举属性
 - setTimeout底层如何实现的
 - 变量作用域链
 - addEventListener和onClick()的区别
@@ -372,35 +430,7 @@ var o4 = Object.create(p)
 
 
 ```
-- instanceof 实现
-```  
-// 思路：右边变量的原型存在于左边变量的原型链上
-function instanceOf(left, right) {
-  let leftValue = left.__proto__
-  let rightValue = right.prototype
-  while (true) {
-    if (leftValue === null) {
-      return false
-    }
-    if (leftValue === rightValue) {
-      return true
-    }
-    leftValue = leftValue.__proto__
-  }
-}
 
-```
-
-- Object.create 的基本实现
-``` 
-
-// 思路：将传入的对象作为原型
-function create(obj) {
-  function F() {}
-  F.prototype = obj
-  return new F()
-}
-```
 
 - new 实现和new 的过程
 ``` 
@@ -582,19 +612,7 @@ const throttle = (fn, delay = 500) => {
 
 
 
-- Array.isArray实现
-- getOwnPropertyNames 实现
-- 手写jsonp实现
-``` 
-function handleResponse(response){
-    alert(“You’re at IP address ” + response.ip + ”, which is in ” + response.city + ”, ” + response.region_name);
-}
-var script = document.createElement(“script”);
-script.src = “http://freegeoip.net/json/?callback=handleResponse”;
-document.body.insertBefore(script, document.body.firstChild);
 
-
-```
 - js实现css的:hover效果
 
 ``` 
@@ -616,7 +634,7 @@ todo
 var jsonStr = '{"name":"cxk", "age":25}';
 var obj = eval("(" + json + ")");
 ```
-- js实现继承的几种方式
+
 
 ``` 
 
@@ -819,28 +837,31 @@ for of数组对象都可以遍历，遍历对象需要通过和Object.keys()
 
 for in循环出的是key，for of循环出的是value
 ```
+- obj对象和map对象区别
+``` 
+obj对象就是键必须是字符串，这给它的使用带来了很大的限制，所以引入了Map，它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
+```
 - Set、Map和weakset、WeakMap的区别
+
+
 
 ```
 应用场景Set用于数据重组，Map用于数据储存
 
-Set：
+Set： // 能够存储无重复值的有序列表
 1，成员不能重复
 2，只有键值没有键名，类似数组
 3，可以遍历，方法有add, delete,has
 
-Map:
-1，本质上是健值对的集合，类似集合
-2，可以遍历，可以跟各种数据格式转换
-WeakMap 结构与 Map 结构基本类似，唯一的区别是它只接受对象作为键名（ null 除外），不接受其他类型的值作为键名，而且键名所指向的对象，不计入垃圾回收机制。
-WeakMap 最大的好处是可以避免内存泄漏。一个仅被 WeakMap 作为 key 而引用的对象，会被垃圾回收器回收掉。
-WeakMap 拥有和 Map 类似的 set(key, value) 、get(key)、has(key)、delete(key) 和 clear() 方法, 没有任何与迭代有关的属性和方法。
+Weakset // 存放的是对象的弱引用
 
+Map:  // ES6中提供了Map数据结构，能够存放键值对，其中，键的去重是通过Object.is()方法进行比较，键的数据类型可以是基本类型数据也可以是对象，而值也可以是任意类型数据。
 
+Weak Map(或者Weak Set)都是存储对象弱引用的方式，在Weak Map（或者Weak Set）中，所有的键都必须是对象（尝试使用非对象的键会抛出错误），而且这些对象都是弱引用，不会干扰到垃圾回收。
 
 ```
 
-
+- Map类型和obj的区别，什么时候只可以用map类型
 
  
 - 可以手写一些Promise么？不是写Promise怎么用哦，让你实现一下Promise。  
@@ -944,72 +965,7 @@ e.stopPropatation()
 - 手写 Proxy / Object.defineProperty
 - 写一个函数，可以控制最大并发数
 
-- 实现lazyMan
 
-```
-function _LazyMan(name) {
-    this.tasks = [];   
-    var self = this;
-    var fn =(function(n){
-        var name = n;
-        return function(){
-            console.log("Hi! This is " + name + "!");
-            self.next();
-        }
-    })(name);
-    this.tasks.push(fn);
-    setTimeout(function(){
-        self.next();
-    }, 0); // 在下一个事件循环启动任务
-}
-/* 事件调度函数 */
-_LazyMan.prototype.next = function() { 
-    var fn = this.tasks.shift();
-    fn && fn();
-}
-_LazyMan.prototype.eat = function(name) {
-    var self = this;
-    var fn =(function(name){
-        return function(){
-            console.log("Eat " + name + "~");
-            self.next()
-        }
-    })(name);
-    this.tasks.push(fn);
-    return this; // 实现链式调用
-}
-_LazyMan.prototype.sleep = function(time) {
-    var self = this;
-    var fn = (function(time){
-        return function() {
-            setTimeout(function(){
-                console.log("Wake up after " + time + "s!");
-                self.next();
-            }, time * 1000);
-        }
-    })(time);
-    this.tasks.push(fn);
-   return this;
-}
-_LazyMan.prototype.sleepFirst = function(time) {
-    var self = this;
-    var fn = (function(time) {
-        return function() {
-            setTimeout(function() {
-                console.log("Wake up after " + time + "s!");
-                self.next();
-            }, time * 1000);
-        }
-    })(time);
-    this.tasks.unshift(fn);
-    return this;
-}
-/* 封装 */
-function LazyMan(name){
-    return new _LazyMan(name);
-}
-
-```
 - 说说js的垃圾回收(GC)
 - Async/Await 如何通过同步的方式实现异步
 

@@ -3,6 +3,49 @@
 
 
 ```
+- instanceof 实现
+```  
+// 思路：右边变量的原型存在于左边变量的原型链上
+function instanceOf(left, right) {
+  let leftValue = left.__proto__
+  let rightValue = right.prototype
+  while (true) {
+    if (leftValue === null) {
+      return false
+    }
+    if (leftValue === rightValue) {
+      return true
+    }
+    leftValue = leftValue.__proto__
+  }
+}
+
+```
+- Array.isArray实现
+- getOwnPropertyNames 实现
+- 手写jsonp实现
+``` 
+function handleResponse(response){
+    alert(“You’re at IP address ” + response.ip + ”, which is in ” + response.city + ”, ” + response.region_name);
+}
+var script = document.createElement(“script”);
+script.src = “http://freegeoip.net/json/?callback=handleResponse”;
+document.body.insertBefore(script, document.body.firstChild);
+
+
+```
+
+- Object.create 的基本实现
+``` 
+
+// 思路：将传入的对象作为原型
+function create(obj) {
+  function F() {}
+  F.prototype = obj
+  return new F()
+}
+```
+
 - 实现instance of
 - 实现promise.all
 
@@ -47,13 +90,101 @@ const myPromiseAll = (arr)=>{
 - 手写一个throttle
 
 - 实现promise.all的polyfill
-- 实现promise.retry
-- 实现promise.race
+- 实现promise.all
+``` 
+Promise.all = function(arr){
+    if(!Array.isArray(arr)){
+        throw new TypeError(`argument must be a array`)
+    }
+    return new Promise((resolve,reject) => {
+        var resolveNum = 0;
+        var resolveResult = [];
+        for(let i = 0; i < arr.length; i++){
+           Promise.resolve(
+                arr[i].then((data) => {
+                    resolveNum++;
+                    resolveResult.push(data)
+                    if(resolveNum == arr.length){ // 如果都执行完了，把resolveResult返回
+                        return resolve(resolveResult)
+                    }
+                }，(e) => {
+                    return reject(e)
+                })
+        })
+    })
+    
+}
+```
+- 实现promise.race // Promise.race方法和Promise.all方法差不多，只是Promise.all需要等待所有的请求都完成，而Promise.race只要有一个请求完成就可以。
 
 ``` 
-TODO
+Promise.race = function(arr) {
+      if(!Array.isArray(arr)){
+          throw new TypeError(`argument must be a array`)
+      }
+    return new Promise(function(resolve, reject) {
+      for (let i = 0; i < arr.length; i++) {
+         Promise.resolve(
+            arr[i]).then(data => {
+                return resolve(data);
+            }, (e) => {
+                return reject(e);
+            });
+         }
+    })
+  }
 
 ```
+
+- 实现promise.retry
+``` 
+Promise.retry = function(fn, times, delay) {
+  return new Promise(function(resolve, reject){
+      var error;
+      var attempt = function() {
+          if (times == 0) {
+              reject(error);
+          } else {
+              fn().then(resolve).catch(function(e){
+                      times--;
+                      error = e;
+                      setTimeout(function(){attempt()}, delay);
+                  });
+          }
+      };
+      attempt();
+  });
+};
+
+```
+
+
+
+
+- 实现一个sleep函数
+``` 
+function sleep(time) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(true);
+        }, time*1000);
+    });
+}
+
+```
+- 将一个同步callback包装成promise形式
+``` 
+function promisify(fn,context){
+  return (...args) => {
+    return new Promise((resolve,reject) => {
+        fn.apply(context,[...args,(err,res) => {
+            return err ? reject(err) : resolve(res)
+        }])
+    })
+  }
+}
+```
+- 写一个函数，可以控制最大并发数
 - 手写reduce或者filter的polyfill
 - 手写parseInt的实现
 - 自己实现一个event类
@@ -65,6 +196,22 @@ TODO
 - cookie封装
 - 实现一个循环监听
 - 原生js实现filter函数。
+``` 
+Array.prototype.filter = function(fn,context){
+    if(typeof fn != 'function'){
+        throw new TypeError(`${fn} is not a function`)
+    }
+    let arr = this;
+    let reuslt = []
+    for(var i = 0;i < arr.length; i++){
+        let temp= fn.call(context,arr[i],i,arr);
+        if(temp){
+            result.push(arr[i]);
+        }
+    }
+    return result
+}
+```
 - promise封装ajax
 ``` 
 var  myNewAjax=function(url){
@@ -98,7 +245,60 @@ var  myNewAjax=function(url){
 - 求一个对象的层级数（我写完后，又问如果不用递归，只用循环实现呢）
 - 纯js写一个动画，5s由快到慢，速度自定义
 - 写一个curry函数，其实就是add(1,2,3) 改成 add(1)(2,3)
+``` 
+function currying(fn,...args){
+    if(fn.length <= args.length){
+        return fn(...args)
+    }
+    return function(...args1){
+        return currying(fn,...args,...args1)
+    }
+}
+function add(a,b,c){
+    return a + b + c
+}
+add(1,2,3) // 6
+var curryingAdd = currying(add);
+curryingAdd(1)(2)(3) // 6
+```
 - 手写发布订阅的EventEmitter类
+``` 
+class EventEmitter {
+    constructor(){
+        this.events = {}
+    }
+    on(name,cb){
+        if(!this.events[name]){
+            this.events[name] = [cb];
+        }else{
+            this.events[name].push(cb)
+        }
+    }
+    emit(name,...arg){
+        if(this.events[name]){
+            this.events[name].forEach(fn => {
+                fn.call(this,...arg)
+            })
+        }
+    }
+    off(name,cb){
+        if(this.events[name]){
+            this.events[name] = this.events[name].filter(fn => {
+                return fn != cb
+            })
+        }
+    }
+    once(name,fn){
+        var onlyOnce = () => {
+            fn.apply(this,arguments);
+            this.off(name,onlyOnce)
+        }
+        this.on(name,onlyOnce);
+        return this;
+    }
+}
+```
+- js实现继承的几种方式
 - 手写实现观察者模式
 - 写了一个curry函数，其实就是add(1,2,3) 改成 add(1)(2,3)
 - new Queue().task(1000,()=>console.log(1)).task(2000,()=>console.log(2)).task(3000,()=>console.log(3)).start()实现该函数，start()后等1秒输出1，再等2秒2，再等3秒3.
@@ -200,5 +400,57 @@ function log(...args){
     return "(app)"+str;
 }
 ```
+- 实现lazyMan
 
+```
+function _LazyMan(name){
+    this.nama = name;
+    this.queue = [];
+    this.queue.push(() => {
+        console.log("Hi! This is " + name + "!");
+        this.next();
+    })
+    setTimeout(()=>{
+        this.next()
+    },0)
+}
+  
+_LazyMan.prototype.eat = function(name){
+    this.queue.push(() =>{
+        console.log("Eat " + name + "~");
+        this.next()
+    })
+    return this;
+}
+
+_LazyMan.prototype.next = function(){
+    var fn = this.queue.shift();
+    fn && fn();
+}
+
+_LazyMan.prototype.sleep = function(time){
+    this.queue.push(() =>{
+        setTimeout(() => {
+            console.log("Wake up after " + time + "s!");
+            this.next()
+        },time * 1000)
+    })
+    return this;
+}
+
+_LazyMan.prototype.sleepFirst = function(time){
+    this.queue.unshift(() =>{
+        setTimeout(() => {
+            console.log("Wake up after " + time + "s!");
+            this.next()
+        },time * 1000)
+    })
+    return this;
+}
+
+function LazyMan(name){
+    return new _LazyMan(name)
+}
+
+```
 - 写一个cookie并定义过期时间为一天
