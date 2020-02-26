@@ -104,6 +104,17 @@ console.log(name);  // Bingo
 console.log(rest);  // ["Iris", "Alex"]
 ```
 
+
+- 对象新增的方法
+``` 
+Object.is()
+Object.assign()
+Object.getOwnPropertyDescriptors() 
+__proto__属性，Object.setPrototypeOf()，Object.getPrototypeOf() 
+Object.keys()，Object.values()，Object.entries()
+
+```
+
 - promise
 
 ``` 
@@ -278,11 +289,22 @@ console.log(k.next());//{value: 3, done: false}
 console.log(k.next());//{value: undefined, done: true}
 
 ```
+
+- Set 和 Map 数据结构
+- Proxy
+- Reflect
+- Iterator 和 for...of 循环
+- ArrayBuffer
+- Decorator(装饰器)
+``` 
+装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数
+```
+
+
+
 - ES6的generator函数来进行异步的调用，手写
 - 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换
-- Reflect对象
-- Proxy
-- Set和Map数据结构
+
 - 用es5写promise
 - Promise 中抛出异常能否被 catch 捕获？
 ```  
@@ -298,8 +320,11 @@ promise.catch(err => {
 
 
 - CommonJS和ES Module的区别
-- ES7 的 decorator
-``` 
-装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数
 
-```
+- Promise.resolve(1)返回是一个什么
+- Promise.any()
+- Promise.reject()
+- Promise.allSettled()
+
+- new Promise(() => {throw new Error()})能否抛出异常？  
+- 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch

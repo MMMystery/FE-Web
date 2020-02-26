@@ -1,6 +1,94 @@
+
+
 - 实现promise
 ``` 
 
+
+```
+- call或者apply实现bind。
+- call、apply、bind 实现
+
+```  
+call
+// 思路：将要改变this指向的方法挂到目标this上执行并返回
+Function.prototype.mycall = function (context) {
+  if (typeof this !== 'function') {
+    throw new TypeError('not funciton')
+  }
+  context = context || window
+  context.fn = this
+  let arg = [...arguments].slice(1)
+  let result = context.fn(...arg)
+  delete context.fn
+  return result
+} 
+
+
+apply
+
+// 思路：将要改变this指向的方法挂到目标this上执行并返回
+Function.prototype.myapply = function (context) {
+  if (typeof this !== 'function') {
+    throw new TypeError('not funciton')
+  }
+  context = context || window
+  context.fn = this
+  let result
+  if (arguments[1]) {
+    result = context.fn(...arguments[1])
+  } else {
+    result = context.fn()
+  }
+  delete context.fn
+  return result
+}
+
+
+bind
+
+// 思路：类似call，但返回的是函数
+Function.prototype.mybind = function (context) {
+  if (typeof this !== 'function') {
+    throw new TypeError('Error')
+  }
+  let _this = this
+  let arg = [...arguments].slice(1)
+  return function F() {
+    // 处理函数使用new的情况
+    if (this instanceof F) {
+      return new _this(...arg, ...arguments)
+    } else {
+      return _this.apply(context, arg.concat(...arguments))
+    }
+  }
+}
+
+```
+
+- 实现数组的flat函数（数组拍平）
+``` 
+
+```
+
+- 实现在原型链上重写 flat 函数 （链接：https://juejin.im/post/5dff18a4e51d455804256d31#heading-15）
+``` 
+Array.prototype.fakeFlat = function(num = 3) {
+  if (!Number(num) || Number(num) < 0) {
+    return this;
+  }
+  let arr = this.concat();    // 获得调用 fakeFlat 函数的数组
+  while (num > 0) {           
+    if (arr.some(x => Array.isArray(x))) {
+      arr = [].concat.apply([], arr);	// 数组中还有数组元素的话并且 num > 0，继续展开一层数组 
+    } else {
+      break; // 数组中没有数组元素并且不管 num 是否依旧大于 0，停止循环。
+    }
+    num--;
+  }
+  return arr;
+};
+const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
+arr.fakeFlat(arr)
 
 ```
 - instanceof 实现

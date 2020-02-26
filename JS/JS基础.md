@@ -24,6 +24,26 @@ console.log(obj1.name); // 小鹿
 
 
 ```
+- 如何准确判断一个变量是否是数组类型
+
+``` 
+1.instanceof
+
+var a = []
+a instanceof Array //a是否Array的实例？true or false
+
+2.数组方法 isArray()
+Array.isArray(a)
+
+
+3.利用构造函数constructor
+var arr = [1,2,3];
+arr.constructor === Array // a实例所对应的构造函数是否为Array
+
+4.Object.prototype.toString.call()  （这种方式最精准）
+
+```
+
 - 如何判断对象的属性是原型的还是实例的
 ``` 
 function isPrototypeAttr(obj,pro) // 检查给定的属性是否存在于当前实例对象中(不包括原型链)
@@ -33,12 +53,7 @@ function isPrototypeAttr(obj,pro) // 检查给定的属性是否存在于当前�
 
 // pro in obj的作用是为了判断该属性是否存在，是必要条件
 ```
-- js的函数式特性（弱类型？函数式的可置换性是什么
 
-- JS的原型
-
-
-- js实现before，after这样的钩子函数
 
 - attribute 和 property 的区别
 ``` 
@@ -60,6 +75,34 @@ input.value // Jack
 
 
 attribute 会始终保持 html 代码中的初始值, 而 Property 是有可能变化的
+
+```
+- console.log(typeof null, typeof [])等等类型判断
+
+```  
+基本类型有6种: number, string, null, undefined, bool, symbol
+typeof可以返回7种: number, string, object, undefined, function, boolean, symbol
+一些面试题：
+typeof null => object, 
+typeof undefined => undefined,
+typeof NaN => number
+NaN == undefined => false
+NaN == NaN => false
+
+symbol是什么
+```
+
+- js空值判断
+``` 
+判断undefined
+if (typeof(exp) == undefined)
+
+判断null
+var exp = null; 
+if (!exp && typeof(exp)!=”undefined” && exp!=0) 
+{ 
+alert(“is null”); 
+}　
 
 ```
 
@@ -89,18 +132,25 @@ j();
 箭头函数 > new > 显式 > 隐式 > 默认绑定
 ```
 
-
-- 构造函数的隐式原型是什么
-- 怎么监听对象属性值的改变
+- JS的原型
 - 对象遍历
 - JavaScript中的arguments
 - class继承和原型链继承的区别
 - 遍历不可枚举属性
 - setTimeout底层如何实现的
 - 变量作用域链
-- addEventListener和onClick()的区别
 - new和Object.create的区别
-- 写一个四则运算，输入字符串输入结果，果然有括号呢
+
+
+- 构造函数的隐式原型是什么
+- 怎么监听对象属性值的改变
+- js的函数式特性（弱类型？函数式的可置换性是什么
+
+- js实现before，after这样的钩子函数
+
+
+
+- 写一个四则运算，输入字符串输入结果，如果有括号呢
 - JavaScript 创建构造函数的过程中发生了什么
 - 定义函数的方式
 ```
@@ -135,25 +185,7 @@ const demo = new Function("a", "b")
 typeof有什么不好的地方
 
 ```
-- 如何准确判断一个变量是否是数组类型
 
-``` 
-1.instanceof
-
-var a = []
-a instanceof Array //a是否Array的实例？true or false
-
-2.数组方法 isArray()
-Array.isArray(a)
-
-
-3.利用构造函数constructor
-var arr = [1,2,3];
-arr.constructor === Array // a实例所对应的构造函数是否为Array
-
-4.Object.prototype.toString.call()  （这种方式最精准）
-
-```
 - 0.1+0.2等于多少，精度丢失的原因
 - 点击一个文本结点, target会是什么
 
@@ -252,7 +284,6 @@ var obj1 = {
 
 赋值是进行了传址操作，赋值的实际上是obj1的数据地址，所以当obj2数据修改的时候，是通过地址进行的修改，所以相同数据地址的obj1也发生了改变
 
-
 重点：根据数据的操作方式不同，可以将数据分为两大类型：基础类型和引用类型
 
 基础类型：number类型、boolean类型和string类型，其操作方式为传值
@@ -260,34 +291,7 @@ var obj1 = {
 引用类型：array类型、object类型、function类型，其操作方式为传址
 
 ```
-- console.log(typeof null, typeof [])等等类型判断
 
-```  
-基本类型有6种: number, string, null, undefined, bool, symbol
-typeof可以返回7种: number, string, object, undefined, function, boolean, symbol
-一些面试题：
-typeof null => object, 
-typeof undefined => undefined,
-typeof NaN => number
-NaN == undefined => false
-NaN == NaN => false
-
-symbol是什么
-```
-
-- js空值判断
-``` 
-判断undefined
-if (typeof(exp) == undefined)
-
-判断null
-var exp = null; 
-if (!exp && typeof(exp)!=”undefined” && exp!=0) 
-{ 
-alert(“is null”); 
-}　
-
-```
 - 如何清除不使用的变量
 ``` 
 布局变量再函数执行完后就销毁了。
@@ -351,67 +355,7 @@ function isEven(num) {
 - 如何检查对象中是否存在某个属性
 
 - call、apply、bind的区别
-- call、apply、bind 实现
 
-```  
-call
-// 思路：将要改变this指向的方法挂到目标this上执行并返回
-Function.prototype.mycall = function (context) {
-  if (typeof this !== 'function') {
-    throw new TypeError('not funciton')
-  }
-  context = context || window
-  context.fn = this
-  let arg = [...arguments].slice(1)
-  let result = context.fn(...arg)
-  delete context.fn
-  return result
-} 
-
-
-apply
-
-// 思路：将要改变this指向的方法挂到目标this上执行并返回
-Function.prototype.myapply = function (context) {
-  if (typeof this !== 'function') {
-    throw new TypeError('not funciton')
-  }
-  context = context || window
-  context.fn = this
-  let result
-  if (arguments[1]) {
-    result = context.fn(...arguments[1])
-  } else {
-    result = context.fn()
-  }
-  delete context.fn
-  return result
-}
-
-
-bind
-
-// 思路：类似call，但返回的是函数
-Function.prototype.mybind = function (context) {
-  if (typeof this !== 'function') {
-    throw new TypeError('Error')
-  }
-  let _this = this
-  let arg = [...arguments].slice(1)
-  return function F() {
-    // 处理函数使用new的情况
-    if (this instanceof F) {
-      return new _this(...arg, ...arguments)
-    } else {
-      return _this.apply(context, arg.concat(...arguments))
-    }
-  }
-}
-
-
-
-
-```
 - 说一下JS的作用域查找过程
 - 说一下对bind，call，apply三个函数的认识，自己实现一下bind方法。
 
@@ -1213,6 +1157,20 @@ lastIndexOf()
 reduce(fn(prev,cur,index,array){ return ... },initValue)
 1.fn返回的值会作为第一个参数传递给下一项
 2.initValue做为归并基础的初始值
+
+
+遍历数组并取得数组元素的方法非常之多，包括且不限于下面几种：
+
+for 循环
+for...of
+for...in
+forEach()
+entries()
+keys()
+values()
+reduce()
+map()
+
 ```
 - 你认为js和其他语言的不同点在哪里
 - try catch只能捕获同步的异常，无法捕获异步
