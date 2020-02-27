@@ -1,11 +1,46 @@
 
+- new 实现和new 的过程
+``` 
+(1) 创建一个新对象；
+(2) 将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象） ；
+(3) 执行构造函数中的代码（为这个新对象添加属性） ；
+(4) 返回新对象。
+
+function myNew() {
+  var constr = Array.prototype.shift.call(arguments);
+  var obj = Object.create(constr.prototype);
+  var result = constr.apply(obj, arguments);
+  return result instanceof Object? result : obj;
+}
+
+function myNew (fun) {
+  return function () {
+    // 创建一个新对象且将其隐式原型指向构造函数原型
+    let obj = {
+      __proto__ : fun.prototype
+    }
+    // 执行构造函数
+    fun.call(obj, ...arguments)
+    // 返回该对象
+    return obj
+  }
+}
+
+function person(name, age) {
+  this.name = name
+  this.age = age
+}
+let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
+
+
+```
 
 - 实现promise
 ``` 
 
 
 ```
-- call或者apply实现bind。
+- 用call或者apply实现bind。
 - call、apply、bind 实现
 
 ```  
@@ -111,6 +146,145 @@ function instanceOf(left, right) {
 ```
 - Array.isArray实现
 - getOwnPropertyNames 实现
+- 使用setTimeout实现setInterval
+
+``` 
+// 可避免setInterval因执行时间导致的间隔执行时间不一致
+setTimeout (function () {
+  // do something
+  setTimeout (arguments.callee, 500)
+}, 500)
+
+
+```
+- 实现一个基本的Event Bus
+- 如何实现一个事件的发布订阅
+- 实现一个双向数据绑定
+
+```
+
+let obj = {}
+let input = document.getElementById('input')
+let span = document.getElementById('span')
+// 数据劫持，这个是关键
+Object.defineProperty(obj, 'text', {
+  configurable: true,
+  enumerable: true,
+  get() {
+    console.log('获取数据了')
+  },
+  set(newVal) {
+    console.log('数据更新了')
+    input.value = newVal
+    span.innerHTML = newVal
+  }
+})
+// 输入监听
+input.addEventListener('keyup', function(e) {
+  obj.text = e.target.value
+})
+
+
+```
+- 实现一个简单路由
+
+``` 
+todo
+
+```
+
+- 手写AJAX
+  
+```
+var xhr = new XMLHttpRequest()
+// 初始化
+xhr.open("GET","/api",false)
+
+// 发送请求
+xhr.send(data)
+
+xhr.onreadystatechange = function(){
+    //这里的函数异步执行，可参考之前JS基础中的异步模块
+    if(xhr.readyState == 4){
+        if(xhr.status == 200){
+            alert(xhr.responseText)
+        }
+    }
+}
+
+xhr.send(null)
+
+如何发送同步ajax
+
+```
+- 实现拖拽
+
+``` 
+todo
+
+```
+- 手写一个防抖/节流函数
+
+``` 
+// 防抖函数 生存环境请用lodash.debounce， 防止连续频发操作，触发多次。只触发最后一次。
+const debounce = (fn, delay) => {
+  let timer = null;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
+};
+
+// 节流函数  间隔一段时间内触发一次。
+const throttle = (fn, delay = 500) => {
+  let flag = true;
+  return (...args) => {
+    if (!flag) return;
+    flag = false;
+    setTimeout(() => {
+      fn.apply(this, args);
+      flag = true;
+    }, delay);
+  };
+};
+
+```
+
+
+
+
+- js实现css的:hover效果
+
+``` 
+$("el").onmouseover = function() {
+  //
+}
+$("el").onmouseout = function() {
+  //
+}
+
+```
+- 实现一个JSON.stringify
+``` 
+todo
+
+```
+- 实现一个JSON.parse
+```  
+var jsonStr = '{"name":"cxk", "age":25}';
+var obj = eval("(" + json + ")");
+```
+
+
+``` 
+
+连接：https://www.jianshu.com/p/9cfe30d1a967
+
+```
+- es5的继承 实现一下
+- 实现extend函数
 - 手写jsonp实现
 ``` 
 function handleResponse(response){
@@ -126,12 +300,7 @@ document.body.insertBefore(script, document.body.firstChild);
 - Object.create 的基本实现
 ``` 
 
-// 思路：将传入的对象作为原型
-function create(obj) {
-  function F() {}
-  F.prototype = obj
-  return new F()
-}
+
 ```
 
 - 实现instance of
@@ -162,6 +331,15 @@ const myPromiseAll = (arr)=>{
 
 ```
 - 实现一个JS函数柯里化，函数柯里化使用场景
+
+- 手写代码实现一下Array.prototype.trim这个函数，并写个测试用例跑给我看下
+``` 
+String.prototype.trim = function () {
+　　    return this.replace(/(^\s*)|(\s*$)/g, "");
+　　}
+
+```
+
 - 自己实现一个event类
 - 实现 memorize once 高阶函数
 - sum(2, 3)实现sum(2)(3)的效果
@@ -171,12 +349,16 @@ const myPromiseAll = (arr)=>{
 - Iterator遍历器实现
 - Thunk函数实现（结合Generator实现异步）
 - 实现一个方法遍历输出Object所有属性
+- js实现before，after这样的钩子函数
+- 手写一个基于hash路由函数
+- 实现一个repeat函数，主要是闭包的应用
 1. Promise（A+规范）、then、all方法
 
 3. Thunk函数实现（结合Generator实现异步）
 4. async实现原理（spawn函数）
+- 手写实现inherit函数
 - 手写一个throttle
-
+- 手写实现以下事件委托函数 function delegate(parent, selector, handle) {}
 - 实现promise.all的polyfill
 - 实现promise.all
 ``` 
@@ -283,6 +465,7 @@ function promisify(fn,context){
 - 手撕代码--图片懒加载实现（JS原生）
 - cookie封装
 - 实现一个循环监听
+- 如果我需要设计一个拖拽的dialog，怎么实现？手写代码
 - 原生js实现filter函数。
 ``` 
 Array.prototype.filter = function(fn,context){

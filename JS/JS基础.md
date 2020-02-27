@@ -43,16 +43,36 @@ arr.constructor === Array // a实例所对应的构造函数是否为Array
 4.Object.prototype.toString.call()  （这种方式最精准）
 
 ```
-- javascript的执行上下文
-- 如何判断对象的属性是原型的还是实例的
-``` 
-function isPrototypeAttr(obj,pro) // 检查给定的属性是否存在于当前实例对象中(不包括原型链)
-{
-    return obj.hasOwnProperty(pro) && (pro in obj)
-}
 
-// pro in obj的作用是为了判断该属性是否存在，是必要条件
+- js继承的几种实现方式
 ```
+
+class 实现继承
+
+class Son entends Father {
+  constructor(name){
+    super(name);
+    this.name = name;
+  
+  }
+}
+var s = new Son('son');
+console.log(s.name); // son
+console.log(s instanceof Father); // true
+console.log(s instanceof Son); // true
+
+
+
+
+
+
+- 组合继承和寄生组合继承的优缺点
+- class继承和原型链继承的区别
+
+```
+
+- javascript的执行上下文
+
 
 
 - attribute 和 property 的区别
@@ -133,32 +153,140 @@ j();
 ```
 
 - JS的原型
-- 对象遍历
+- 对象遍历 和 数组遍历
+``` 
+
+-------------------对象遍历-------------------
+//for in的方式 遍历对象的每一个可枚举属性,包括原型链上面的可枚举属性
+
+let obj = {'0':'a','1':'b','2':'c'};
+for(let i in obj){
+    console.log(i, obj[i])
+}
+
+// Object.keys 只能遍历自己的对象上的可枚举的属性，不能遍历自己原型上可枚举的属性。
+
+Object.keys(obj).forEach((key)=>{
+    console.log(key, obj[key])
+})
+
+// Object.getOwnPropertyNames()  它遍历自身对象的所有属性，包括可枚举不可枚举，但是原型上的属性是无法遍历的。
+
+Object.getOwnPropertyNames(obj).forEach((key)=>{
+   console.log(key, obj[key])
+})
+
+
+// Reflect.ownKeys(obj) 遍历
+Reflect.ownKeys(obj).forEach(function(key){
+    console.log(key,obj[key]);
+});
+
+
+
+-------------------数组遍历-------------------
+
+for 循环
+forEach()
+for...in
+for...of  // for-in会把继承链的对象属性都会遍历一遍,所以会更花时间. for-of 语句只遍历可迭代对象的数据。
+
+
+entries()
+keys()
+values()
+reduce()
+map() (不改变原数组)
+
+
+```
 - JavaScript中的arguments
-- class继承和原型链继承的区别
-- 遍历不可枚举属性
+``` 
+arguments 是一个类数组对象 代表传给一个function的参数列表。
+
+function printArgs() {
+    console.log(arguments);
+}
+printArgs("A", "a", 0, { foo: "Hello, arguments" });
+执行结果是：
+["A", "a", 0, Object]
+
+arguments 操作
+arguments.length //参数个数
+
+Array.prototype.slice.call(arguments)或[].slice.call(arguments)将arguments转换为数组
+
+
+const obj = { 0: "a", 1: "b" }; // 这种是类数组？
+const arr = [ "a", "b" ];
+
+```
+
+- 如何判断对象的属性是原型的还是实例的
+``` 
+function isPrototypeAttr(obj,pro) // 检查给定的属性是否存在于当前实例对象中(不包括原型链)
+{
+    return obj.hasOwnProperty(pro) && (pro in obj)
+}
+
+// pro in obj的作用是为了判断该属性是否存在，是必要条件
+```
+- 如何检查对象中是否存在某个属性
+``` 
+1. 使用in关键字。"toString" in o; 可以判断对象的自有属性和继承来的属性是否存在
+2. 对象的hasOwnProperty() 只能判断自有属性是否存在，对于继承属性会返回false
+3. 用undefined判断 o.y!==undefined;  自有属性和继承属性均可判断
+4. if(o.y) if直接判断
+```
+- 遍历不可枚举属性， 怎么分辨可枚举属性和不可枚举属性
 - setTimeout底层如何实现的
 - 变量作用域链
+- js中创建对象的方式有，字面量创建var objA = {}; Object.create创建和new创建，new和Object.create的区别
+- Object.assign和Object.create相关
 - new和Object.create的区别
-
-
 - 构造函数的隐式原型是什么
-- 怎么监听对象属性值的改变
+- 怎么监听对象属性值的改变（其实就是双向绑定的原理）
+``` 
+// defineProperty + set/get
+var obj={};
+Object.defineProperty(obj,'data',{
+    get:function(){
+        return data;
+    },
+    set:function(newValue){
+        data=newValue;
+        console.log('set :',newValue);
+        //需要触发的渲染函数写在这...
+    }
+})
+
+
+proxy
+// let p = new Proxy(target, handler);
+
+
+```
+
+
 - js的函数式特性（弱类型？函数式的可置换性是什么
-
-- js实现before，after这样的钩子函数
-
-
-
 - 写一个四则运算，输入字符串输入结果，如果有括号呢
-- JavaScript 创建构造函数的过程中发生了什么
+- JavaScript 创建构造函数的过程中发生了什么(其实问的就是new的过程)
+``` 
+a：创建一个空对象，作为将要返回的对象实例。
+
+b：将空对象的原型指向了构造函数的prototype属性。
+
+c：将空对象赋值给构造函数内部的this关键字。
+
+d：开始执行构造函数内部的代码。
+
+```
 - 定义函数的方式
 ```
 1.函数声明
 function demo (){}
 function (){} // 匿名函数
-
-()=>{} // ES6
+()=>{} // ES6匿名函数
 
 2.函数表达式
 
@@ -171,10 +299,59 @@ const demo = new Function("a", "b")
 
 ```
 - 字符串和new String出来的字符串有啥区别？
+``` 
+
+let A="ABC";
+let B=new String("ABC");
+console.log(A==B) // true
+console.log(A.equals(B))  // true
+console.log(A===B)  // false  引用类型全比较的时候比较的是引用地址是否相等，那肯定不等
+
+```
 - 类数组与数组的区别与转换
+``` 
+const obj = { 0: "a", 1: "b" }; // 这种是类数组
+const arr = [ "a", "b" ];
+
+他俩之间的转换其实就很简单
+```
 - Array.sort()方法与实现机制
+``` 
+数组长度小于等于 22 的用插入排序，其它的用快速排序
+```
 - js函数的4种调用方式讲一下
-- 如何实现一个对象的属性无法改变
+``` 
+1、函数调用模式
+function add(x,y){
+    console.log(this);//window
+}    
+add();
+
+2、方法调用模式
+var o = {
+    m: function(){
+        console.log(1);
+    }
+};
+o.m();
+
+3、构造函数调用模式(要借助new )  // 如果函数或者方法调用之前带有new关键字，它就构成构造函数调用。
+function fn(x){
+    this.a = x;
+};
+var obj = new fn(2);
+console.log(obj.a);//2
+
+
+4、间接调用
+call()方法和apply()方法
+
+function myFunction(a, b) {
+    return a * b;
+}
+myObject = myFunction.call(myObject, 10, 2);  
+
+```
 - js类型判断方式有哪些
 ``` 
 1.typeof
@@ -187,10 +364,32 @@ typeof有什么不好的地方
 ```
 
 - 0.1+0.2等于多少，精度丢失的原因
-- 点击一个文本结点, target会是什么
+``` 
+0.1的二进制格式是：0.0001100011....。这是一个二进制无限循环小数，但计算机内存有限，我们不能用储存所有的小数位数。那么在精度与内存间如何取舍呢？
 
+答案是：在某个精度点直接舍弃。当然，代价就是，0.1在计算机内部根本就不是精确的0.1，而是一个有舍入误差的0.1。
+
+
+如何比较这种数据呢：
+bignumber.js会在一定精度内，让浮点数计算结果符合我们的期望。let x = new BigNumber(0.1);
+或者转换为字符串比较是否相等
+```
 - stream和同步方式处理文件有什么区别
 - 循环语法比较及使用场景（for、forEach、for...in、for...of）
+
+``` 
+forEach // 进行数组遍历,这种方法更加简洁，但是不能使用breack语句中断循环，也不能使用return语句返回到外层函数
+for..in // for-in循环体还会遍历自定义的属性，数组原型链上的属性都能被访问到。
+           for-in按照随机顺序遍历数组元素
+
+for..of // ES6的新语法。
+           这个方法避开了for-in循环的所有缺陷
+           与forEach()不同的是，它可以正确响应break、continue和return语句
+
+for…in 遍历（当前对象及其原型上的）每一个属性名称
+for…of遍历（当前对象上的）每一个属性值:
+```
+
 - js的变量提升和函数提升，暂时性死区
 ```  
 JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量(函数也是变量)，然后再一行一行地运行。这造成的结果，就是所有的变量的声明语句，都会被提升到代码的头部，这就叫做变量提升（hoisting）。
@@ -303,15 +502,24 @@ var obj1 = {
 函数声明未被调用说明未被编译是不占内存的。
 ```
 
-- js阻止冒泡事件
+- js阻止冒泡事件和阻止默认事件
 ```  
-ev.stopPropagation()
+event.stopPropagation()  // 方法用于阻止捕获和冒泡阶段中当前事件的进一步传播。
+event.preventDefault()  // 方法可防止元素的默认行为。 如果在表单元素中使用，它将阻止其提交。 如果在锚元素中使用，它将阻止其导航。 如果在上下文菜单中使用，它将阻止其显示或显示。
 
 ```
 - setTimeout用作倒计时为何会产生误差
-- Object.assign和Object.create相关
-- new和Object.create的区别
-- 手写一个基于hash路由函数
+``` 
+setTimeout(function () {
+	console.log('biubiu');
+}, 1000);
+
+某个执行时间很长的函数();
+
+
+如果定时器下面的函数执行要 5秒钟，那么定时器里的log 则需要 5秒之后再执行，函数占用了当前 执行栈 ，要等执行栈执行完毕后再去读取 微任务(microtask)，等 微任务(microtask) 完成，这个时候才会去读取 宏任务(macrotask) 里面的 setTimeout 回调函数执行。
+
+```
 
 - 怎么判断 script 或 img 是否加载完成
 ``` 
@@ -333,7 +541,7 @@ import 是 ES6 的模块化语法，require() 在好几种模块规范中都有�
 
 
 - $nextTrick原理   
-- settimeout promise requestAnimationFrame 三个任务的时机 以及区别
+- settimeout promise requestAnimationFrame 三个任务的时机, 以及区别
 
 
 - 如何在不使用`%`模运算符的情况下检查一个数字是否是偶数？
@@ -350,14 +558,39 @@ function isEven(num) {
 ```
 
 - router分为hash和history，它们有什么区别？
-- 多个子站点部署，如何同步cooike信息，如何优化性能？
-- 什么是NaN？以及如何检查值是否为 NaN？
-- 如何检查对象中是否存在某个属性
 
-- call、apply、bind的区别
+
+- 什么是NaN？以及如何检查值是否为 NaN？
+``` 
+NaN属性表示“不是数字”的值，但它的的类型又是数字
+Number.isNaN() 可以检测
+```
+
+- call、apply、bind的区别。
+``` 
+总之三种方法都是改变函数内this的指向
+
+1.fn.call (context, arg1, arg2, .....)
+
+call中第一个参数是fn的上下文，剩下的参数就是需要向fn中传递的参数
+
+2.fn.apply (context, [args])
+
+apply同call类似，第一个参数也是fn的上下文，和call不同的是，apply第二个参数是数组，call的第二个及第二个以后的参数都是数组里面的元素
+
+3.fn.bind (context)
+
+bind会创建一个函数，称之为绑定函数，调用这个函数时，绑定函数会以创建它是bind方法传入的第一个参数作为自己的上下文，第二个及第二个以后的参数并且加上绑定函数运行时传递进来的参数作为原函数的参数来调用原函数。 （有点绕哈，不过对下一道题有帮助）
+
+4.call、apply、bind最大的区别就是bind不会立即调用，会返回一个函数，apply、call会立即调用。
+
+```
 
 - 说一下JS的作用域查找过程
-- 说一下对bind，call，apply三个函数的认识，自己实现一下bind方法。
+``` 
+当一个作用域嵌套在另一个块或函数中，就产生了作用域嵌套。
+在当前作用域无法找到某变量时，向外层查找
+```
 
 - 对象的几种创建方式
 ``` 
@@ -376,45 +609,16 @@ var o4 = Object.create(p)
 ```
 
 
-- new 实现和new 的过程
-``` 
-(1) 创建一个新对象；
-(2) 将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象） ；
-(3) 执行构造函数中的代码（为这个新对象添加属性） ；
-(4) 返回新对象。
 
-function myNew() {
-  var constr = Array.prototype.shift.call(arguments);
-  var obj = Object.create(constr.prototype);
-  var result = constr.apply(obj, arguments);
-  return result instanceof Object? result : obj;
-}
-
-function myNew (fun) {
-  return function () {
-    // 创建一个新对象且将其隐式原型指向构造函数原型
-    let obj = {
-      __proto__ : fun.prototype
-    }
-    // 执行构造函数
-    fun.call(obj, ...arguments)
-    // 返回该对象
-    return obj
-  }
-}
-
-function person(name, age) {
-  this.name = name
-  this.age = age
-}
-let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
-
-
-```
-- promise 实现
 
 - 深拷贝和浅拷贝的实现方式分别有哪些？什么时候需要深拷贝，深拷贝需要注意的地方
 ```
+
+浅拷贝只复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存。修改新对象也会改动原对象。
+但深拷贝会另外创造一个一模一样的对象，新对象跟原对象不共享内存，修改新对象不会改到原对象。
+
+
+
 浅拷贝：(1) Object.assign的方式 (2) 通过对象扩展运算符 (3) 通过数组的slice方法 (4) 通过数组的concat方法。
 
 // 1. ...实现
@@ -445,164 +649,33 @@ function deepClone(obj) {
 }
 
 
-```
-- 深拷贝(数组，对象，dom元素)
-- var str='abc'和var str=new string('abc')的区别是什么
-- 使用setTimeout实现setInterval
+问：深拷贝(数组，对象，dom元素)
 
-``` 
-// 可避免setInterval因执行时间导致的间隔执行时间不一致
-setTimeout (function () {
-  // do something
-  setTimeout (arguments.callee, 500)
-}, 500)
+数组深拷贝的方式 for循环 、concat方法 、...扩展符
 
+对象的深拷贝  for...in 、 JSON.parse(JSON.stringify(obj)) 、 ...扩展符
+
+
+问：怎么实现this对象的深拷贝
 
 ```
-- 实现一个基本的Event Bus
+
+
+
+
+
 - 如何解决循环引用的问题
-- 如何实现一个事件的发布订阅
-- 实现一个双向数据绑定
-
-```
-
-let obj = {}
-let input = document.getElementById('input')
-let span = document.getElementById('span')
-// 数据劫持，这个是关键
-Object.defineProperty(obj, 'text', {
-  configurable: true,
-  enumerable: true,
-  get() {
-    console.log('获取数据了')
-  },
-  set(newVal) {
-    console.log('数据更新了')
-    input.value = newVal
-    span.innerHTML = newVal
-  }
-})
-// 输入监听
-input.addEventListener('keyup', function(e) {
-  obj.text = e.target.value
-})
-
-
-```
-- 实现一个简单路由
 
 ``` 
-todo
+JS 中引用计数垃圾回收策略的问题
 
-```
-
-- 手写AJAX
-  
-```
-var xhr = new XMLHttpRequest()
-// 初始化
-xhr.open("GET","/api",false)
-
-// 发送请求
-xhr.send(data)
-
-xhr.onreadystatechange = function(){
-    //这里的函数异步执行，可参考之前JS基础中的异步模块
-    if(xhr.readyState == 4){
-        if(xhr.status == 200){
-            alert(xhr.responseText)
-        }
-    }
-}
-
-xhr.send(null)
-
-如何发送同步ajax
-
-```
-- 实现拖拽
-
-``` 
-todo
-
-```
-- 手写一个防抖/节流函数
-
-``` 
-// 防抖函数 生存环境请用lodash.debounce， 防止连续频发操作，触发多次。只触发最后一次。
-const debounce = (fn, delay) => {
-  let timer = null;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      fn.apply(this, args);
-    }, delay);
-  };
-};
-
-// 节流函数  间隔一段时间内触发一次。
-const throttle = (fn, delay = 500) => {
-  let flag = true;
-  return (...args) => {
-    if (!flag) return;
-    flag = false;
-    setTimeout(() => {
-      fn.apply(this, args);
-      flag = true;
-    }, delay);
-  };
-};
+利用JSON 扩展包的
+JSON.decycle 去除循环引用
+JSON.retrocycle 还原
 
 ```
 
 
-
-
-- js实现css的:hover效果
-
-``` 
-$("el").onmouseover = function() {
-  //
-}
-$("el").onmouseout = function() {
-  //
-}
-
-```
-- 实现一个JSON.stringify
-``` 
-todo
-
-```
-- 实现一个JSON.parse
-```  
-var jsonStr = '{"name":"cxk", "age":25}';
-var obj = eval("(" + json + ")");
-```
-
-
-``` 
-
-连接：https://www.jianshu.com/p/9cfe30d1a967
-
-```
-- es5的继承 实现一下
-- 实现extend函数
-- 组合继承和寄生组合继承的优缺点
-- class 实现继承
-``` 
-class Son entends Father {
-  constructor(name){
-    super(name);
-    this.name = name;
-  
-  }
-}
-var s = new Son('son');
-console.log(s.name); // son
-console.log(s instanceof Father); // true
-console.log(s instanceof Son); // true
-```
 
 
 
@@ -676,7 +749,6 @@ a()  // 2
 - 实际中遇到的闭包问题
 - 说说你对闭包的理解,闭包为什么会造成内存泄漏？
 
-- 实现一个repeat函数，主要是闭包的应用
 
 
 
@@ -712,10 +784,21 @@ MutationObserver
 
 
 ```
-- 箭头函数可以new吗，可以放argument吗？
-- 面向对象理解
+- 箭头函数有作用域吗？可以new吗？可以放argument吗？
+``` 
+箭头函数、没有prototype、没有自己的this指向
 
-- 函数式编程理解
+（1）函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象。
+（2）不可以当作构造函数，也就是说，不可以使用new命令，否则会抛出一个错误。
+（3）不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用Rest参数代替。
+（4）不可以使用yield命令，因此箭头函数不能用作Generator函数。
+
+箭头函数中的this因为绑定了词法作用域，所以始终指向自身外的第一个this（由于自身没有声明this，所以会去作用域链上找this），也就是始终等于调用它的函数的this
+
+arguments 能否适用是看该函数是否处于严格模式,严格模式是禁止适用的
+可以使用rest参数代替arguments。let fun = (...arg) => { console.log(...arg) }; 
+
+```
 
 - rem基本设置
 
@@ -733,7 +816,7 @@ addEventListener("resize", setRem)
 
 
 ```
-- 手写代码实现一下Array.prototype.trim这个函数，并写个测试用例跑给我看下
+
 
 
 - 获取URL上的值
@@ -894,13 +977,6 @@ function forEach(obj,fn){
 
 ```
 
-
-- 阻止事件冒泡
-
-```
-e.stopPropatation() 
-```
-
 - setTimeout、setInterval和requestAnimationFrame；
 - 前端的requestAnimationFrame了解吗？有使用过吗？说一下使用场景。
 - Map和Set；
@@ -995,14 +1071,7 @@ $(docuement).on('click',function(e){
 - setTimetout 到期时间是怎么计算的，比如有1000个定时器
 
 - 请分别用深度优先思想和广度优先思想实现一个拷贝函数？
-- 表单可以跨域吗
-``` 
-原页面用 form 提交到另一个域名之后，原页面的脚本无法获取新页面中的内容，所以浏览器认为这是安全的。
 
-因为浏览器安全策略限制的是脚本，而并不限制src，form提交之类的请求。form表单提交不存在跨域
-另外ajax是提交了的（调试工具中很容易看到请求已经发出），只是脚本无法获得结果。
-
-```
 
 
 - 最常见是在Array、String prototype 上写一个函数。比如 'abcd'.f() => 'd-c-b-a'
@@ -1058,11 +1127,7 @@ document.body.insertBefore(fragment, document.body.children[0]);
 
 ```
 
-- event.preventDefault() 和 event.stopPropagation()方法之间有什么区别？
-``` 
-event.preventDefault() 方法可防止元素的默认行为。 如果在表单元素中使用，它将阻止其提交。 如果在锚元素中使用，它将阻止其导航。 如果在上下文菜单中使用，它将阻止其显示或显示。 event.stopPropagation()方法用于阻止捕获和冒泡阶段中当前事件的进一步传播。
 
-```
 - setTimout promise等异步方案的加载顺序
 
 ``` 
@@ -1168,10 +1233,20 @@ fn()
 fn2()
 
 ```
+- == 和 ===
+``` 
+==存在类型转换
+
+===的话
+1、如果是引用类型，则两个变量必须指向同一个对象（同一个地址）；
+2.、如果是基本类型，则两个变量除了类型必须相同外，值还必须相等。
+```
 - 怎么判断两个对象相等
 ```
 ```
 - 0.1+0.2===0.3吗，为什么？
+
+
 - Number()的存储空间是多大，如果后台发送了一个超过最大字节的数字怎们办
 - 怎么会产生内存泄漏
 
@@ -1189,12 +1264,12 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
 - SON的parse有几个参数
 - b === b + 1?如何实现
 - JS 可以实现多线程吗？
-- 怎么实现this对象的深拷贝
+
 - 搜索请求中文如何请求
 - for..in 和 object.keys的区别
 - 设计一个栈，不使用数组
 - 实现 memorize once 高阶函数
-- 如何实现属性的监听的
+
 - 如果js文件加载不成功会发生什么
 - setTimeout底层如何实现的
 - 对JavaScript和Java两者的怎么看
@@ -1265,6 +1340,11 @@ var c = a.b
 console.log(c())
 ```
 
+- 函数式编程理解
+- 面向对象理解
+
+
+----------------------------------------------暂时不处理-----------------------------------------------
 - canvas优化绘制性能
 - 给页面注入50万个li怎么做提升性能？
 - fileReader用过吗？base64编码原理？

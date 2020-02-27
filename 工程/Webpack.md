@@ -248,7 +248,7 @@ SplitChunksPlugin，并通过内置的optimization配置段进行配置
 babel-core：babel转译器本身，提供了babel的转译API，如babel.transform等，用于对代码进行转译。
 
 ->ES6代码输入
-->babylon 将 ES6/ES7 代码解析成 AST
+->babylon 将 ES6/ES7 代码解析成 AST  // 代码在 “编译”（解释型语言在运行时也有编译的过程） 的过程中，都会生成一种树状的中间状态，这就是 AST
 ->babel-traverse 对 AST 进行遍历转译，得到新的 AST
 ->babel-generator 根据AST转换成 ES5
 
