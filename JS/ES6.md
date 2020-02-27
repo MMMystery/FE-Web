@@ -115,16 +115,23 @@ Object.keys()，Object.values()，Object.entries()
 
 ```
 
-- promise
+- promise（promise A+规范）
 
 ``` 
 Promise 的三种状态：
 
 pending：等待任务完成；
-resolved：任务完成并且没有任何问题；
+resolved（或fulfilled）：任务完成并且没有任何问题；
 rejected：任务完成，但是出现问题。
 
+Promise的静态方法：
+
+Promise.resolve 返回一个fulfilled状态的promise对象
+Promise.reject 返回一个rejected状态的promise对象
+Promise.all 接收一个promise对象数组为参数，只有全部为resolve才会调用 通常会用来处理 多个并行异步操作
+Promise.race 接收一个promise对象数组为参数，只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理。
 ```
+
 - 用promise 实现genetator
 
 - promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？

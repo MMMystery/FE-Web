@@ -43,7 +43,7 @@ arr.constructor === Array // a实例所对应的构造函数是否为Array
 4.Object.prototype.toString.call()  （这种方式最精准）
 
 ```
-
+- javascript的执行上下文
 - 如何判断对象的属性是原型的还是实例的
 ``` 
 function isPrototypeAttr(obj,pro) // 检查给定的属性是否存在于当前实例对象中(不包括原型链)
@@ -413,7 +413,7 @@ let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 ```
 - promise 实现
 
-- 深拷贝和浅拷贝的实现方式分别有哪些？什么时候需要深拷贝
+- 深拷贝和浅拷贝的实现方式分别有哪些？什么时候需要深拷贝，深拷贝需要注意的地方
 ```
 浅拷贝：(1) Object.assign的方式 (2) 通过对象扩展运算符 (3) 通过数组的slice方法 (4) 通过数组的concat方法。
 
@@ -460,7 +460,8 @@ setTimeout (function () {
 
 ```
 - 实现一个基本的Event Bus
-
+- 如何解决循环引用的问题
+- 如何实现一个事件的发布订阅
 - 实现一个双向数据绑定
 
 ```
@@ -708,7 +709,7 @@ MutationObserver
 看链接；https://juejin.im/post/59e85eebf265da430d571f89
 
 
-nexttick实现原理
+
 
 ```
 - 箭头函数可以new吗，可以放argument吗？
@@ -766,7 +767,6 @@ Async、await运行的时候会解析成什么样来运行
 
 - typeof 于 instanceof 区别
 - 怎么判断页面是否加载完成？
-- 说说你对Service worker的理解
 - defer和async区别
 - 说说重绘（Repaint）和回流（Reflow）
 
@@ -1121,57 +1121,7 @@ async函数(async await 是 promise 和 generator 函数组合的一个语法糖
 
 ```
 
-- 数组操作
-```
-// 检测数值ES5方法
-Array.isArray(value)  // 检测值是否为数组
-// 转换方法
-toString() 将数组转化为以逗号分隔的字符串
-valueOf() 返回的还是数组
-// 栈方法
-push() 可以接收任意数量的参数，把他们逐个添加到数组的末尾，返回修改后数组的长度
-pop() 从数组末尾移除最后一项，返回移除的项
-// 队列方法
-shift() 移除数组的第一项并返回该项
-unshift() 向数组前端添加任意个项并返回新数组的长度
-// 排序
-sort(compare)
-compare函数接收两个参数,如果返回负数，则第一个参数位于第二个参数前面；如果返回零，则两个参数相等；如果返回正数，第一个参数位于第二个参数后面
-// 降序，升序相反
-(a,b) => (b-a)
-// 操作方法
-concat(数组 | 一个或多个元素) // 合并数组，返回新数组
-slice(起始位置 ，[结束位置]) // 切分数组，返回新数组，新数组不包含结束位置的项
-splice(起始位置，删除的个数，[插入的元素]) // 删除|插入|替换数组，返回删除的元素组成的数组，会修改原数组
-// 位置方法
-indexOf(查找的项，[查找起点位置]) // 使用全等操作符，严格相等
-lastIndexOf()
-// 迭代方法，都接收两个参数，一个是要在每一项上运行的函数，一个是作用域（可选）
-1.every 对数组中每一项运行给定函数，如果函数对每一项都返回true,则返回true
-        every(fn(value,index,array){return ...},[this])
-2.some 对数组中每一项运行给定函数，如果函数对任一项都返回true,则返回true
-3.filter 对数组中每一项运行给定函数，返回该函数会返回true的项组成的数组
-4.forEach 对数组每一项运行给定函数，无返回值
-5.map 对数组每一项运行给定函数，返回每次函数调用返回结果组成的数组
-// 归并方法 reduce和reduceRight(和前者遍历的方向相反),构建一个最终返回的值
-reduce(fn(prev,cur,index,array){ return ... },initValue)
-1.fn返回的值会作为第一个参数传递给下一项
-2.initValue做为归并基础的初始值
 
-
-遍历数组并取得数组元素的方法非常之多，包括且不限于下面几种：
-
-for 循环
-for...of
-for...in
-forEach()
-entries()
-keys()
-values()
-reduce()
-map()
-
-```
 - 你认为js和其他语言的不同点在哪里
 - try catch只能捕获同步的异常，无法捕获异步
 ```  
@@ -1270,7 +1220,7 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
   这个我一时间答不出来，面试官提醒我用es6的symbol
 
 ```
-- nextTick 的使用场景 ？
+- nextTick 实现原理 和 使用场景 ？
 - __proto__怎样修改
 - 讲讲arraybuffer
 - Math.round(-7.5),Math.round(-7.6)的结果,考察floor等
@@ -1283,7 +1233,6 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
 ```
 单页面应用会出现什么问题？（f5之后会出现404，前端如何解决？）
 
-深拷贝的方式
 
 - 下面两个式子谁改变arr1
 ``` 

@@ -521,7 +521,9 @@ serve -s build
 - Flux架构模式
 - 手写实现一个 Redux 中的 reducer (state, action) => newState？
 - 了解fiber吗，做了什么优化，描述一个使用fiber优化前后有区别的场景
--Redux的中间件和node的中间件原理
+- Redux的中间件和node的中间件原理
 - mobx-react如何驱动react组件重渲染
 - this.$refs中元素的排列顺序；
 - Redux有没有做过封装
+- react的redux是什么设计模式，react这里用了什么设计模式
+- 高阶组件和mixin的区别

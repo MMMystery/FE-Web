@@ -452,16 +452,24 @@ to {top:200px;}
 
 ```
 .card:nth-child(3n+3) {
-      margin-right: 0
-    }
-    .card:not(:nth-child(3n+3)) {
-      margin: 24px 32px 0 0;
-    }
-    // 考虑兼容性，使用nth-child的方式。
-    //display: grid;
-    //grid-template-columns: repeat(auto-fill, 226px);
-    //grid-column-gap: 32px;
-    //grid-row-gap: 24px;;
+  margin-right: 0
+}
+.card:not(:nth-child(3n+3)) {
+  margin: 24px 32px 0 0;
+}
+// 考虑兼容性，使用nth-child的方式。
+
+flex的方式
+
+
+
+grid的方式
+{
+display: grid;
+grid-template-columns: repeat(auto-fill, 226px);
+grid-column-gap: 32px;
+grid-row-gap: 24px;
+}
 ```
 
 
@@ -852,6 +860,7 @@ transform:scale(0.8)进行缩放或者使用图片
   是给CSS属性添加浏览器私有前缀，实现跨浏览器兼容性的问题。
 
 ```
+- - less和sass区别
 
 - retina屏幕兼容（用retina.js）
 ```
@@ -886,6 +895,15 @@ align-items // 交叉轴的对齐方式
 
 align-content // 定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用
 
+
+flex:1 //指的是什么
+flex: 1 1 0;
+flex的值的完整写法是[<flex-grow> <flex-shrink> <flex-basis>]
+
+flex-grow用于设置各item项按对应比例划分剩余空间
+flex-shrink用于设置item的总和超出容器空间时，各item的收缩比例
+flex-basis用于设置各item项的伸缩基准值，可以取值为长度或百分比
+
 ```
 - grid布局
 - 栅格实现：flex，grid
@@ -913,9 +931,13 @@ TODO
         }
 
 ```
-- less和sass区别
+
 - 写一个媒体查询
 - calc属性使用
+``` 
+运算符前后都需要保留一个空格，例如：width: calc(100% - 10px)；
+calc()函数支持 "+", "-", "*", "/" 运算；
+```
 - z-index 一定是数越大层级越在上面吗
 ```
 一、定义：

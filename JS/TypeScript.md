@@ -1,0 +1,4 @@
+- 介绍一下interface
+- 介绍一下泛型，一般会用在什么地方
+- typescript是如何编译的
+- namespace/module
