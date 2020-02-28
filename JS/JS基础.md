@@ -43,7 +43,7 @@ arr.constructor === Array // a实例所对应的构造函数是否为Array
 4.Object.prototype.toString.call()  （这种方式最精准）
 
 ```
-
+- 怎么判断对象类型？
 - js继承的几种实现方式
 ```
 
@@ -75,28 +75,6 @@ console.log(s instanceof Son); // true
 
 
 
-- attribute 和 property 的区别
-``` 
-<input id="the-input" type="typo" value="Name:" /> // 在页面加载后,我们在这个input中输入 "Jack"
-
-attribute 是我们在 html 代码中经常看到的键值对
-
-// attribute still remains the original value
-input.getAttribute('id') // the-input
-input.getAttribute('type') // typo
-input.getAttribute('value') // Name:
-
-
-property 是 attribute 对应的 DOM 节点的 对象属性 (Object field)
-// property is a different story
-input.id // the-input
-input.type //  text
-input.value // Jack
-
-
-attribute 会始终保持 html 代码中的初始值, 而 Property 是有可能变化的
-
-```
 - console.log(typeof null, typeof [])等等类型判断
 
 ```  
@@ -106,6 +84,7 @@ typeof可以返回7种: number, string, object, undefined, function, boolean, sy
 typeof null => object, 
 typeof undefined => undefined,
 typeof NaN => number
+
 NaN == undefined => false
 NaN == NaN => false
 
@@ -238,10 +217,26 @@ function isPrototypeAttr(obj,pro) // 检查给定的属性是否存在于当前�
 3. 用undefined判断 o.y!==undefined;  自有属性和继承属性均可判断
 4. if(o.y) if直接判断
 ```
-- 遍历不可枚举属性， 怎么分辨可枚举属性和不可枚举属性
+- 遍历不可枚举属性，怎么分辨可枚举属性和不可枚举属性
 - setTimeout底层如何实现的
 - 变量作用域链
 - js中创建对象的方式有，字面量创建var objA = {}; Object.create创建和new创建，new和Object.create的区别
+``` 
+
+- 对象的几种创建方式
+
+// 第一种：字面量
+var o1 = {name: "o1"}
+var o2 = new Object({name: "o2"})
+// 第二种：通过构造函数
+var o3 = new function(){}
+// 第三种：Object.create()
+var o4 = Object.create({name: "p"})
+
+区别：
+
+
+```
 - Object.assign和Object.create相关
 - new和Object.create的区别
 - 构造函数的隐式原型是什么
@@ -310,10 +305,17 @@ console.log(A===B)  // false  引用类型全比较的时候比较的是引用�
 ```
 - 类数组与数组的区别与转换
 ``` 
-const obj = { 0: "a", 1: "b" }; // 这种是类数组
+const obj = { 0: "a", 1: "b" , length: 3}; // 这种是类数组
 const arr = [ "a", "b" ];
 
-他俩之间的转换其实就很简单
+ES6 扩展运算符进行转换
+var arr1 = [...arrayLike]; // ['a','b','c']
+复制代码
+
+ES6 中的 Array.from
+let arr2 = Array.from(arrayLike); // ['a', 'b', 'c']
+
+
 ```
 - Array.sort()方法与实现机制
 ``` 
@@ -374,7 +376,7 @@ typeof有什么不好的地方
 bignumber.js会在一定精度内，让浮点数计算结果符合我们的期望。let x = new BigNumber(0.1);
 或者转换为字符串比较是否相等
 ```
-- stream和同步方式处理文件有什么区别
+
 - 循环语法比较及使用场景（for、forEach、for...in、for...of）
 
 ``` 
@@ -539,11 +541,6 @@ import 是 ES6 的模块化语法，require() 在好几种模块规范中都有�
 ```
 
 
-
-- $nextTrick原理   
-- settimeout promise requestAnimationFrame 三个任务的时机, 以及区别
-
-
 - 如何在不使用`%`模运算符的情况下检查一个数字是否是偶数？
 
 ``` 
@@ -592,21 +589,6 @@ bind会创建一个函数，称之为绑定函数，调用这个函数时，绑�
 在当前作用域无法找到某变量时，向外层查找
 ```
 
-- 对象的几种创建方式
-``` 
-// 第一种：字面量
-var o1 = {name: "o1"}
-var o2 = new Object({name: "o2"})
-// 第二种：通过构造函数
-var M = function(name){this.name = name}
-var o3 = new M("o3")
-// 第三种：Object.create()
-var p = {name: "p"}
-var o4 = Object.create(p)
-
-
-
-```
 
 
 
@@ -840,7 +822,7 @@ var f = function(s) {
 文章：https://www.jianshu.com/p/be7c95714586
 
 ```
-- 怎么判断对象类型？
+
 - generator 原理
 - async、await 原理和优缺点
 ``` 
@@ -868,9 +850,7 @@ for in循环出的是key，for of循环出的是value
 ``` 
 obj对象就是键必须是字符串，这给它的使用带来了很大的限制，所以引入了Map，它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
 ```
-- Set、Map和weakset、WeakMap的区别
-
-
+- Set、Map和weakset、WeakMap分别是什么
 
 ```
 应用场景Set用于数据重组，Map用于数据储存
@@ -885,6 +865,9 @@ Weakset // 存放的是对象的弱引用
 Map:  // ES6中提供了Map数据结构，能够存放键值对，其中，键的去重是通过Object.is()方法进行比较，键的数据类型可以是基本类型数据也可以是对象，而值也可以是任意类型数据。
 
 Weak Map(或者Weak Set)都是存储对象弱引用的方式，在Weak Map（或者Weak Set）中，所有的键都必须是对象（尝试使用非对象的键会抛出错误），而且这些对象都是弱引用，不会干扰到垃圾回收。
+
+
+问：Set去重的原理？
 
 ```
 
@@ -977,13 +960,23 @@ function forEach(obj,fn){
 
 ```
 
-- setTimeout、setInterval和requestAnimationFrame；
-- 前端的requestAnimationFrame了解吗？有使用过吗？说一下使用场景。
-- Map和Set；
+- setTimeout、setInterval和requestAnimationFrame；前端的requestAnimationFrame了解吗？有使用过吗？说一下使用场景。
 
-- 写一个方法遍历所有文档树所有节点(考察递归)；
-- 手写 Proxy / Object.defineProperty
-- 写一个函数，可以控制最大并发数
+``` 
+都是宏任务
+
+setTimeout :设置某个时间后执行某个动作，表示延时执行某个动作
+setInterval :设置每隔多久执行一次某个动作，它是循环的
+requestAnimationFrame采用系统时间间隔，保持最佳绘制效率，不会因为间隔时间过短，造成过度绘制，增加开销；也不会因为间隔时间太长，使用动画卡顿不流畅，让各种网页动画效果能够有一个统一的刷新机制
+
+
+区别：
+定时器指定的时间间隔表示何时将定时器的代码添加到队列，而不是何时实际执行代码！
+而requestAnimationFrame：采用系统时间间隔，最佳绘制。使用一个回调函数作为参数，这个回调函数会在浏览器重绘之前调用。
+是浏览器用于定时循环操作的一个接口，主要用途是按帧对网页进行重绘。
+
+
+```
 
 
 - 说说js的垃圾回收(GC)
@@ -1055,7 +1048,7 @@ $(docuement).on('click',function(e){
 
 
 - offsetWidth/offsetHeight,clientWidth/clientHeight与scrollWidth/scrollHeight的区别
-- javascript有哪些方法定义对象
+
 - 怎么从十万个节点中找到想要的节点，怎么快速在某个节点前插入一个节点？
 - 怎么用原生js实现一个轮播图，以及滚动滑动
 - 怎么实现上传下载的功能
@@ -1065,30 +1058,23 @@ $(docuement).on('click',function(e){
 若要实现先冒泡后捕获，给一个元素绑定两个addEventListener，其中一个第三个参数设置为false（即冒泡），另一个第三个参数设置为true（即捕获），调整它们的代码顺序，将设置为false的监听事件放在设置为true的监听事件前面即可。
 
 ```
-- 介绍下浏览器事件循环
+
 - 浏览器事件循环和 node事件循环有什么差别
 
 - setTimetout 到期时间是怎么计算的，比如有1000个定时器
 
 - 请分别用深度优先思想和广度优先思想实现一个拷贝函数？
 
-
-
-- 最常见是在Array、String prototype 上写一个函数。比如 'abcd'.f() => 'd-c-b-a'
-
-- 实现 promise.all 并发限制，每次只能并发5个请求
-
-- 写一个函数，每隔1000ms发送一次请求，如果promise未正确返回则继续发送，最多5次。
-
 - 介绍defineProperty方法，什么时候需要用到
+- Object.getPrototypeOf()这个方法
+- Object.assign()
 
 - 实现Storage，使得该对象为单例，并对localStorage进行封装设置值setItem(key,value)和getItem(key)
 ``` 
 
 
 ```
-- Object.getPrototypeOf()这个方法
-- Object.assign()
+
 - 文件上传如何做断点续传
 
 ```  
@@ -1102,9 +1088,7 @@ $(docuement).on('click',function(e){
 
 
 - 手写原生 DOM 拖拽
-- canvas 的一个问题， 一个球从一个角飞到另一个角。 现在用鼠标画一条线。 只要是穿过这个球，球就停止。  说一下实现，不会实现就说思路。
-- Canvas绘制波浪线。
-- 比如 'abcd'.f() => 'd-c-b-a'
+
 
 - fragment 缓存DOM操作片段，解决性能问题：在网页之前插入1000个li标签
 ``` 
@@ -1199,7 +1183,7 @@ try {
   console.log(err);
 }
 ```
-- 实现一个类，可以on,emit,off,once，注册、调用、取消、注册仅能使用一次的事件
+
 - 文件上传如何实现？，除了input还有什么别的方法？
 - 浏览器如何预览图片，假设我要上传图片，未上传前我想在浏览器看到我待上传的图片
 - base64 前端如何转化
@@ -1244,25 +1228,30 @@ fn2()
 - 怎么判断两个对象相等
 ```
 ```
+
 - 0.1+0.2===0.3吗，为什么？
-
-
 - Number()的存储空间是多大，如果后台发送了一个超过最大字节的数字怎们办
 - 怎么会产生内存泄漏
 
-JSON.stringify(obj)==JSON.stringify(obj2);//true
+- JSON.stringify(obj)==JSON.stringify(obj2);//true
 
 
 - class编译和构造函数编译有什么区别
 
--sort函数实现排序原理
+- sort函数实现排序原理
 ``` 
 数组长度<=22时采用插入排序，大于22用快排。
 ```
-- set去重原理
 - 阻止相同事件的其他侦听器被调用（stopImmediatePropagation）
-- SON的parse有几个参数
+- JSON的parse有几个参数
+``` 
+text:必需， 一个有效的 JSON 字符串。
+reviver: 可选，一个转换结果的函数， 将为对象的每个成员调用此函数。
+```
 - b === b + 1?如何实现
+``` 
+console.log(2===true+1) // true。 因为true+1会转换为1+1
+```
 - JS 可以实现多线程吗？
 
 - 搜索请求中文如何请求
@@ -1297,16 +1286,32 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
 ```
 - nextTick 实现原理 和 使用场景 ？
 - __proto__怎样修改
-- 讲讲arraybuffer
-- Math.round(-7.5),Math.round(-7.6)的结果,考察floor等
+
+
+- Math.round(-7.5),Math.round(-7.6)的结果,考察Math的ceil、floor、round方法
+``` 
+Math类中提供了三个与取整有关的方法：ceil、floor、round
+
+ceil // 表示向上取整
+floor // 表示向下取整
+round // 四舍五入 
+
+Math.round(11.4)  // 11
+Math.round(11.5)  // 12
+Math.round(-11.5) // -11
+Math.round(-11.6) // -12
+```
+
+
 - encodeURI和encodeURIComponent的区别
--图片懒加载实现的几种方式
+- 图片懒加载实现的几种方式
 - 2.person的实例     p1.call({})   会怎么样？沿着p1一直问到了object.prototype._ptoto_；
--js传参是按值传递还是按照地址
+
+- js传参是按值传递还是按照地址
 ``` 
 按值传递，不然如果是引用数据类型的话，修改了的话把原始数据给改了
 ```
-单页面应用会出现什么问题？（f5之后会出现404，前端如何解决？）
+
 
 
 - 下面两个式子谁改变arr1
@@ -1316,9 +1321,7 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
 
 ```
          
-
-JSON.stringify（）会出现什么问题？还有吗？（循环引用，如何解决）
-- 题目
+- this指向的题目
 ```  
 
 var a = {
@@ -1335,9 +1338,11 @@ var a = {
 
 }
 
-console.log(a.b())
+console.log(a.b()) // 谁调用this指向谁，所以是this指向a。
 var c = a.b
-console.log(c())
+console.log(c()) // 这里闭包了，每调用一次会+1。并且this指向window了。
+
+
 ```
 
 - 函数式编程理解
@@ -1348,4 +1353,7 @@ console.log(c())
 - canvas优化绘制性能
 - 给页面注入50万个li怎么做提升性能？
 - fileReader用过吗？base64编码原理？
+- stream和同步方式处理文件有什么区别
+- canvas 的一个问题， 一个球从一个角飞到另一个角。 现在用鼠标画一条线。 只要是穿过这个球，球就停止。  说一下实现，不会实现就说思路。
+- Canvas绘制波浪线。
   

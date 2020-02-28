@@ -40,6 +40,10 @@ let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 
 
 ```
+
+- 实现 promise.all 并发限制，每次只能并发5个请求
+
+- 写一个函数，每隔1000ms发送一次请求，如果promise未正确返回则继续发送，最多5次。
 - 用call或者apply实现bind。
 - call、apply、bind 实现
 
@@ -99,7 +103,41 @@ Function.prototype.mybind = function (context) {
 }
 
 ```
+- 数据绑定最基本的实现
+``` 
+题目：
+// 实现一个方法，可以给 obj 所有的属性添加动态绑定事件，当属性值发生变化时会触发事件
+let obj = {
+  key_1: 1,
+  key_2: 2
+}
+function func(key) {
+  console.log(key + ' 的值发生改变：' + this[key]);
+}
+bindData(obj, func);
+obj.key_1 = 2; // 此时自动输出 "key_1 的值发生改变：2"
+obj.key_2 = 1; // 此时自动输出 "key_2 的值发生改变：1"
 
+答案：
+function bindData(obj, fn) {
+  for (let key in obj) {
+    Object.defineProperty(obj, key, {
+      set(newVal) {
+        if (this.value !== newVal) {
+          this.value = newVal;
+          fn.call(obj, key);
+        }
+      },
+      get() {
+        return this.value;
+      }
+    })
+  }
+}
+
+
+
+```
 - 实现数组的flat函数（数组拍平）
 ``` 
 
@@ -145,7 +183,36 @@ function instanceOf(left, right) {
 
 ```
 - Array.isArray实现
+``` 
+
+Array.isArray = function(obj){
+    return Object.prototype.toString.call(obj) == "[object Array]"
+}
+
+```
 - getOwnPropertyNames 实现
+``` 
+// 不能拿到不可枚举的属性
+
+if (typeof Object.getOwnPropertyNames !== 'function') {
+  Object.getOwnPropertyNames = function(o) {
+    if (o !== Object(o)) {
+      throw TypeError('Object.getOwnPropertyNames called on non-object');
+    }
+    var props = [],
+      p;
+    for (p in o) {
+      if (Object.prototype.hasOwnProperty.call(o, p)) {
+        props.push(p);
+      }
+    }
+    return props;
+  };
+}
+
+
+
+```
 - 使用setTimeout实现setInterval
 
 ``` 
@@ -157,8 +224,7 @@ setTimeout (function () {
 
 
 ```
-- 实现一个基本的Event Bus
-- 如何实现一个事件的发布订阅
+- 实现一个基本的Event Bus，如何实现一个事件的发布订阅
 - 实现一个双向数据绑定
 
 ```
@@ -184,12 +250,6 @@ input.addEventListener('keyup', function(e) {
   obj.text = e.target.value
 })
 
-
-```
-- 实现一个简单路由
-
-``` 
-todo
 
 ```
 
@@ -223,6 +283,7 @@ xhr.send(null)
 todo
 
 ```
+
 - 手写一个防抖/节流函数
 
 ``` 
@@ -299,11 +360,33 @@ document.body.insertBefore(script, document.body.firstChild);
 
 - Object.create 的基本实现
 ``` 
-
+_create = function (o) {
+    let F = function () {}
+    F.prototype = o
+    return new F()
+}
 
 ```
 
 - 实现instance of
+```  
+
+function new_instance_of(leftVaule, rightVaule) { 
+    let rightProto = rightVaule.prototype; // 取右表达式的 prototype 值
+    leftVaule = leftVaule.__proto__; // 取左表达式的__proto__值
+    while (true) {
+    	if (leftVaule === null) {
+            return false;	
+        }
+        if (leftVaule === rightProto) {
+            return true;	
+        } 
+        leftVaule = leftVaule.__proto__ 
+    }
+}
+
+
+```
 - 实现promise.all
 
 ``` 
@@ -331,6 +414,23 @@ const myPromiseAll = (arr)=>{
 
 ```
 - 实现一个JS函数柯里化，函数柯里化使用场景
+``` 
+function multi() {
+    var args = Array.prototype.slice.call(arguments);
+	var fn = function() {
+		var newArgs = args.concat(Array.prototype.slice.call(arguments));
+        return multi.apply(this, newArgs);
+    }
+    fn.toString = function() {
+        return args.reduce(function(a, b) {
+            return a * b;
+        })
+    }
+    return fn;
+}
+
+
+```
 
 - 手写代码实现一下Array.prototype.trim这个函数，并写个测试用例跑给我看下
 ``` 
@@ -339,9 +439,108 @@ String.prototype.trim = function () {
 　　}
 
 ```
+- 写一个方法遍历所有文档树所有节点(考察递归)；
+``` 
+function traversal(node){
+    if(node&&node.nodeType === 1){
+    console.log(node);
+    }
+    let tempNode;
+    for(let i=0; i<node.childNodes; i++){
+        tempNode = node.childNodes[i];
+        if(tempNode.nodeType === 1){
+            traversal(tempNode)
+         }
+    }
+}
 
+```
+- 实现一个print函数，需要具备以下功能（其实就是实现一个简单的模板引擎）
+``` 
+let str = 'My name is ${name}, I am from ${city}',
+info = {
+   name: 'AaDerBrane',
+   city: 'GungZhou'
+};
+console.log(printf(str, info));
+// My name is AaDerBrane, I am from GuangZhou
+function printf(str, info) {}
+
+答案：
+function render(template, data) {
+  return template.replace(new RegExp('{{(.*?)}}', 'g'), (match, key) => data[key.trim()]);
+}
+
+```
+
+- 实现一个简单的虚拟 DOM 渲染
+``` 
+let domNode = {
+  tagName: 'ul',
+  props: { class: 'list' },
+  children: [{
+    tagName: 'li',
+    children: ['item1']
+  }, {
+    tagName: 'li',
+    children: ['item1']
+  }]
+};
+
+// 构建一个 render 函数，将 domNode 对象渲染为 以下 dom
+<ul class="list">
+    <li>item1</li>
+    <li>item2</li>
+</ul>
+
+答案：
+function render(domNode) {
+  if (!domNode) return document.createDocumentFragment();
+  let $el
+  if (typeof domNode === 'object') {
+    $el = document.createElement(domNode.tagName);
+
+    if (domNode.hasOwnProperty('props')) {
+      for (let key in domNode.props) {
+        $el.setAttribute(key, domNode.props[key]);
+      }
+    }
+
+    if (domNode.hasOwnProperty('children')) {
+      domNode.children.forEach(val => {
+        const $childEl = render(val);
+        $el.appendChild($childEl);
+      })
+    }
+  } else {
+    $el = document.createTextNode(domNode);
+  }
+
+  return $el;
+}
+
+
+
+
+
+```
+- 手写dom的深度遍历
+- 实现一个类，可以on,emit,off,once，注册、调用、取消、注册仅能使用一次的事件
+- 最常见是在Array、String prototype 上写一个函数。比如 'abcd'.f() => 'd-c-b-a'
+``` 
+String.prototype.f = function(){
+    let str;
+    for(let i=this.length; i>0; i--){
+        str + = this[i]
+    }
+    return str.join('-');
+}
+
+```
+- 手写 Proxy / Object.defineProperty
+- 写一个函数，可以控制最大并发数
 - 自己实现一个event类
-- 实现 memorize once 高阶函数
+
 - sum(2, 3)实现sum(2)(3)的效果
 - 实现Object.assign()函数
 - async/await 实现
@@ -357,7 +556,6 @@ String.prototype.trim = function () {
 3. Thunk函数实现（结合Generator实现异步）
 4. async实现原理（spawn函数）
 - 手写实现inherit函数
-- 手写一个throttle
 - 手写实现以下事件委托函数 function delegate(parent, selector, handle) {}
 - 实现promise.all的polyfill
 - 实现promise.all
@@ -465,6 +663,7 @@ function promisify(fn,context){
 - 手撕代码--图片懒加载实现（JS原生）
 - cookie封装
 - 实现一个循环监听
+- 实现 memorize once 高阶函数
 - 如果我需要设计一个拖拽的dialog，怎么实现？手写代码
 - 原生js实现filter函数。
 ``` 
@@ -663,7 +862,6 @@ Student继承与Person
 
 ```
 
-- 前端路由实现（JS原生）
 - 让spacify（）能接受多个参数，例如spacify（‘hello’，‘world’，‘d’）；
 - 实现log函数
 ``` 
@@ -726,3 +924,66 @@ function LazyMan(name){
 
 ```
 - 写一个cookie并定义过期时间为一天
+
+- 给定一棵树，请你输出所有从根节点到叶子节点的路径组成的数字之和
+``` 
+let tree = {
+      val: 1,
+      left: {
+          val: 2,
+          left: {
+              val: 4,
+              left: null,
+              right: null
+          },
+          right: {
+              val: 5,
+              left: null,
+              right: null
+          }
+      },
+      right: {
+          val: 3,
+          left: null,
+          right: null
+      }
+  }
+
+// 例如以上的树，总共有从根节点到叶子节点的路径3条，分别为：1->2->4,1->2->5,1->3
+// 则计算方法为：124+125+13=262
+
+
+```
+
+- 代码实现题Url参数转换为对象
+``` 
+题目：
+let urlStr = 'http://www.inode.club?name=koala&study=js&study=node';
+转换结果如下:
+{ name: 'koala', study: [ 'js', 'node' ] }
+
+答案：
+// 参数转成对象
+function queryString(request){
+    let params = request.split('?')[1];
+    let param = params.split('&');
+    let obj = {};
+    for (let i = 0;i<param.length;i++){
+        let paramsA = param[i].split('=');
+        let key = paramsA[0];
+        let value = paramsA[1];
+        if(obj[key]){
+            obj[key] = Array.isArray(obj[key])?obj[key]:[obj[key]];
+            obj[key].push(value);
+        }else{
+            obj[key] = value;
+        }
+    }
+    return obj;
+}
+console.log(queryString(urlStr));
+
+```
+
+
+

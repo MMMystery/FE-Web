@@ -73,12 +73,12 @@ element diff
 
 前端路由实现起来其实很简单，本质就是监听 URL 的变化，然后匹配路由规则，显示相应的页面，并且无须刷新。目前单页面使用的路由就只有两种实现方式
 
-hashHistory 模式
+hashHistory 模式（Hash路由）
 老浏览器的history: 主要通过hash来实现，对应createHashHistory
 createHashHistory: location.hash=*** location.replace()
 
 
-browserHistory 模式 （路径是真实的URL，会发送request，所以需要服务器端做特殊配置）
+browserHistory 模式（Browser路由） （路径是真实的URL，会发送request，所以需要服务器端做特殊配置）
 高版本浏览器: 通过html5里面的history，对应createBrowserHistory
 createBrowserHistory: pushState、replaceState
 
@@ -527,3 +527,14 @@ serve -s build
 - Redux有没有做过封装
 - react的redux是什么设计模式，react这里用了什么设计模式
 - 高阶组件和mixin的区别
+- 你们 abort 机制怎么设计的，了解过原理吗
+
+- react数据通信方式
+``` 
+React
+
+父子组件,父->子直接用Props,子->父用callback回调
+非父子组件,用发布订阅模式的Event模块
+项目复杂的话用Redux、Mobx等全局状态管理管库
+用新的Context Api
+```

@@ -131,7 +131,6 @@ HTML文档在解析的过程当中，如果遇到link标签，则会立即发起
 
 - Label的作用是什么？是怎么用的？
 ``` 
-
 label标签来定义表单控制间的关系,当用户选择该标签时，浏览器会自动将焦点转到和标签相关的表单控件上。
 
 <label for="Name">Number:</label>
@@ -141,9 +140,51 @@ label标签来定义表单控制间的关系,当用户选择该标签时，浏�
 
 ```
 - 实现页面加载进度条
-- script标签属性
+
 - HTML中attribute和property的区别是什么？
+``` 
+<input id="the-input" type="typo" value="Name:" /> // 在页面加载后,我们在这个input中输入 "Jack"
+
+attribute 是我们在 html 代码中经常看到的键值对
+
+// attribute still remains the original value
+input.getAttribute('id') // the-input
+input.getAttribute('type') // typo
+input.getAttribute('value') // Name:
+
+
+property 是 attribute 对应的 DOM 节点的 对象属性 (Object field)
+// property is a different story
+input.id // the-input
+input.type //  text
+input.value // Jack
+
+
+attribute 会始终保持 html 代码中的初始值, 而 Property 是有可能变化的
+
+```
+
 - html一个标签input的type属性，要求十个
+``` 
+text
+button
+checkbox
+radio
+file
+email
+number
+time
+color
+week
+url
+image
+password
+submit
+
+```
+
+
+
 - src和href的区别
 
 ``` 
@@ -154,3 +195,24 @@ href是指网络资源所在位置，建立和当前元素（锚点）或当前�
 
 
 - 重绘重排的原理，如果DOM下100个节点更新那会重排100次吗？
+
+``` 
+重排触发情况：
+
+添加或删除可见的DOM元素
+元素位置改变
+元素本身的尺寸发生改变
+内容改变
+页面渲染器初始化
+浏览器窗口大小发生改变
+
+如果是每次都是单独设值的方式是会的，可以改为成一个对象一次性修改，减少重排次数。
+
+现在可以用虚拟dom比较一次性进行更新替换。
+
+另外的优化方案：
+利用DocumentFragment对象：DocumentFragment对象不包含在真实的文档流之中，因此对其修改不会触发热reflow和repaint。DocumentFragment对象是一个无父节点的最小化文档对象，是一个轻量级的存储一段包含多个节点的文档结构。当将该对象插入DOM树时，其通常会将其子孙节点一并插入。可以使用createDocumentFragment创建该对象，然后使用appendChild等方法插入到DOM树。
+
+
+
+```

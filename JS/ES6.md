@@ -209,6 +209,12 @@ ES6 模块化
 - 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
 - Promise和Async处理失败的时候有什么区别
 - Async/await promise 和 generator区别。
+``` 
+Async/await是一个语法糖，内部实现还是generator + yield
+async function 代替了 function*，await 代替了 yield
+
+
+```
 -写一个封装函数控制1000s访问一次，然后最多5次，直至拿到结果。
 - 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
 - 三个异步函数怎么知道彼此已经结束。不用promise.all
@@ -301,7 +307,20 @@ console.log(k.next());//{value: undefined, done: true}
 - Proxy
 - Reflect
 - Iterator 和 for...of 循环
+
 - ArrayBuffer
+```
+ArrayBuffer是一(大)块内存，但不能直接访问ArrayBuffer里面的字节。要访问ArrayBuffer，需要用到 Typed Array。
+
+（1）ArrayBuffer对象：代表内存之中的一段二进制数据，可以通过“视图”进行操作。“视图”部署了数组接口，这意味着，可以用数组的方法操作内存。
+
+（2）TypedArray视图：共包括9种类型的视图，比如Uint8Array（无符号8位整数）数组视图, Int16Array（16位整数）数组视图, Float32Array（32位浮点数）数组视图等等。
+
+（3）DataView视图：可以自定义复合格式的视图，比如第一个字节是Uint8（无符号8位整数）、第二、三个字节是Int16（16位整数）、第四个字节开始是Float32（32位浮点数）等等，此外还可以自定义字节序。
+
+简单说，ArrayBuffer对象代表原始的二进制数据，TypedArray视图用来读写简单类型的二进制数据，DataView视图用来读写复杂类型的二进制数据。
+
+```
 - Decorator(装饰器)
 ``` 
 装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数
