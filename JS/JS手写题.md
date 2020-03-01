@@ -524,6 +524,19 @@ function render(domNode) {
 
 
 ```
+- 手写代码，实现原型式继承（看红宝书）
+- 手写代码，实现借用构造函数（看红宝书）
+- 编写一个函数将dom列表子元素顺序反转
+``` 
+let frag = document.creatDocumentFragment();
+for(let i=target.children.length - 1; i--){
+    frag.appendChild(target.children[i])
+}
+target.appendChild(frag)
+
+```
+- 手写once函数，传入函数参数只执行一次（闭包）
+- 手写代码，不产生新数组，删除数组里的重复元素（排序， splice() ）
 - 手写dom的深度遍历
 - 实现一个类，可以on,emit,off,once，注册、调用、取消、注册仅能使用一次的事件
 - 最常见是在Array、String prototype 上写一个函数。比如 'abcd'.f() => 'd-c-b-a'
@@ -540,7 +553,8 @@ String.prototype.f = function(){
 - 手写 Proxy / Object.defineProperty
 - 写一个函数，可以控制最大并发数
 - 自己实现一个event类
-
+- 设计一个栈，不使用数组
+- 实现 memorize once 高阶函数
 - sum(2, 3)实现sum(2)(3)的效果
 - 实现Object.assign()函数
 - async/await 实现
@@ -851,8 +865,10 @@ String.prototype.duplicate = function() {
     return this+this;   
 }
 ```
--假设现在要实现一个点击发送短信验证码的功能，如何实现它的倒计时？
+- 假设现在要实现一个点击发送短信验证码的功能，如何实现它的倒计时？
 - 没有后台服务器和不能Date返回的时间有误的情况下如何获得当前的本地时间？
+
+
 - 手写一个继承
 ``` 
 父类Person, 拥有属性lastname, 方法hello
@@ -863,6 +879,20 @@ Student继承与Person
 ```
 
 - 让spacify（）能接受多个参数，例如spacify（‘hello’，‘world’，‘d’）；
+``` 
+使用arguments，它是一个类数组对象，其中包含了传递给函数的所有参数。
+
+function containsAll(haystack) {
+  for (var i = 1; i < arguments.length; i++) {
+    var needle = arguments[i];
+    if (haystack.indexOf(needle) === -1) {
+      return false;
+    }
+  }
+  return true;
+}
+
+```
 - 实现log函数
 ``` 
 function log(...args){
@@ -955,6 +985,7 @@ let tree = {
 
 ```
 
+- 获取URL上的值
 - 代码实现题Url参数转换为对象
 ``` 
 题目：

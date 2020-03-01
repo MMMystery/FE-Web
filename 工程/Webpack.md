@@ -255,11 +255,9 @@ babel-core：babel转译器本身，提供了babel的转译API，如babel.transf
 ```
 - async 经过 babel 处理后的代码看过吗
 ``` 
-async是ES7出的语法糖，转换后肯定就是generator。
+async是ES7出的语法糖，转换后肯定就是generator和promises后
 
 ```
-
-
 
 
 - 假如有2个团队，一个团队想用另一个团队的一个类库，并且还是想在用到的时候才加进来，怎么办？

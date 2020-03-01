@@ -306,6 +306,10 @@ console.log(k.next());//{value: undefined, done: true}
 - Set 和 Map 数据结构
 - Proxy
 - Reflect
+``` 
+Reflect 是一个内置的对象，它提供拦截 JavaScript 操作的方法。
+与大多数全局对象不同，Reflect不是一个构造函数。你不能将其与一个new运算符一起使用，或者将Reflect对象作为一个函数来调用。Reflect的所有属性和方法都是静态的（就像Math对象）。
+```
 - Iterator 和 for...of 循环
 
 - ArrayBuffer
