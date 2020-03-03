@@ -242,7 +242,7 @@ SplitChunksPlugin，并通过内置的optimization配置段进行配置
 - babel 原理
 - babel 怎么转化 class extend 的
 - babel 怎么配置
-- babel编译原理，抽象语法树，babel把ES6转成ES5或者ES3之类的原理是什么，有没有去研究。
+- babel 编译原理，抽象语法树，babel把ES6转成ES5或者ES3之类的原理是什么，有没有去研究。
 
 ```
 babel-core：babel转译器本身，提供了babel的转译API，如babel.transform等，用于对代码进行转译。
@@ -253,6 +253,7 @@ babel-core：babel转译器本身，提供了babel的转译API，如babel.transf
 ->babel-generator 根据AST转换成 ES5
 
 ```
+- babel的stage-1，stage-2，stage-3？
 - async 经过 babel 处理后的代码看过吗
 ``` 
 async是ES7出的语法糖，转换后肯定就是generator和promises后
@@ -295,7 +296,7 @@ optimization.minimizer可以配置你自己的压缩程序
 
 - webpack4.0，5.0做了什么更新
 
-webpack的loader和plugin的原理
+- webpack的loader和plugin的原理
 ``` 
 
 
@@ -332,6 +333,7 @@ SCSS 源代码会先交给 sass-loader 把 SCSS 转换成 CSS；
 - 实现webpack的vconsole的插件
 - 写过 webpack 插件吗？知道 webpack 插件的组成吗？
 - 如何编写loaders和plugins
+- 自己写过什么loader和plugins？
 
 
 
@@ -339,7 +341,17 @@ SCSS 源代码会先交给 sass-loader 把 SCSS 转换成 CSS；
 
 
 
-- webpack 打包优化
+- 使用 Webpack 优化项目
+``` 
+loader
+dll
+happypack
+压缩代码
+tree shaking树摇
+scope hoisting
+code splitting代码分割
+
+```
 - 最后可以在聊聊webpack的优化，例如babel-loader的优化，gzip压缩等等
 - webpack配置用到webpack.optimize.UglifyJsPlugin这个插件，有没有觉得压缩速度很慢，有什么办法提升速度
 - 描述一下npm run dev / npm run build执行的是哪些文件
@@ -365,7 +377,7 @@ webpack 递归地构建一个依赖图，这个依赖图包含着应用程序所
 }
 ```
 说说hash、chunkhash和contenthash的区别？
-- babel的stage-1，stage-2，stage-3？
+
 - webpack.then原理
 - require懒加载
 - max-chunk啥的

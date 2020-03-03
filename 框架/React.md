@@ -215,7 +215,7 @@ Hooks还有的好处：
 useState()
 useContext()
 useReducer()
-useEffect()
+useEffect() // 怎么保证是在Didmount之后使用？
 
 ```
 - React Hooks当中的useEffect是如何区分生命周期钩子的
@@ -515,7 +515,7 @@ serve -s build
  容器组件会为展示组件或者其它容器组件提供数据和行为(behavior)，它们会调用 Flux actions，并将其作为回调提供给展示组件。容器组件经常是有状态的，因为它们是(其它组件的)数据源。
 
 ```
--手写实现 React 高阶组件
+- 手写一个 React 高阶组件
 - forceUpdate经历了哪些生命周期，子组件呢?
 - vue和react谈谈区别和选型考虑
 - Flux架构模式

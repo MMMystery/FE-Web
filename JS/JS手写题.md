@@ -33,6 +33,21 @@ function person(name, age) {
 let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 
 
+
+// 第二版的代码
+function objectFactory() {
+
+    var obj = new Object(),
+
+    Constructor = [].shift.call(arguments);
+
+    obj.__proto__ = Constructor.prototype;
+
+    var ret = Constructor.apply(obj, arguments);
+
+    return typeof ret === 'object' ? ret : obj;
+
+};
 ```
 
 - 实现promise
@@ -620,17 +635,20 @@ Promise.race = function(arr) {
 
 - 实现promise.retry
 ``` 
-Promise.retry = function(fn, times, delay) {
-  return new Promise(function(resolve, reject){
+Promise.retry = (fn, times, delay) => {
+  return new Promise((resolve, reject)=>{
       var error;
-      var attempt = function() {
+      var attempt = () => {
           if (times == 0) {
               reject(error);
           } else {
-              fn().then(resolve).catch(function(e){
+              fn().then(resolve).catch((e) => {
                       times--;
                       error = e;
-                      setTimeout(function(){attempt()}, delay);
+                      setTimeout(()=>
+                        {
+                            attempt()  
+                        }, delay);
                   });
           }
       };
@@ -670,7 +688,6 @@ function promisify(fn,context){
 - 手写reduce或者filter的polyfill
 - 手写parseInt的实现
 - 自己实现一个event类
-- 自己实现new函数
 - 用reduce实现map的功能
 - 手写indexOf的实现
 - 手撕代码--前端路由实现（JS原生）
