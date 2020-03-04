@@ -32,8 +32,6 @@ function person(name, age) {
 }
 let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 
-
-
 // 第二版的代码
 function objectFactory() {
 
@@ -49,7 +47,17 @@ function objectFactory() {
 
 };
 ```
+- 实现原型链继承
+``` 
+function myExtend(C, P) {
+    var F = function(){};
+    F.prototype = P.prototype;
+    C.prototype = new F();
+    C.prototype.constructor = C;
+    C.super = P.prototype;
+}
 
+```
 - 实现promise
 ``` 
 
@@ -60,20 +68,24 @@ function objectFactory() {
 
 - 写一个函数，每隔1000ms发送一次请求，如果promise未正确返回则继续发送，最多5次。
 - 用call或者apply实现bind。
-- call、apply、bind 实现
+- call、apply、bind 实现。
 
 ```  
+fun.call(thisArg, param1, param2, ...)
+fun.apply(thisArg, [param1,param2,...])
+fun.bind(thisArg, param1, param2, ...)
+
 call
 // 思路：将要改变this指向的方法挂到目标this上执行并返回
 Function.prototype.mycall = function (context) {
-  if (typeof this !== 'function') {
+  if (typeof this !== 'function') {  // 检查调用call的对象是否为函数，不是函数就跑出
     throw new TypeError('not funciton')
   }
   context = context || window
-  context.fn = this
-  let arg = [...arguments].slice(1)
-  let result = context.fn(...arg)
-  delete context.fn
+  context.fn = this //给context添加一个方法 指向this
+  let arg = [...arguments].slice(1) // arguments是类数组，所以[...xxx]把类数组变成数组，去除第一位，剩余的参数然后转为数组
+  let result = context.fn(...arg) //解构数组，执行fn
+  delete context.fn //删除方法
   return result
 } 
 
@@ -88,8 +100,8 @@ Function.prototype.myapply = function (context) {
   context = context || window
   context.fn = this
   let result
-  if (arguments[1]) {
-    result = context.fn(...arguments[1])
+  if (arguments[1]) { // 判断第二个参数是否存在，转换为数组
+    result = context.fn(...arguments[1]) 解构数组，执行fn
   } else {
     result = context.fn()
   }
@@ -109,8 +121,8 @@ Function.prototype.mybind = function (context) {
   let arg = [...arguments].slice(1)
   return function F() {
     // 处理函数使用new的情况
-    if (this instanceof F) {
-      return new _this(...arg, ...arguments)
+    if (this instanceof F) { 
+      return new _this(...arg, ...arguments)  // 若是用new操作符调用,则直接用new 调用原函数,并用扩展运算符传递参数
     } else {
       return _this.apply(context, arg.concat(...arguments))
     }
@@ -160,28 +172,33 @@ function bindData(obj, fn) {
 
 - 实现在原型链上重写 flat 函数 （链接：https://juejin.im/post/5dff18a4e51d455804256d31#heading-15）
 ``` 
-Array.prototype.fakeFlat = function(num = 3) {
-  if (!Number(num) || Number(num) < 0) {
-    return this;
-  }
-  let arr = this.concat();    // 获得调用 fakeFlat 函数的数组
-  while (num > 0) {           
-    if (arr.some(x => Array.isArray(x))) {
-      arr = [].concat.apply([], arr);	// 数组中还有数组元素的话并且 num > 0，继续展开一层数组 
-    } else {
-      break; // 数组中没有数组元素并且不管 num 是否依旧大于 0，停止循环。
+Array.prototype.myFlat = function(num = 1) {
+  if (Array.isArray(this)) {
+    let arr = [];
+    if (!Number(num) || Number(num) < 0) {
+      return this;
     }
-    num--;
+    this.forEach(item => {
+      if(Array.isArray(item)){
+        let count = num
+        arr = arr.concat(item.myFlat(--count))
+      } else {
+        arr.push(item)
+      }  
+    });
+    return arr;
+  } else {
+    throw tihs + ".flat is not a function";
   }
-  return arr;
 };
 const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
-arr.fakeFlat(arr)
+arr.myFlat(arr)
 
 ```
 - instanceof 实现
 ```  
-// 思路：右边变量的原型存在于左边变量的原型链上
+// 思路：判断右边变量的原型是否存在于左边变量的原型链上
+
 function instanceOf(left, right) {
   let leftValue = left.__proto__
   let rightValue = right.prototype

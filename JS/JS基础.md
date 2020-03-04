@@ -40,15 +40,15 @@ Array.isArray(a)
 var arr = [1,2,3];
 arr.constructor === Array // a实例所对应的构造函数是否为Array
 
-4.Object.prototype.toString.call()  （这种方式最精准）
+4.Object.prototype.toString.call(obj)  （这种方式最精准）// “[object Number]”
 
 ```
-- 判断一个对象是否是函数
-- 怎么判断对象类型？
+- 怎么判断对象类型？判断一个对象是否是函数
 ``` 
+typeof操作符
 instanceof
 利用构造函数constructor 
-Object.prototype.toString.call()
+Object.prototype.toString.call() // “[object Number]”
 
 ```
 - js继承的几种实现方式
@@ -67,10 +67,6 @@ var s = new Son('son');
 console.log(s.name); // son
 console.log(s instanceof Father); // true
 console.log(s instanceof Son); // true
-
-
-
-
 
 
 - 组合继承和寄生组合继承的优缺点
@@ -595,19 +591,21 @@ Number.isNaN() 可以检测
 ``` 
 总之三种方法都是改变函数内this的指向
 
-1.fn.call (context, arg1, arg2, .....)
+1.fn.call (context, arg1, arg2, .....) 
 
-call中第一个参数是fn的上下文，剩下的参数就是需要向fn中传递的参数
+call中第一个参数是上下文，剩下的参数就是需要向fn中传递的参数,从第二个参数开始往后,每个参数被依次传入函数
 
 2.fn.apply (context, [args])
 
-apply同call类似，第一个参数也是fn的上下文，和call不同的是，apply第二个参数是数组，call的第二个及第二个以后的参数都是数组里面的元素
+apply同call类似，第一个参数也是fn的上下文，和call不同的是，apply第二个参数是数组或者类数组
 
 3.fn.bind (context)
 
 bind会创建一个函数，称之为绑定函数，调用这个函数时，绑定函数会以创建它是bind方法传入的第一个参数作为自己的上下文，第二个及第二个以后的参数并且加上绑定函数运行时传递进来的参数作为原函数的参数来调用原函数。 （有点绕哈，不过对下一道题有帮助）
 
+
 4.call、apply、bind最大的区别就是bind不会立即调用，会返回一个函数，apply、call会立即调用。
+call和apply改变了函数的this上下文后便执行该函数,而bind则是返回改变了上下文后的一个函数。
 
 ```
 
