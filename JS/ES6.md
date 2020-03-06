@@ -131,6 +131,7 @@ Promise.reject 返回一个rejected状态的promise对象
 Promise.all 接收一个promise对象数组为参数，只有全部为resolve才会调用 通常会用来处理 多个并行异步操作
 Promise.race 接收一个promise对象数组为参数，只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理。
 ```
+- promise原理
 
 - 用promise 实现genetator
 
