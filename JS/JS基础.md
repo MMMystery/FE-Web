@@ -91,7 +91,6 @@ typeof NaN => number
 NaN == undefined => false
 NaN == NaN => false
 
-symbol是什么
 ```
 
 - js空值判断

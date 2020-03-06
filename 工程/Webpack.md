@@ -73,7 +73,7 @@ module.exports={
     HotModuleReplacementPlugin //热更新插件
     UglifyJsPlugin: JS的压缩混淆
     webpack-bundle-analyzer可视化分析包
-    使用CommonsChunkPlugin插件将react,,react-dom,react-router-dom包单独导出成vendor.js。（webpack4.0后已经直接改为使用optimization里配置即可）
+    使用CommonsChunkPlugin插件将react,react-dom,react-router-dom包单独导出成vendor.js。（webpack4.0后已经直接改为使用optimization里配置即可）
     
 
     

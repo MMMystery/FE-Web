@@ -860,7 +860,7 @@ transform:scale(0.8)进行缩放或者使用图片
   是给CSS属性添加浏览器私有前缀，实现跨浏览器兼容性的问题。
 
 ```
-- - less和sass区别
+- less和sass区别
 
 - retina屏幕兼容（用retina.js）
 ```
@@ -906,7 +906,8 @@ flex-basis用于设置各item项的伸缩基准值，可以取值为长度或百
 
 ```
 - grid布局
-- 栅格实现：flex，grid
+
+
 - outline和border的区别
 ```
 而 outline 是针对链接、表单控件和ImageMap等元素设计，outline 的效果将随元素的 focus 而自动出现，相应的由 blur 而自动消失。
