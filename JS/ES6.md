@@ -131,6 +131,7 @@ Promise.reject 返回一个rejected状态的promise对象
 Promise.all 接收一个promise对象数组为参数，只有全部为resolve才会调用 通常会用来处理 多个并行异步操作
 Promise.race 接收一个promise对象数组为参数，只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理。
 ```
+- promise原理
 
 - 用promise 实现genetator
 
@@ -201,7 +202,7 @@ ES6 模块化
 1，设计思想：静态化
 2，在编译时就能确定模块的依赖关系，以及输入和输出的变量
 ```
-- promise是怎么实现的,原理
+- promise是怎么实现的原理
 - Promise.then里抛出的错误能否被try...catch捕获，为什么
 - Proxy对象能拦截什么
 - promise相关。resolve，reject，then，all，race了解过吗？
