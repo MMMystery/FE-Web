@@ -54,3 +54,17 @@ function inCircle(cx,cy,x,y,r){
 
 ```
 
+- 输出
+``` 
+var a = {n: 1};
+var b = a;
+a.x = a = {n: 2};
+
+console.log(a.x) 	// undefined 
+console.log(b.x)   // {n:2}
+
+尽管赋值是从右到左的没错，但是.的优先级比=要高，所以这里首先执行a.x，相当于为a（或者b）所指向的{n:1}对象新增了一个属性x，即此时对象将变为{n:1;x:undefined}。
+
+
+```
+

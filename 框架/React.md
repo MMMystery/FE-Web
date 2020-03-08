@@ -260,8 +260,29 @@ react的 Virtual Dom模型
 
 ```
 高阶组件(Higher Order Componennt)本身其实不是组件，而是一个函数，这个函数接收一个元组件作为参数，然后返回一个新的增强组件，高阶组件的出现本身也是为了逻辑复用
+const EnhancedComponent = higherOrderComponent(WrappedComponent) 
 
 里层原理，如何实现
+
+在高阶组件内，应避免对组件做任何修改。应使用组合技术，将输入的组件包裹到一个容器组件中。
+function logProps(WrappedComponent) {
+  return class extends React.Component {
+    componentWillReceiveProps(nextProps) {
+      console.log('Current props: ', this.props);
+      console.log('Next props: ', nextProps);
+    }
+    render() {
+      // 用容器包裹输入组件，不要修改它
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+}
+
+
+作者：Vanessa
+链接：https://hacpai.com/article/1552450398648
+来源：黑客派
+协议：CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
 ```
 - react如何提高性能
 
@@ -313,7 +334,12 @@ setState就是更新状态啊
 ```  
 部分 UI 的 JavaScript 错误不应该导致整个应用崩溃，为了解决这个问题，React 16 引入了一个新的概念 —— 错误边界。
 
-错误边界是一种 React 组件，这种组件可以捕获并打印发生在其子组件树任何位置的 JavaScript 错误，并且，它会渲染出备用 UI，而不是渲染那些崩溃了的子组件树。
+错误边界是 React 捕获子组件树中所有 JavaScript 错误的组件，他可以记录这些错误，并将错误显示在 UI 上来替代组件树的崩溃。
+
+如果类组件定义了一个名为 componentDidCatch 的新生命周期方法，那么他将成为错误边界。
+
+
+后面改用 static getDerivedStateFromError() 来代替了。
 
 ```
 - 什么是 Fragments
@@ -340,19 +366,35 @@ setState就是更新状态啊
 什么是传送门(react Portals)
 
 ```  
-使得组件可以脱离父组件层级挂载在DOM树的任何位置
+Portals 提供了一种很好的将子节点渲染到父组件外部 DOM 层级中的 DOM 节点中的方式。
+
+ReactDOM.createPortal(child, container) 
+第一个参数（child）是任意可渲染的 React 子元素，例如一个元素，字符串或片断。第二个参数（container）是一个 DOM 元素。
 
 render() {
-  // React does *not* create a new div. It renders the children into `domNode`.
-  // `domNode` is any valid DOM node, regardless of its location in the DOM.
+  // React 不会创建新的 div。他渲染子元素到 `domNode` 中。
+  // `domNode` 可以是任意有效的 DOM 节点，无论他在 DOM 中的位置如何。
   return ReactDOM.createPortal(
     this.props.children,
-    domNode
+    domNode,
   );
 }
 
+
+作者：Vanessa
+链接：https://hacpai.com/article/1552611002890
+来源：黑客派
+协议：CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
+
 ```
-什么是 Context
+- 什么是 Context
+``` 
+Context 提供了一种通过 React 组件树传递数据的方法，他不需要手动传递属性。
+Context 主要为解决 React 组件树中被认为全局数据的共享。
+使用 Context，可以跨越组件进行数据的传递
+
+```
+
 
 如何在重新加载页面时保留数据
 ``` 
@@ -367,8 +409,16 @@ render() {
 
 ```
 
+- 状态提升在 React 中的作用
+``` 
+当多个组件需要共享一些相同的数据时，建议将共享的状态提升到离这些组件最近的共同祖先上。 例如，如果两个子组件共享了一些相同的数据，那么就建议将共享的状态移至他们的父组件，而不是在两个子组件中使用本地状态进行维护。
 
-
+```
+- React 和 HTML 的事件处理有什么不同？
+``` 
+在 HTML 中，事件名称使用小写，而 React 中使用驼峰命名。
+React 中的事件机制分为两个阶段：事件注册、事件分发。所有的事件都会注册到 document 上，然后使用统一的回调函数 dispatchEvent 来执行分发。
+```
 - 什么是Redux及其工作原理
 
 - redux中的reducer（纯函数）
@@ -505,7 +555,7 @@ serve -s build
 - React componentWillMount 做 setState 会干嘛
 - react在更新了页面的时候，怎么实现将虚拟的DOMjs对象转到真正的DOM上面去呢
 - Class的Constructor调用Super,Class和以前的创建对象方式有啥不同
-- react suspense
+- react suspense 
 - render phase && commit phase
 - 展示组件(Presentational component)和容器组件(Container component)之间有何不同
 ``` 
@@ -537,4 +587,38 @@ React
 非父子组件,用发布订阅模式的Event模块
 项目复杂的话用Redux、Mobx等全局状态管理管库
 用新的Context Api
+```
+
+- 介绍 React 中的 Refs 及其使用场景？
+``` 
+Refs 是使用 React.createRef() 方法创建的，他通过 ref 属性附加到 React 元素上。要在整个组件中使用 Refs，需要将 ref 在构造函数中分配给其实例属性
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props)
+    this.myRef = React.createRef()
+  }
+
+  render() {
+    return <div ref={this.myRef} />
+  }
+} 
+
+由于函数组件没有实例，因此不能在函数组件上直接使用 ref。可以通过再申明一下实例来处理
+
+```
+- React 中如何使用 prop 检查？
+``` 
+import PropTypes from "prop-types"
+
+class User extends React.Component {
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    age: PropTypes.number.isRequired
+  }
+}
+
+使用 propTypes 并不是必需的，但这是一个非常棒的减少错误的实践
+使用 PropTypes.element 可以指定只传递一个子代
+defaultProps 用来确保 this.props 在父组件没有指定的情况下有一个初始值。类型检查发生在 defaultProps 赋值之后，所以类型检查也会应用在 defaultProps 上。
+
 ```

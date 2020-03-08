@@ -60,7 +60,36 @@ function myExtend(C, P) {
 ```
 - 实现promise
 ``` 
+基础版本
+const PENDING = 'pending';
+    const FULFILLED = 'fulfilled';
+    const REJECTED = 'rejected';
 
+    function MyPromise(executor) {
+      this.state = PENDING;
+      this.value = null;
+      this.reason = null;
+
+      const resolve = (value) => {
+        if (this.state === PENDING) {
+          this.state = FULFILLED;
+          this.value = value;
+        }
+      }
+
+      const reject = (reason) => {
+        if (this.state === PENDING) {
+          this.state = REJECTED;
+          this.reason = reason;
+        }
+      }
+
+      try {
+        executor(resolve, reject);
+      } catch (reason) {
+        reject(reason);
+      }
+    }
 
 ```
 
@@ -447,21 +476,13 @@ const myPromiseAll = (arr)=>{
 ```
 - 实现一个JS函数柯里化，函数柯里化使用场景
 ``` 
-function multi() {
-    var args = Array.prototype.slice.call(arguments);
-	var fn = function() {
-		var newArgs = args.concat(Array.prototype.slice.call(arguments));
-        return multi.apply(this, newArgs);
+function currying(fn, ...args) {
+      if (args.length >= fn.length) {
+        return fn(...args);
+      } else {
+        return (...args2) => currying(fn, ...args, ...args2);
+      }
     }
-    fn.toString = function() {
-        return args.reduce(function(a, b) {
-            return a * b;
-        })
-    }
-    return fn;
-}
-
-
 ```
 
 - 手写代码实现一下Array.prototype.trim这个函数，并写个测试用例跑给我看下
@@ -816,8 +837,71 @@ class EventEmitter {
     }
 }
 ```
+- 使用reduce实现map
+``` 
 
+Array.prototype.reduceToMap = function (handler) {
+      return this.reduce((target, current, index) => {
+        target.push(handler.call(this, current, index))
+        return target;
+      }, [])
+    };
+```
+- 使用reduce实现filter
+``` 
+Array.prototype.reduceToFilter = function (handler) {
+      return this.reduce((target, current, index) => {
+        if (handler.call(this, current, index)) {
+          target.push(current);
+        }
+        return target;
+      }, [])
+    };
+
+```
 - js实现继承的几种方式
+```  
+有下面两个类，下面实现Man继承People
+function People() {
+      this.type = 'prople'
+    }
+
+    People.prototype.eat = function () {
+      console.log('吃东西啦');
+    }
+
+    function Man(name) {
+      this.name = name;
+      this.color = 'black';
+    }
+
+原型继承：
+Man.prototype = new People();
+
+构造继承：
+function Man(name) {
+      People.call(this);
+    }
+
+组合继承：
+function Man(name) {
+  People.call(this);
+}
+
+Man.prototype = People.prototype;
+
+寄生组合继承：
+function Man(name) {
+  People.call(this);
+}
+
+Man.prototype = Object.create(People.prototype, {
+  constructor: {
+    value: Man
+  }
+})
+
+```
 - 手写实现观察者模式
 - 写了一个curry函数，其实就是add(1,2,3) 改成 add(1)(2,3)
 - new Queue().task(1000,()=>console.log(1)).task(2000,()=>console.log(2)).task(3000,()=>console.log(3)).start()实现该函数，start()后等1秒输出1，再等2秒2，再等3秒3.
