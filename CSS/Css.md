@@ -1043,6 +1043,12 @@ flex: 1或者都设置33.33%都行
 - 手写css3动画实现从左到右移动30px
 - p元素嵌套div标签
 - css4新特性？
+``` 
+包含元素选择器 :has
+不包含元素选择器 :not
+块级样式scoped // 样式仅在内部生效
+calc函数
+```
 - css3 实现幻灯片
 - 背景色会覆盖border吗
 ```
@@ -1059,3 +1065,52 @@ background-clip: // 规定背景的绘制区域
 - 谈谈css预处理器机制
 - postcss配置
 - media-query用过吗？
+- css选择器“+”和“~”的区别
+```  
+最大的区别是’+’最多只能匹配到一个元素，而’~’是匹配同级所有。
+‘+’是指紧跟在后面的某同级元素
+‘~’是指某些同级元素
+
+```
+- 简述一下 `@media` 的媒体类型
+``` 
+@media 是可根据一个或多个基于媒体特征、媒体类型等条件来使用样式的规则。其包含以下四种媒体类型：
+
+all：适用于所有设备，默认选项
+print：仅适用于打印设备
+screen：仅适用于台式机、平板电脑、手机等屏幕
+speech：仅适用于屏幕阅读器
+```
+- 使用 flexbox，创建一个 3 列布局，其中每列占据容器的 col-{n} / 12 比率
+``` 
+<style lang="scss">
+.row {
+  display: flex;
+  &__col {
+    ...
+    &--2 {
+      flex: 2
+    }
+    &--7 {
+      flex: 7
+    }
+    &--3 {
+      flex: 3
+    }
+  }
+}
+</style>
+<div class="row">
+  <div class="row__col row__col--2"></div>
+  <div class="row__col row__col--7"></div>
+  <div class="row__col row__col--4"></div>
+</div>
+
+```
+- 修改样式<img src="1.jpg" style="width:480px!important;”>为300px
+```  
+ 1.css方法 max-width:300px;
+ 2.覆盖其样式； transform: scale(0.625)；按比例缩放图片； 
+ 3.js方法 document.getElementsByTagName("img")[0].setAttribute("style","width:300px!important;")
+
+```

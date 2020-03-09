@@ -18,6 +18,18 @@ let块级作用域，let 有暂时死区，不会被提升
 const arr = []
 arr.push(1)
 arr.push("2")
+
+
+ES6规定，var 命令和 function 命令声明的全局变量，依旧是顶层对象的属性，但 let命令、const命令、class命令声明的全局变量，不属于顶层对象的属性。
+let aa = 1;
+const bb = 2;
+
+console.log(window.aa); // undefined
+console.log(window.bb); // undefined
+
+只是一个块级作用域（Script）中，应该直接
+console.log(aa); // 1
+console.log(bb); // 2
 ```
 
 2.模板字符串
@@ -55,8 +67,21 @@ const team = {
 }
 console.log(team.teamSummary())
 
-键头函数的this指向和普通函数的区别？
-箭头函数特点，除了this
+
+键头函数的this指向和普通函数的区别？箭头函数有作用域吗？可以new吗？可以放argument吗？
+
+1、函数体内的 this 对象，就是定义时所在的对象，而不是使用时所在的对象。
+
+2、不可以使用 arguments 对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。
+
+3、不可以使用 yield 命令，因此箭头函数不能用作 Generator 函数。
+
+4、不可以使用 new 命令，因为：
+
+没有自己的 this，无法调用 call，apply。
+没有 prototype 属性 ，而 new 命令在执行时需要将构造函数的 prototype 赋值给新的对象的 __proto__
+
+、
 
 ```
 4.增强对象字面量
@@ -132,6 +157,11 @@ Promise.all 接收一个promise对象数组为参数，只有全部为resolve才
 Promise.race 接收一个promise对象数组为参数，只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理。
 ```
 - promise原理
+- Promise 构造函数是同步执行还是异步执行，那么 then 方法呢？
+```   
+promise构造函数是同步执行的，then方法是异步执行的
+
+```
 
 - 用promise 实现genetator
 
@@ -145,6 +175,35 @@ reject 是用来抛出异常的，catch 才是用来处理异常的
 - 模块化Commonjs,AMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义
 
 ``` 
+https://www.processon.com/view/link/5c8409bbe4b02b2ce492286a#map
+
+IIFE： 使用自执行函数来编写模块化，特点：在一个单独的函数作用域中执行代码，避免变量冲突。
+
+(function(){
+  return {
+	data:[]
+  }
+})()
+AMD： 使用requireJS 来编写模块化，特点：依赖必须提前声明好。
+
+define('./index.js',function(code){
+	// code 就是index.js 返回的内容
+})
+CMD： 使用seaJS 来编写模块化，特点：支持动态引入依赖文件。
+
+define(function(require, exports, module) {  
+  var indexCode = require('./index.js');
+});
+
+CommonJS： nodejs 中自带的模块化。
+
+var fs = require('fs');
+
+ES Modules： ES6 引入的模块化，支持import 来引入另一个 js 。
+
+import a from 'a';
+
+
 Commonjs
 
 暴露模块：module.exports = value或exports.xxx = value；
@@ -363,6 +422,25 @@ promise.catch(err => {
 - Promise.any()
 - Promise.reject()
 - Promise.allSettled()
+- 模拟实现一个 Promise.finally
+```  
+Promise.prototype.finally = function (callback) {
+  let P = this.constructor;
+  return this.then(
+    value  => P.resolve(callback()).then(() => value),
+    reason => P.resolve(callback()).then(() => { throw reason })
+  );
+};
+
+```
+- 设计并实现 Promise.race()
+```  
+Promise._race = promises => new Promise((resolve, reject) => {
+	promises.forEach(promise => {
+		promise.then(resolve, reject)
+	})
+})
+```
 
 - new Promise(() => {throw new Error()})能否抛出异常？  
 - 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch

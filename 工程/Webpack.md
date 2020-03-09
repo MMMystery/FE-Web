@@ -252,6 +252,9 @@ babel-core：babel转译器本身，提供了babel的转译API，如babel.transf
 ->babel-traverse 对 AST 进行遍历转译，得到新的 AST
 ->babel-generator 根据AST转换成 ES5
 
+
+@babel/parser 的 parse 方法，将代码字符串解析成 AST；使用 @babel/core 的 transformFromAstSync 方法，对 AST 进行处理，将其转成 ES5 并生成相应的代码字符串；
+
 ```
 - babel的stage-1，stage-2，stage-3？
 - async 经过 babel 处理后的代码看过吗
