@@ -391,6 +391,18 @@ redux-saga相当于在Redux原有数据流中多了一层，通过对Action进�
 ```
 
 - 介绍下 redux，以及和 mobx 区别是什么
+```  
+redux三大原则
+
+单一数据流
+整个应用state都被储存在一个store里面 构成一个Object tree
+State是只读的
+唯一改变state的方法就是触发action, action是一个用于描述已发生事件的普通对象
+使用纯函数来执行修改
+为了描述action如何改变state tree， 你需要编写reducers
+把reducer设计成纯函数，可以实现时间旅行，记录/回放或者热加载
+
+```
 
 
 - 用react/vue写一个组件，功能是反馈鼠标在整个页面的的位置
@@ -423,6 +435,10 @@ FunctionComponent无生命周期，不能在里面进行状态的修改。
 
 - react-router怎么实现路由切换
 - react-router里的<Link>标签和<a>标签有什么区别
+```  
+Link 的本质也是a 标签。只不过在Link 中禁用了 a 标签的默认事件，改用了history对象提供的方法进行跳转。
+
+```
 - <a>标签默认事件禁掉之后做了什么才实现了跳转
 
 - react异步渲染的概念,介绍Time Slicing 和 Suspense

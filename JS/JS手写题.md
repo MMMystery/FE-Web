@@ -260,18 +260,16 @@ setTimeout (function () {
 - 实现一个双向数据绑定
 
 ```
-
+// defineProperty方式
 let obj = {}
 let input = document.getElementById('input')
 let span = document.getElementById('span')
 // 数据劫持，这个是关键
 Object.defineProperty(obj, 'text', {
-  configurable: true,
-  enumerable: true,
-  get() {
-    console.log('获取数据了')
+  get: function () {
+      return obj
   },
-  set(newVal) {
+  set: function (newValue) {
     console.log('数据更新了')
     input.value = newVal
     span.innerHTML = newVal
@@ -282,6 +280,27 @@ input.addEventListener('keyup', function(e) {
   obj.text = e.target.value
 })
 
+
+// Proxy方式
+    var obj = {
+        name: ''
+    }
+    var proxyObj = new Proxy(obj, {
+    get: function(target, key, receiver) {
+      return Reflect.get(target, key, receiver)
+    },
+    set: function(target, key, value, receiver) {
+      if (key === 'name') {
+        document.getElementById('name').value = value
+        document.getElementById('pName').innerHTML = value
+      }
+      return Reflect.set(target, key, value, receiver)
+    }
+    })
+    
+    document.getElementById('name').addEventListener('input', function(e){
+    proxyObj.name = e.target.value
+})
 
 ```
 
@@ -751,6 +770,16 @@ var  myNewAjax=function(url){
 
 ```
 - 手写闭包里怎么用setTimeout
+- 实现 (5).add(3).minus(2) 功能
+``` 
+Number.prototype.add = function(n) {
+  return this.valueOf() + n;
+};
+Number.prototype.minus = function(n) {
+  return this.valueOf() - n;
+};
+console.log((5).add(3).minus(2))//6
+```
 - 实现一个斐波那契数列实现输入第n项输出相应的值，优化这个函数，让被查找过的下标值下次再次访问的时候能够立马找到并输出
 - 36进制加法，add(string a,string b)
 - 实现一个函数, 奇数次输出1, 偶数次输出2, 不能使用全局变量

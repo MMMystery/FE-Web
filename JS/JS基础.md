@@ -1049,32 +1049,6 @@ onmouseup：鼠标抬起事件
 
 ```
 
-- 你能实现一下双向绑定吗
-
-```
-<body>
-    <div id="app">
-        <input type="text" id="txt">
-        <p id="show-txt"></p>
-    </div>
-    <script>
-        var obj = {}
-        Object.defineProperty(obj, 'txt', {
-            get: function () {
-                return obj
-            },
-            set: function (newValue) {
-                document.getElementById('txt').value = newValue
-                document.getElementById('show-txt').innerHTML = newValue
-            }
-        })
-        document.addEventListener('keyup', function (e) {
-            obj.txt = e.target.value
-        })
-    </script>
-</body>
-
-```
 
 
 
