@@ -70,9 +70,11 @@ console.log(team.teamSummary())
 
 键头函数的this指向和普通函数的区别？箭头函数有作用域吗？可以new吗？可以放argument吗？
 
+箭头函数没有自己的this，箭头函数中的this是在定义函数的时候绑定，它会捕获其所在的上下文的this作为自己的this，而不像普通函数那样是在执行函数的时候绑定。
+
 1、函数体内的 this 对象，就是定义时所在的对象，而不是使用时所在的对象。
 
-2、不可以使用 arguments 对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。
+2、无 arguments 对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。
 
 3、不可以使用 yield 命令，因此箭头函数不能用作 Generator 函数。
 
@@ -81,7 +83,8 @@ console.log(team.teamSummary())
 没有自己的 this，无法调用 call，apply。
 没有 prototype 属性 ，而 new 命令在执行时需要将构造函数的 prototype 赋值给新的对象的 __proto__
 
-、
+5、call和apply方法只有参数，没有作用域
+
 
 ```
 4.增强对象字面量

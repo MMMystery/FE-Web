@@ -1,4 +1,17 @@
+- 手写一个ES6的类
+``` 
+// ES5普通写法
+function Animal() {
+  this.name = 'name'
+}
 
+// ES6
+class Animal2 {
+  constructor () {
+    this.name = 'name';
+  }
+}
+```
 - new 实现和new 的过程
 ``` 
 (1) 创建一个新对象；
@@ -6,46 +19,18 @@
 (3) 执行构造函数中的代码（为这个新对象添加属性） ；
 (4) 返回新对象。
 
-function myNew() {
-  var constr = Array.prototype.shift.call(arguments);
-  var obj = Object.create(constr.prototype);
-  var result = constr.apply(obj, arguments);
-  return result instanceof Object? result : obj;
-}
-
-function myNew (fun) {
-  return function () {
-    // 创建一个新对象且将其隐式原型指向构造函数原型
-    let obj = {
-      __proto__ : fun.prototype
-    }
-    // 执行构造函数
-    fun.call(obj, ...arguments)
-    // 返回该对象
-    return obj
+// v2 : 还需要判断返回的值是不是一个对象，如果是一个对象，我们就返回这个对象，如果没有，我们该返回什么就返回什么。
+  function objectFactory() {
+      var obj = new Object(),
+      // 因为 shift 会修改原数组，所以 arguments 会被去除第一个参数
+      Constructor = [].shift.call(arguments);
+      // 建立继承关系(二者之间的关系)
+      obj.__proto__ = Constructor.prototype;
+      // 开始执行这个构造函数
+      var res = Constructor.apply(obj, arguments);
+      // 看一下构造函数的返回值，是对象还是一个基本数据类型?
+      return typeof res === 'object' ? res : obj;
   }
-}
-
-function person(name, age) {
-  this.name = name
-  this.age = age
-}
-let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
-
-// 第二版的代码
-function objectFactory() {
-
-    var obj = new Object(),
-
-    Constructor = [].shift.call(arguments);
-
-    obj.__proto__ = Constructor.prototype;
-
-    var ret = Constructor.apply(obj, arguments);
-
-    return typeof ret === 'object' ? ret : obj;
-
-};
 ```
 - 实现原型链继承
 ``` 

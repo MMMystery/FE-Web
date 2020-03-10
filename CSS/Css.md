@@ -777,6 +777,8 @@ transform: scaleY(0.5); 缩放
 伪类像类选择器一样给已存在某个元素添加额外的样式；伪元素则是给自己虚拟的元素添加样式。
 伪类和选择器之间用一个冒号隔开，伪元素则是两个冒号隔
 
+伪元素是真的有元素
+
 伪类： :hover :active :visited
 伪元素： ::after  ::before
 
@@ -900,9 +902,9 @@ flex:1 //指的是什么
 flex: 1 1 0;
 flex的值的完整写法是[<flex-grow> <flex-shrink> <flex-basis>]
 
-flex-grow用于设置各item项按对应比例划分剩余空间
-flex-shrink用于设置item的总和超出容器空间时，各item的收缩比例
-flex-basis用于设置各item项的伸缩基准值，可以取值为长度或百分比
+flex-grow用于设置各item项的放大比例
+flex-shrink用于设置item的总和超出容器空间时，各item的缩小比例
+flex-basis用于设置各item项的伸缩基准值，定义了在分配多余的空间，项目占据的空间。
 
 ```
 - grid布局

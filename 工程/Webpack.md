@@ -59,7 +59,7 @@ module.exports={
     本质上，webpack loader 将所有类型的文件，转换为应用程序的依赖图（和最终的 bundle）可以直接引用的模块。
 
     babel-loader： 让下一代的js文件转换成现代浏览器能够支持的JS文件。
-    scss-loader,css-loader,style-loader,postcss-loader。 //postcss-loader里有用autoprefixer插件,主要是对css文件添加兼容性前缀
+    scss-loader,css-loader,style-loader,postcss-loader。 //postcss-loader里有用autoprefixer插件,主要是对css文件添加兼容性前缀，压缩文件
     file-loader,url-loader，eslint-loader
 
 
@@ -95,7 +95,13 @@ module.exports={
 
 - webpack构建流程
 ``` 
-
+初始化参数，从配置文件和shell语句中读到的参数合并，得到最后的参数
+开始编译：用合并得到的参数初始化complier对象，加载是所有配置的插件，执行run方法开始编译
+确定入口，通过entry找到入口文件
+编译模块，从入口文件出发，调用所有配置的loader对模块进行解析翻译，在找到该模块依赖的模块进行处理
+完成模块编译，得到每个模块被翻译之后的最终的内容和依赖关系
+输出资源，根据入口和模块之间的依赖关系，组装成一个个包含多个模块的chunk，在把每个chunk转换成一个单独的文件加载到输出列表
+输出完成，确定输出的路径和文件名，把内容写到文件系统中
 ```
 
 - webpack 和 rollup 有什么相同和不同点
@@ -169,6 +175,7 @@ webpack监听源文件的变化，即当开发者保存文件时触发webpack的
 Loader：
 Loader是webpack最重要的功能之一。Loader让webpack能够处理不同的文件。loader可以将所有类型的文件转换为webpack能够处理的有效模块
 
+
 作用：
 识别出应该被对应的loader进行转换的文件。（使用test属性）
 转换这些文件，从而使其能够被添加到依赖图中（并最终添加到bundle中）。（使用use属性）
@@ -187,7 +194,7 @@ plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后�
 
 区别：
 
-对于loader，它是一个转换器，将A文件进行编译形成B文件，这里操作的是文件，比如将A.scss转换为A.css，单纯的文件转换过程
+对于loader，它是一个转换器，loader是使wenbpack拥有加载和解析非js文件的能力，这里操作的是文件，比如将A.scss转换为A.css，单纯的文件转换过程
 
 plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后，webpack打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack打包过程中的某些节点，执行广泛的任务
 
@@ -298,6 +305,14 @@ optimization.minimizer可以配置你自己的压缩程序
 ```
 
 - webpack4.0，5.0做了什么更新
+- webpack3和webpack4的区别？
+``` 
+mode/–mode参数: 新增了mode/--mode参数来表示是开发还是生产（development/production）; production 侧重于打包后的文件大小，development侧重于构建速度
+移除loaders，必须使用rules（在3版本的时候loaders和rules 是共存的但是到4的时候只允许使用rules）
+移除了CommonsChunkPlugin (提取公共代码)，用optimization.splitChunks和optimization.runtimeChunk来代替
+支持es6的方式导入JSON文件，并且可以过滤无用的代码
+
+```
 
 - webpack的loader和plugin的原理
 ``` 
@@ -346,13 +361,22 @@ SCSS 源代码会先交给 sass-loader 把 SCSS 转换成 CSS；
 
 - 使用 Webpack 优化项目
 ``` 
-loader
-dll
+loader （使用exclude排除node_modules中的文件，减小 Loader 的文件搜索范围，那么需要去搜索的文件量就减小了）
+
+DllPlugin
+DllPlugin 可以将特定的类库提前打包然后引入。这种方式可以极大的减少打包类库的次数，只有当类库更新版本才有需要重新打包，并且也实现了将公共代码抽离成单独文件的优化方案。
+
 happypack
-压缩代码
-tree shaking树摇
-scope hoisting
-code splitting代码分割
+受限于 Node 是单线程运行的，所以 Webpack 在打包的过程中也是单线程的，特别是在执行 Loader 的时候，长时间编译的任务很多，这样就会导致等待的情况。
+HappyPack 开启多个线程可以将 Loader 的同步执行转换为并行的
+
+压缩代码UglifyJS
+
+tree shaking树摇 （Tree Shaking 可以实现删除项目中未被引用的代码，uglifySPlugin来Tree-shaking JS，Css需要使用Purify-CSS）
+
+scope hoisting  （Scope Hoisting 会分析出模块之间的依赖关系，尽可能的把打包出来的模块合并到一个函数中去。）
+
+code splitting代码分割和按需加载 提取公共代码。webpack4移除了CommonsChunkPlugin (提取公共代码)，用optimization.splitChunks和optimization.runtimeChunk来代替
 
 ```
 - 最后可以在聊聊webpack的优化，例如babel-loader的优化，gzip压缩等等

@@ -220,6 +220,21 @@ rel="noopener" 是 <a> 超链接标签的一个属性。他可以禁止打开的
 另外的优化方案：
 利用DocumentFragment对象：DocumentFragment对象不包含在真实的文档流之中，因此对其修改不会触发热reflow和repaint。DocumentFragment对象是一个无父节点的最小化文档对象，是一个轻量级的存储一段包含多个节点的文档结构。当将该对象插入DOM树时，其通常会将其子孙节点一并插入。可以使用createDocumentFragment创建该对象，然后使用appendChild等方法插入到DOM树。
 
+```
 
-
+- 说一下HTML5 drag api
+```  
+参考回答：
+  dragstart：事件主体是被拖放元素，在开始拖放被拖放元素时触发，。
+  darg：事件主体是被拖放元素，在正在拖放被拖放元素时触发。
+  
+  dragenter：事件主体是目标元素，在被拖放元素进入某元素时触发。
+  
+  dragover：事件主体是目标元素，在被拖放在某元素内移动时触发。
+  
+  dragleave：事件主体是目标元素，在被拖放元素移出目标元素是触发。
+  
+  drop：事件主体是目标元素，在目标元素完全接受被拖放元素时触发。
+  
+  dragend：事件主体是被拖放元素，在整个拖放操作结束时触发
 ```

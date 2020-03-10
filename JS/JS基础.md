@@ -27,10 +27,12 @@ console.log(obj1.name); // 小鹿
 - 如何准确判断一个变量是否是数组类型
 
 ``` 
-1.instanceof
+1.instanceof  
 
 var a = []
-a instanceof Array //a是否Array的实例？true or false
+a instanceof Array //a是否Array的实例？true or false 
+总结：判断实例对象的proto属性与构造函数的prototype是不是用一个引用。如果不是，他会沿着对象的proto向上查找的，直到顶端Object。
+f.proto 一层一层向上寻找，能否找到FOO.prototype，找到为true，否则为false
 
 2.数组方法 isArray()
 Array.isArray(a)
@@ -46,10 +48,15 @@ arr.constructor === Array // a实例所对应的构造函数是否为Array
 - 怎么判断对象类型？判断一个对象是否是函数
 ``` 
 typeof操作符
-instanceof
+instanceof 
 利用构造函数constructor 
 Object.prototype.toString.call() // “[object Number]”
 
+```
+- JS中的内置函数有哪些？
+```  
+内置函数： Object Array Boolean Number String Function Date RegExp Error
+内置对象：Math, JSON
 ```
 - js继承的几种实现方式
 ```
@@ -312,13 +319,10 @@ proxy
 - 写一个四则运算，输入字符串输入结果，如果有括号呢
 - JavaScript 创建构造函数的过程中发生了什么(其实问的就是new的过程)
 ``` 
-a：创建一个空对象，作为将要返回的对象实例。
-
-b：将空对象的原型指向了构造函数的prototype属性。
-
-c：将空对象赋值给构造函数内部的this关键字。
-
-d：开始执行构造函数内部的代码。
+创建一个新的对象 obj;
+将这个空对象的proto成员指向了Base函数对象prototype成员对象
+Base函数对象的this指针替换成obj, 相当于执行了Base.call(obj);
+如果构造函数显示的返回一个对象，那么则这个实例为这个返回的对象。 否则返回这个新创建的对象
 
 ```
 - 定义函数的方式
@@ -629,7 +633,13 @@ Number.isNaN() 可以检测
 
 - call、apply、bind的区别。
 ``` 
+
+
 总之三种方法都是改变函数内this的指向
+call：调用一个对象的一个方法，用另一个对象替换当前对象。例如：B.call(A, args1,args2);即A对象调用B对象的方法。
+apply：调用一个对象的一个方法，用另一个对象替换当前对象。例如：B.apply(A, arguments);即A对象应用B对象的方法。
+bind除了返回是函数以外，它的参数和call一样。
+
 
 1.fn.call (context, arg1, arg2, .....) 
 
@@ -948,12 +958,7 @@ promise.then(function (value) {
 ```
 
 
-- new 操作符具体做了什么？
 
-``` 
-
-创建一个新的对象， 将该构造函数内的this指向自身，返回该对象。
-```
 - 1.document.ready和onload的区别？
 ```
 页面加载完成有两种事件，一是ready，表示文档结构已经加载完成（不包含图片等非文字媒体文件），二是onload，指示页 面包含图片等文件在内的所有元素都加载完成。(可以说：ready 在onload 前加载！！！)我的理解： 一般样式控制的，比如图片大小控制放在onload 里面加载;              而：jS事件触发的方法，可以在ready 里面加载;
