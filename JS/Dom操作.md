@@ -174,3 +174,5 @@ function interator(node) {
 - JS中substr与substring的区别？
 - javascript中childNodes与children的区别？
 - getElementsByName和querySelectorAll的区别？
+- 点击穿透与ontouch onclick事件
+

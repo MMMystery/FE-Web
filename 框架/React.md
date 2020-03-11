@@ -548,7 +548,7 @@ serve -s build
 ``` 
   作用域的问题，foo() {} 与 const foo = () => {}里面的this作用域不一样，foo() {}里面使用外部成员，需要bind(this)，直接使用的this作用域仅在该方法内部
 ```
-- vue和react的区别
+- vue 和 react 谈谈区别和选型考虑
 - 路由懒加载原理
 - context本质是什么
 - React16新特性

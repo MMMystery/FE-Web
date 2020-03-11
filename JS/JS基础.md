@@ -53,6 +53,7 @@ instanceof
 Object.prototype.toString.call() // “[object Number]”
 
 ```
+- 利用typeof instance of来判断数组还是对象
 - JS中的内置函数有哪些？
 ```  
 内置函数： Object Array Boolean Number String Function Date RegExp Error
@@ -572,7 +573,7 @@ setTimeout(function () {
 某个执行时间很长的函数();
 
 
-如果定时器下面的函数执行要 5秒钟，那么定时器里的log 则需要 5秒之后再执行，函数占用了当前 执行栈 ，要等执行栈执行完毕后再去读取 微任务(microtask)，等 微任务(microtask) 完成，这个时候才会去读取 宏任务(macrotask) 里面的 setTimeout 回调函数执行。
+如果定时器下面的函数执行要 5秒钟，那么定时器里的log 则需要 5秒之后再执行，函数占用了当前执行栈 ，要等执行栈执行完毕后再去读取 微任务(microtask)，等 微任务(microtask) 完成，这个时候才会去读取 宏任务(macrotask) 里面的 setTimeout 回调函数执行。
 
 ```
 
@@ -885,8 +886,8 @@ Async、await运行的时候会解析成什么样来运行
 
 ```
 for in 一般常用来遍历对象或json
-
 for of数组对象都可以遍历
+forEach
 
 for in循环出的是key，for of循环出的是value
 ```
@@ -1232,7 +1233,7 @@ async函数(async await 是 promise 和 generator 函数组合的一个语法糖
 
 
 ```
-
+- 实现ajax异步函数的方式
 - 内存泄露和内存溢出
 ``` 
 内存泄漏是资源未释放，内存溢出是满出来了。
