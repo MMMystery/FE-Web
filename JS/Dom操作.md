@@ -138,3 +138,39 @@ removeEventListener
 - 给ul里的li反转   （下面是面试官给的答案，让我手写代码，突然很慌）
   const ul = document.querySelector('ul')
   ul.innerHTML = Array.from(ul.querySelectorAll('li')).reverse().map(item => item.outerHTML).join('')
+
+- DOM树的深度遍历和广度遍历
+``` 
+
+// 深度遍历
+function interator(node) {
+    console.log(node);
+    if (node.children.length) {
+        for (var i = 0; i < node.children.length; i++) {
+            interator(node.children[i]);
+        }
+    }
+}
+
+// 广度遍历
+function interator(node) {
+
+    var arr = [];
+    arr.push(node);
+    while (arr.length > 0) {
+        node = arr.shift();
+        console.log(node);
+        if (node.children.length) {
+            for (var i = 0; i < node.children.length; i++) {
+                arr.push(node.children[i]);
+            }
+        }
+    }
+}
+
+
+```
+
+- JS中substr与substring的区别？
+- javascript中childNodes与children的区别？
+- getElementsByName和querySelectorAll的区别？

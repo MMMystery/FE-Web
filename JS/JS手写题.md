@@ -12,6 +12,7 @@ class Animal2 {
   }
 }
 ```
+- es6 class怎么用es5实现
 - new 实现和new 的过程
 ``` 
 (1) 创建一个新对象；
@@ -183,7 +184,7 @@ function bindData(obj, fn) {
 ``` 
 
 ```
-
+- 能不能改写一个数组的push方法，不是重写，也不是新写，保持原来的逻辑之外，再添加一个consle.log（arguements）在控制台打印出来，比如pushA。在工作台把A打印出来，push什么就打印什么。原来的逻辑不能改？
 - 实现在原型链上重写 flat 函数 （链接：https://juejin.im/post/5dff18a4e51d455804256d31#heading-15）
 ``` 
 Array.prototype.myFlat = function(num = 1) {
@@ -270,6 +271,22 @@ setTimeout (function () {
 
 
 ```
+
+- JSON转换为URL
+``` 
+ // data={name : 'zhangsan', age : 'lisi'}
+  function parseParams(data){
+    var key, i, value, tempArr = [];
+    for (i in data) {
+      key = encodeURIComponent(i);
+      value = encodeURIComponent(data[i]);
+      tempArr.push(key + '=' + value);
+    }
+    return tempArr.join('&');
+  }
+
+
+```
 - 实现一个基本的Event Bus，如何实现一个事件的发布订阅
 - 实现一个双向数据绑定
 
@@ -318,7 +335,7 @@ input.addEventListener('keyup', function(e) {
 
 ```
 
-- 手写AJAX
+- 手写AJAX实现（要求带cookie）
   
 ```
 var xhr = new XMLHttpRequest()
@@ -342,13 +359,38 @@ xhr.send(null)
 如何发送同步ajax
 
 ```
+- 数组中map和reduce，如何用reduce实现map
+- 实现compose函数（实现函数compose，compose接受多个函数作为参数，并返回一个新的函数，新的函数会从右向左依次执行原函数， 并且上一次结果的返回值将会作为下一个函数的参数。）
+``` 
+function compose(...fns) {
+  return (...args) => fns.reduceRight((acc, cur) => cur(acc), ...args);
+}
+
+function a(msg) {
+  return msg + "a";
+}
+function b(msg) {
+  return msg + "b";
+}
+function c(msg) {
+  return msg + "c";
+}
+
+const f = compose(
+  a,
+  b,
+  c
+);
+console.log(f("hello"));
+
+```
 - 实现拖拽
 
 ``` 
 todo
 
 ```
-
+- 在线编程，getUrlParams(url,key); 就是很简单的获取url的某个参数的问题，但要考虑边界情况，多个返回值等等
 - 手写一个防抖/节流函数
 
 ``` 
@@ -422,7 +464,7 @@ document.body.insertBefore(script, document.body.firstChild);
 
 
 ```
-
+- 基于promise实现jsonp
 - Object.create 的基本实现
 ``` 
 _create = function (o) {
@@ -786,7 +828,7 @@ Number.prototype.minus = function(n) {
 };
 console.log((5).add(3).minus(2))//6
 ```
-- 实现一个斐波那契数列实现输入第n项输出相应的值，优化这个函数，让被查找过的下标值下次再次访问的时候能够立马找到并输出
+
 - 36进制加法，add(string a,string b)
 - 实现一个函数, 奇数次输出1, 偶数次输出2, 不能使用全局变量
 - when('#id).then(success, faild), 结点存在调用success, 不存在调用faild, 实现这样一个when方法
@@ -875,6 +917,21 @@ Array.prototype.reduceToFilter = function (handler) {
 ```
 - js实现继承的几种方式
 ```  
+
+class 实现继承
+
+class Son entends Father {
+  constructor(name){
+    super(name);
+    this.name = name;
+  
+  }
+}
+var s = new Son('son');
+console.log(s.name); // son
+console.log(s instanceof Father); // true
+console.log(s instanceof Son); // true
+
 有下面两个类，下面实现Man继承People
 function People() {
       this.type = 'prople'
@@ -921,13 +978,13 @@ Man.prototype = Object.create(People.prototype, {
 - new Queue().task(1000,()=>console.log(1)).task(2000,()=>console.log(2)).task(3000,()=>console.log(3)).start()实现该函数，start()后等1秒输出1，再等2秒2，再等3秒3.
 - ab-cd-ef=》ab-Cd-Ef（来个简单的题（你菜给你来个简单的嘤嘤嘤））
 - [1,2,3,4,6,7,9,13,15]=>['1->4',6->7,'9','13','15']实现一下
-- 手撕代码 实现一个函数接受一个值，输出小于这个数的斐波那契数列的所有项
+
 - 手撕代码 实现一个自增类 改类有一个id属性，每次实例化时，id都加一
 - 实现一个calendar组件
 - 写一个轮播图，用原生js
 - 写代码 实现remove函数，删除object的属性
 - promise的catch怎么实现？
-- 基于promise实现jsonp
+
 - 手撕js实现对象变query
 - 手写一个工厂类方法，并在它的基础上给出装饰者模式
 - 实现一个函数，这个函数有两个参数，一个参数是fn 一个是count 要求，参数fn是一个promise函数, 如果执行成功直接返回，如果失败就重试count次数，到达count之后就返回失败
@@ -1086,7 +1143,36 @@ function LazyMan(name){
 
 ```
 - 写一个cookie并定义过期时间为一天
+- 使用ES6的Reflect来实现一个观察者模式
+``` 
+    // 观察者设计模式
+    const queuedObservers = new Set();
 
+    const observe = fn => queuedObservers.add(fn);
+    const observable = obj => new Proxy(obj, {set});
+
+    function set(target, key, value, receiver) {
+      const result = Reflect.set(target, key, value, receiver);
+      queuedObservers.forEach(observer => observer());
+      return result;
+    }
+
+
+    // test
+    const person = observable({
+      name: '张三',
+      age: 20
+    });
+
+    function print() {
+      console.log(`${person.name}, ${person.age}`)
+    }
+
+    observe(print);
+    person.name = '李四';
+    // 输出
+    // 李四, 20
+```
 - 给定一棵树，请你输出所有从根节点到叶子节点的路径组成的数字之和
 ``` 
 let tree = {
@@ -1147,6 +1233,5 @@ function queryString(request){
 console.log(queryString(urlStr));
 
 ```
-
-
+- 5个feach请求，请求完成后要求立即执行，但最终的输出顺序要按照要求输出ABCDE
 

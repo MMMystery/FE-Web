@@ -1,4 +1,4 @@
-
+- 堆和栈区别
 - JavaScript有⼏种类型的值
 ``` 
 
@@ -58,23 +58,8 @@ Object.prototype.toString.call() // “[object Number]”
 内置函数： Object Array Boolean Number String Function Date RegExp Error
 内置对象：Math, JSON
 ```
-- js继承的几种实现方式
+- js继承的几种方式以及区别
 ```
-
-class 实现继承
-
-class Son entends Father {
-  constructor(name){
-    super(name);
-    this.name = name;
-  
-  }
-}
-var s = new Son('son');
-console.log(s.name); // son
-console.log(s instanceof Father); // true
-console.log(s instanceof Son); // true
-
 
 - 组合继承和寄生组合继承的优缺点
 - class继承和原型链继承的区别
@@ -959,20 +944,7 @@ promise.then(function (value) {
 
 
 
-- 1.document.ready和onload的区别？
-```
-页面加载完成有两种事件，一是ready，表示文档结构已经加载完成（不包含图片等非文字媒体文件），二是onload，指示页 面包含图片等文件在内的所有元素都加载完成。(可以说：ready 在onload 前加载！！！)我的理解： 一般样式控制的，比如图片大小控制放在onload 里面加载;              而：jS事件触发的方法，可以在ready 里面加载;
 
-
- onload
- 必须等待网页全部加载完毕（包括图片等），然后再执行JS代码
- 只能执行一次，如果第二次，那么第一次的执行会被覆盖
- 
- ready
- 只需要等待网页中的DOM结构加载完毕
- 可以执行多次，N次都不会被覆盖
-
-```
 
 - 组件化和模块化
 ```
@@ -1540,7 +1512,11 @@ encodeURI和encodeURIComponent的区别在于前者被设计来用于对完整UR
 ``` 
 按值传递，不然如果是引用数据类型的话，修改了的话把原始数据给改了
 ```
+- tostring和valueof有什么区别
+``` 
+valueof是返回最适合该对象类型的原始值，而tostring则是返回对象的字符串表示。
 
+```
 
 
 - 下面两个式子谁改变arr1

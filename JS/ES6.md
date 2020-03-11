@@ -267,6 +267,10 @@ ES6 模块化
 - promise是怎么实现的原理
 - Promise.then里抛出的错误能否被try...catch捕获，为什么
 - Proxy对象能拦截什么
+``` 
+
+
+```
 - promise相关。resolve，reject，then，all，race了解过吗？
 - 现在有100个请求，怎么实现 Promise 串行化 。就是形如 [fn1, fn2, fn3] 这样， 然后 fn1 返回的是一个 promise ，resolve 之后再去执行 fn2
 - 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
@@ -388,7 +392,7 @@ ArrayBuffer是一(大)块内存，但不能直接访问ArrayBuffer里面的字�
 简单说，ArrayBuffer对象代表原始的二进制数据，TypedArray视图用来读写简单类型的二进制数据，DataView视图用来读写复杂类型的二进制数据。
 
 ```
-- Decorator(装饰器)
+- Decorator(装饰器), 实现原理
 ``` 
 装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数
 就是简单的将一个函数包装成另一个函数

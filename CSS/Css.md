@@ -1116,3 +1116,6 @@ speech：仅适用于屏幕阅读器
  3.js方法 document.getElementsByTagName("img")[0].setAttribute("style","width:300px!important;")
 
 ```
+
+- 实现矩形，水平垂直居中，且宽高比为 2:1
+- Css 写一个正方形，大小是父级的一半

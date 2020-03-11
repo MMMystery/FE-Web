@@ -33,7 +33,7 @@ Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。�
 ```
 - 虚拟dom的缺点
 - diff 和patch 的过程
-- diff
+- diff （DIFF算法为什么是O(n)复杂度而不是O(n^3)）
 ```
 diff算法比较新旧节点的时候，比较只会在同层级比较，不会跨层级比较
 当数据发生变化的时候会生成一个新的VNode，然后新VNode和oldNode做对比，发现不一样的地方直接修改在真实的dom上，比较新旧节点，一边比较一边给真是的dom打补丁
@@ -498,7 +498,7 @@ Link 的本质也是a 标签。只不过在Link 中禁用了 a 标签的默认�
 - refs的使用
 - react如何调用api
 - React中有几种创建组件的方式
-- connect如何获取store的值的以及connect原理
+- connect如何获取store的值的以及connect原理，里面做了什么？
 
 ```  
 通过mapStateToProps和mapDispatchToProps
@@ -638,3 +638,6 @@ class User extends React.Component {
 defaultProps 用来确保 this.props 在父组件没有指定的情况下有一个初始值。类型检查发生在 defaultProps 赋值之后，所以类型检查也会应用在 defaultProps 上。
 
 ```
+
+
+- 说一下你对React的理解？React设计思想？
