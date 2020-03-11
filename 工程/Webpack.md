@@ -419,21 +419,6 @@ Bundle是由多个不同的模块生成，bundles是最终打包出来的源文�
 - Webpack 打包出来的文件如何拆包？
 
 
-- webpack的dll
-- webpack的scop hosting
-- webpack用过吗？摇树treeshaking是什么，什么场景下用过？
-``` 
-就是清理无用的代码。
-
-实现条件：
-使用ES2015模块语法（即import和export）。
-包括支持死代码删除的缩小器。例如，UglifyJSPlugin
-
-默认使用UglifyJSPlugin的时候就会删除无用代码
-另外webpack配置中的wbpack.prod.js中只需要设置 mode: 'production', 生产环境会默认打开。
-
-```
-
 
 
 
