@@ -32,8 +32,8 @@ BFC就是页面上的一个隔离的独立容器，它是页面中的一块渲�
 因为BFC内部的元素和外部的元素绝对不会互相影响，因此， 当BFC外部存在浮动时，它不应该影响BFC内部Box的布局，BFC会通过变窄，而不与浮动有重叠。同样的，当BFC内部有浮动时，为了不影响外部元素的布局，BFC计算高度时会包括浮动的高度。
 
 如何创建BFC
-1、float的值不是none。
-2、position的值不是static或者relative。
+1、浮动元素（float不取值为none）
+2、绝对定位元素（position取值为absolute或fixed）
 3、display的值是inline-block、table-cell、flex、table-caption或者inline-flex
 4、overflow的值不是visible
 
@@ -1083,7 +1083,7 @@ print：仅适用于打印设备
 screen：仅适用于台式机、平板电脑、手机等屏幕
 speech：仅适用于屏幕阅读器
 ```
-- 使用 flexbox，创建一个 3 列布局，其中每列占据容器的 col-{n} / 12 比率
+- 使用 flexbox，创建一个 3 列布局，其中每列占据容器的 col- {n} / 12 比率
 ``` 
 <style lang="scss">
 .row {
