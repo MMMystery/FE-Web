@@ -268,6 +268,23 @@ function currying(fn, ...args) {
       }
     }
 ```
+- 写一个curry函数，其实就是add(1,2,3) 改成 add(1)(2,3)
+``` 
+function currying(fn,...args){
+    if(fn.length <= args.length){
+        return fn(...args)
+    }
+    return function(...args1){
+        return currying(fn,...args,...args1)
+    }
+}
+function add(a,b,c){
+    return a + b + c
+}
+add(1,2,3) // 6
+var curryingAdd = currying(add);
+curryingAdd(1)(2)(3) // 6
+```
 - 实现compose函数（实现函数compose，compose接受多个函数作为参数，并返回一个新的函数，新的函数会从右向左依次执行原函数， 并且上一次结果的返回值将会作为下一个函数的参数。）
 ``` 
 function compose(...fns) {
@@ -725,23 +742,7 @@ console.log((5).add(3).minus(2))//6
 - 大数相加和大数相减，大数相乘。
 - 求一个对象的层级数（我写完后，又问如果不用递归，只用循环实现呢）
 - 纯js写一个动画，5s由快到慢，速度自定义
-- 写一个curry函数，其实就是add(1,2,3) 改成 add(1)(2,3)
-``` 
-function currying(fn,...args){
-    if(fn.length <= args.length){
-        return fn(...args)
-    }
-    return function(...args1){
-        return currying(fn,...args,...args1)
-    }
-}
-function add(a,b,c){
-    return a + b + c
-}
-add(1,2,3) // 6
-var curryingAdd = currying(add);
-curryingAdd(1)(2)(3) // 6
-```
+
 - 手写发布订阅的EventEmitter类
 ``` 
 class EventEmitter {
@@ -839,7 +840,6 @@ Man.prototype = Object.create(People.prototype, {
 
 ```
 - 手写实现观察者模式
-- 写了一个curry函数，其实就是add(1,2,3) 改成 add(1)(2,3)
 - new Queue().task(1000,()=>console.log(1)).task(2000,()=>console.log(2)).task(3000,()=>console.log(3)).start()实现该函数，start()后等1秒输出1，再等2秒2，再等3秒3.
 - ab-cd-ef=》ab-Cd-Ef（来个简单的题（你菜给你来个简单的嘤嘤嘤））
 - [1,2,3,4,6,7,9,13,15]=>['1->4',6->7,'9','13','15']实现一下

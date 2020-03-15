@@ -1,0 +1,77 @@
+
+
+/*方法一*/
+#wrapper {
+  position: relative;
+}
+#box {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform:translate(-50%,-50%);
+}
+
+/*方法二*/
+#wrapper {
+  position: relative;
+}
+#box {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+}
+
+/*方法三*/
+#wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#box {
+  width: 100px;
+  height: 100px;
+}
+
+/*方法四*/
+#wrapper {
+  position: relative;
+}
+#box {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: calc(50% - 50px);
+  top: calc(50% - 50px);
+}
+
+/*方法五*/
+#wrapper {
+  position: relative;
+}
+#box {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+
+/*方法六*/
+#wrapper {
+  display: flex;
+  align-items: center;
+}
+#box {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
