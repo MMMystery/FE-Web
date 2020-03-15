@@ -280,12 +280,11 @@ ES6 模块化
 Async/await是一个语法糖，内部实现还是generator + yield
 async function 代替了 function*，await 代替了 yield
 
-
 ```
 - 写一个封装函数控制1000s访问一次，然后最多5次，直至拿到结果。
 - 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
 - 三个异步函数怎么知道彼此已经结束。不用promise.all
-- Promise.then里抛出的错误能否被try...catch捕获，为什么。
+
 
 
 

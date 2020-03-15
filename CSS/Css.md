@@ -75,7 +75,11 @@ animation(关键帧动画)
     animation-direction	方向
     animation-fill-mode: 禁止模式
 
-动画如何暂停？
+关键帧动画动画如何暂停？如要暂停动画，就要用到animation-play-state这个属性。
+
+animation-play-state属性有两个值：
+paused: 暂停动画;
+running: 继续播放动画;
 ```
 
 - 使用css实现一个持续的动画效果
@@ -544,7 +548,9 @@ rem是根据根元素html font-size计算，而em是根据父级的font-size计�
 rem：相对于根元素html的font-size，假如html为font-size：12px，那么，在其当中的div设置为font-size：2rem,就是当中的div为24px
 em：相对于父元素计算，假如某个p元素为font-size:12px,在它内部有个span标签，设置font-size：2em,那么，这时候的span字体大小为：12*2=24px
 
-物理像素和逻辑像素
+物理像素和逻辑像素，如何获取
+
+
 ```
 - css常用选择器
 
@@ -967,10 +973,17 @@ z-index 只适用于元素有定位的情况，表示层级 数值越大 层级�
 
 ```
 - 哪些可以导致3d加速
+``` 
+.cube {
+   -webkit-transform: translate3d(250px,250px,250px)
+   rotate3d(250px,250px,250px,-120deg)
+   scale3d(0.5, 0.5, 0.5);
+}
+```
 - 识别是否是retina屏幕并适配
 ```
 1.retian.js
-2.
+2. image-set
   background-image: url('img/logo.jpg');
   background-image: -webkit-image-set(url(pic.png) 1x, url(pic@2x.png) 2x);
   background-image: -moz-image-set(url(pic.png) 1x,url(images/pic@2x.png) 2x);
