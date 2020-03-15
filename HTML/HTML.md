@@ -89,27 +89,7 @@ data-*
 ```
 
 
-- 网页内容高度
 
-
-``` 
-页可见区域宽： document.body.clientWidth;
-网页可见区域高： document.body.clientHeight;
-网页可见区域宽： document.body.offsetWidth (包括边线的宽);
-网页可见区域高： document.body.offsetHeight (包括边线的宽);
-网页正文全文宽： document.body.scrollWidth;
-网页正文全文高： document.body.scrollHeight;
-网页被卷去的高： document.body.scrollTop;
-网页被卷去的左： document.body.scrollLeft;
-网页正文部分上： window.screenTop;
-网页正文部分左： window.screenLeft;
-屏幕分辨率的高： window.screen.height;
-屏幕分辨率的宽： window.screen.width;
-屏幕可用工作区高度： window.screen.availHeight;
-浏览器可视高区域高度：window.innerHeight
-
-
-```
 
 - 加载流程
 ```
@@ -195,6 +175,7 @@ submit
 src是指向外部资源的位置，指向的内容会嵌入到文档中当前标签所在的位置，在请求src资源时会将其指向的资源下载并应用到文档内，如js脚本，img图片和frame等元素。当浏览器解析到该元素时，会暂停其他资源的下载和处理，知道将该资源加载、编译、执行完毕，所以一般js脚本会放在底部而不是头部。
 href是指网络资源所在位置，建立和当前元素（锚点）或当前文档（链接）之间的链接，用于超链接。
 ```
+
 - rel="noopener"` 应在什么场景下使用，为什么？
 ``` 
 rel="noopener" 是 <a> 超链接标签的一个属性。他可以禁止打开的新页面中使用 window.opener 属性，这样一来打开的新页面就不能通过 window.opener 去操作你的页面。

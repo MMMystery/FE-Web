@@ -141,6 +141,8 @@ Object.getOwnPropertyDescriptors()
 __proto__属性，Object.setPrototypeOf()，Object.getPrototypeOf() 
 Object.keys()，Object.values()，Object.entries()
 
+这些方法分别有什么用？
+
 ```
 
 - promise（promise A+规范）
@@ -173,102 +175,12 @@ promise构造函数是同步执行的，then方法是异步执行的
 ``` 
 reject 是用来抛出异常的，catch 才是用来处理异常的
 
-```
+```                                                                                                                   j
 
-- 模块化Commonjs,AMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义
-
-``` 
-https://www.processon.com/view/link/5c8409bbe4b02b2ce492286a#map
-
-IIFE： 使用自执行函数来编写模块化，特点：在一个单独的函数作用域中执行代码，避免变量冲突。
-
-(function(){
-  return {
-	data:[]
-  }
-})()
-AMD： 使用requireJS 来编写模块化，特点：依赖必须提前声明好。
-
-define('./index.js',function(code){
-	// code 就是index.js 返回的内容
-})
-CMD： 使用seaJS 来编写模块化，特点：支持动态引入依赖文件。
-
-define(function(require, exports, module) {  
-  var indexCode = require('./index.js');
-});
-
-CommonJS： nodejs 中自带的模块化。
-
-var fs = require('fs');
-
-ES Modules： ES6 引入的模块化，支持import 来引入另一个 js 。
-
-import a from 'a';
-
-
-Commonjs
-
-暴露模块：module.exports = value或exports.xxx = value；
-
-引入模块：require(xxx), 如果是第三方模块，xxx 为模块名；如果是自定义模块，xxx 为模块文件路径
-
-AMD--非同步加载模块
-
-// 定义没有依赖的模块
-define(function(){
-   return 模块
-})
- 
-// 定义有依赖的模块
-define(['module1', 'module2'], function(m1, m2){
-   return 模块
-})
- 
-//引入使用模块：
- 
-require(['module1', 'module2'], function(m1, m2){
-   使用 m1/m2
-})
-
-CMD--专门用于浏览器端，模块的加载是异步的，模块使用时才会加载执行。整合了 CommonJS 和 AMD 规范的特点
-/ 定义没有依赖的模块
-define(function(require, exports, module){
-  exports.xxx = value
-  module.exports = value
-})
- 
- 
-// 定义有依赖的模块
-define(function(require, exports, module){
-  // 引入依赖模块 (同步)
-  var module2 = require('./module2')
-  // 引入依赖模块 (异步)
-    require.async('./module3', function (m3) {
-    })
-  // 暴露模块
-  exports.xxx = value
-})
- 
- 
-//引入模块	
-define(function (require) {
-  var m1 = require('./module1')
-  var m4 = require('./module4')
-  m1.show()
-  m4.show()
-})
-
-
-ES6 模块化
-1，设计思想：静态化
-2，在编译时就能确定模块的依赖关系，以及输入和输出的变量
-```
 - promise是怎么实现的原理
 - Promise.then里抛出的错误能否被try...catch捕获，为什么
 - Proxy对象能拦截什么
-``` 
-
+```            
 
 ```
 - promise相关。resolve，reject，then，all，race了解过吗？
@@ -284,10 +196,52 @@ async function 代替了 function*，await 代替了 yield
 - 写一个封装函数控制1000s访问一次，然后最多5次，直至拿到结果。
 - 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
 - 三个异步函数怎么知道彼此已经结束。不用promise.all
+- 用es5写promise
+- Promise 中抛出异常能否被 catch 捕获？
+```  
+let promise = new Promise((resolve, reject) => {
+  throw new Error()
+  reject()
+})
+promise.catch(err => {
+  console.log(err)
+})
 
+```
+- Promise.resolve(1)返回是一个什么
+- Promise.any()
+- Promise.reject()
+- Promise.allSettled()
+- 模拟实现一个 Promise.finally
+```  
+Promise.prototype.finally = function (callback) {
+  let P = this.constructor;
+  return this.then(
+    value  => P.resolve(callback()).then(() => value),
+    reason => P.resolve(callback()).then(() => { throw reason })
+  );
+};
 
+```
+- 设计并实现 Promise.race()
+```  
+Promise._race = promises => new Promise((resolve, reject) => {
+	promises.forEach(promise => {
+		promise.then(resolve, reject)
+	})
+})
+```
 
+- new Promise(() => {throw new Error()})能否抛出异常？  
+- 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch
 
+- ES6的generator函数来进行异步的调用，手写                             
+```                                                      
+yield怎么控制顺序                                              
+                                                         
+```                                                      
+- 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换    
+--------------------------------------------------
 
 - Symbol
 ``` 
@@ -457,52 +411,101 @@ set
 
 
 
-- ES6的generator函数来进行异步的调用，手写
+
+
+- 模块化Commonjs,AMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义
+
 ``` 
-yield怎么控制顺序
+https://www.processon.com/view/link/5c8409bbe4b02b2ce492286a#map
 
-```
-- 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换
+IIFE： 使用自执行函数来编写模块化，特点：在一个单独的函数作用域中执行代码，避免变量冲突。
 
-- 用es5写promise
-- Promise 中抛出异常能否被 catch 捕获？
-```  
-let promise = new Promise((resolve, reject) => {
-  throw new Error()
-  reject()
+(function(){
+  return {
+	data:[]
+  }
+})()
+AMD： 使用requireJS 来编写模块化，特点：依赖必须提前声明好。
+
+define('./index.js',function(code){
+	// code 就是index.js 返回的内容
 })
-promise.catch(err => {
-  console.log(err)
+CMD： 使用seaJS 来编写模块化，特点：支持动态引入依赖文件。
+
+define(function(require, exports, module) {  
+  var indexCode = require('./index.js');
+});
+
+CommonJS： nodejs 中自带的模块化。
+
+var fs = require('fs');
+
+ES Modules： ES6 引入的模块化，支持import 来引入另一个 js 。
+
+import a from 'a';
+
+
+Commonjs
+
+暴露模块：module.exports = value或exports.xxx = value；
+
+引入模块：require(xxx), 如果是第三方模块，xxx 为模块名；如果是自定义模块，xxx 为模块文件路径
+
+AMD--非同步加载模块
+
+// 定义没有依赖的模块
+define(function(){
+   return 模块
+})
+ 
+// 定义有依赖的模块
+define(['module1', 'module2'], function(m1, m2){
+   return 模块
+})
+ 
+//引入使用模块：
+ 
+require(['module1', 'module2'], function(m1, m2){
+   使用 m1/m2
 })
 
-```
-
-
-- CommonJS和ES Module的区别
-
-- Promise.resolve(1)返回是一个什么
-- Promise.any()
-- Promise.reject()
-- Promise.allSettled()
-- 模拟实现一个 Promise.finally
-```  
-Promise.prototype.finally = function (callback) {
-  let P = this.constructor;
-  return this.then(
-    value  => P.resolve(callback()).then(() => value),
-    reason => P.resolve(callback()).then(() => { throw reason })
-  );
-};
-
-```
-- 设计并实现 Promise.race()
-```  
-Promise._race = promises => new Promise((resolve, reject) => {
-	promises.forEach(promise => {
-		promise.then(resolve, reject)
-	})
+CMD--专门用于浏览器端，模块的加载是异步的，模块使用时才会加载执行。整合了 CommonJS 和 AMD 规范的特点
+/ 定义没有依赖的模块
+define(function(require, exports, module){
+  exports.xxx = value
+  module.exports = value
 })
+ 
+ 
+// 定义有依赖的模块
+define(function(require, exports, module){
+  // 引入依赖模块 (同步)
+  var module2 = require('./module2')
+  // 引入依赖模块 (异步)
+    require.async('./module3', function (m3) {
+    })
+  // 暴露模块
+  exports.xxx = value
+})
+ 
+ 
+//引入模块	
+define(function (require) {
+  var m1 = require('./module1')
+  var m4 = require('./module4')
+  m1.show()
+  m4.show()
+})
+
+
+ES6 模块化
+1，设计思想：静态化
+2，在编译时就能确定模块的依赖关系，以及输入和输出的变量
 ```
 
-- new Promise(() => {throw new Error()})能否抛出异常？  
-- 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch
+
+
+
+
+
+

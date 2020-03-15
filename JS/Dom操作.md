@@ -139,6 +139,7 @@ removeEventListener
   const ul = document.querySelector('ul')
   ul.innerHTML = Array.from(ul.querySelectorAll('li')).reverse().map(item => item.outerHTML).join('')
 
+- ul标签里有五个li标签，把第五个li标签移到第一个li标签和第二个li标签中间，怎么做
 - DOM树的深度遍历和广度遍历
 ``` 
 

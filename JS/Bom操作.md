@@ -24,6 +24,27 @@ window.navigator对象：常常用来获取浏览器信息、是否移动端访�
 
 
 
+- 网页内容高度
+
+
+``` 
+页可见区域宽： document.body.clientWidth;
+网页可见区域高： document.body.clientHeight;
+网页可见区域宽： document.body.offsetWidth (包括边线的宽);
+网页可见区域高： document.body.offsetHeight (包括边线的宽);
+网页正文全文宽： document.body.scrollWidth;
+网页正文全文高： document.body.scrollHeight;
+网页被卷去的高： document.body.scrollTop;
+网页被卷去的左： document.body.scrollLeft;
+网页正文部分上： window.screenTop;
+网页正文部分左： window.screenLeft;
+屏幕分辨率的高： window.screen.height;
+屏幕分辨率的宽： window.screen.width;
+屏幕可用工作区高度： window.screen.availHeight;
+浏览器可视高区域高度：window.innerHeight
+
+```
+
 
 - 怎么获取一个元素到视图顶部的距离
 - getBoundingClientRect获取的top和offsetTop获取的top区别
@@ -32,4 +53,4 @@ getBoundingClientRect用于获得页面中某个元素的左，上，右和下�
 
 页面中的元素的offsetLeft是离其最近的已经定位的元素，如果没有就相对于body元素计算
 ```
-- ul标签里有五个li标签，把第五个li标签移到第一个li标签和第二个li标签中间，怎么做
+
