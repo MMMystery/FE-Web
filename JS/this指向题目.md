@@ -30,3 +30,20 @@ new Foo.getName();  //-> 2    Foo后面不带括号而直接 '.'，那么点的�
 new Foo().getName();//-> 3    此时是Foo的实例，原型上会有输出3这个方法
 
 ```
+
+- this指向题目
+``` 
+obj = {
+    name: 'a',
+    getName : function () {
+        console.log(this.name);
+    }
+}
+
+var fn = obj.getName
+obj.getName()
+var fn2 = obj.getName()
+fn()
+fn2()
+
+```

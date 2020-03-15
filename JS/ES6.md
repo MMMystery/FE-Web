@@ -145,102 +145,7 @@ Object.keys()，Object.values()，Object.entries()
 
 ```
 
-- promise（promise A+规范）
 
-``` 
-Promise 的三种状态：
-
-pending：等待任务完成；
-resolved（或fulfilled）：任务完成并且没有任何问题；
-rejected：任务完成，但是出现问题。
-
-Promise的静态方法：
-
-Promise.resolve 返回一个fulfilled状态的promise对象
-Promise.reject 返回一个rejected状态的promise对象
-Promise.all 接收一个promise对象数组为参数，只有全部为resolve才会调用 通常会用来处理 多个并行异步操作
-Promise.race 接收一个promise对象数组为参数，只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理。
-```
-- promise原理
-- Promise 构造函数是同步执行还是异步执行，那么 then 方法呢？
-```   
-promise构造函数是同步执行的，then方法是异步执行的
-
-```
-
-- 用promise 实现genetator
-
-- promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
-
-``` 
-reject 是用来抛出异常的，catch 才是用来处理异常的
-
-```                                                                                                                   j
-
-- promise是怎么实现的原理
-- Promise.then里抛出的错误能否被try...catch捕获，为什么
-- Proxy对象能拦截什么
-```            
-
-```
-- promise相关。resolve，reject，then，all，race了解过吗？
-- 现在有100个请求，怎么实现 Promise 串行化 。就是形如 [fn1, fn2, fn3] 这样， 然后 fn1 返回的是一个 promise ，resolve 之后再去执行 fn2
-- 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
-- Promise和Async处理失败的时候有什么区别
-- Async/await promise 和 generator区别。
-``` 
-Async/await是一个语法糖，内部实现还是generator + yield
-async function 代替了 function*，await 代替了 yield
-
-```
-- 写一个封装函数控制1000s访问一次，然后最多5次，直至拿到结果。
-- 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
-- 三个异步函数怎么知道彼此已经结束。不用promise.all
-- 用es5写promise
-- Promise 中抛出异常能否被 catch 捕获？
-```  
-let promise = new Promise((resolve, reject) => {
-  throw new Error()
-  reject()
-})
-promise.catch(err => {
-  console.log(err)
-})
-
-```
-- Promise.resolve(1)返回是一个什么
-- Promise.any()
-- Promise.reject()
-- Promise.allSettled()
-- 模拟实现一个 Promise.finally
-```  
-Promise.prototype.finally = function (callback) {
-  let P = this.constructor;
-  return this.then(
-    value  => P.resolve(callback()).then(() => value),
-    reason => P.resolve(callback()).then(() => { throw reason })
-  );
-};
-
-```
-- 设计并实现 Promise.race()
-```  
-Promise._race = promises => new Promise((resolve, reject) => {
-	promises.forEach(promise => {
-		promise.then(resolve, reject)
-	})
-})
-```
-
-- new Promise(() => {throw new Error()})能否抛出异常？  
-- 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch
-
-- ES6的generator函数来进行异步的调用，手写                             
-```                                                      
-yield怎么控制顺序                                              
-                                                         
-```                                                      
-- 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换    
 --------------------------------------------------
 
 - Symbol
@@ -308,7 +213,7 @@ for(let value of obj){
 console.log([...obj]);//["zhangsan", 18, "man"]
 
 
-二、Generator（生成器）
+二、Generator原理（生成器）
 使用function关键字后加*的方式声明一个函数，该函数即为Generator函数
 let tell = function* (){
     yield 1;
@@ -325,6 +230,10 @@ console.log(k.next());//{value: undefined, done: true}
 
 - Set 和 Map 数据结构
 - Proxy
+- Proxy对象能拦截什么
+```            
+
+```
 - Reflect
 ``` 
 Reflect 是一个内置的对象，它提供拦截 JavaScript 操作的方法。
@@ -411,6 +320,229 @@ set
 
 
 
+
+
+
+- promise（promise A+规范）
+
+``` 
+Promise 的三种状态：
+
+pending：等待任务完成；
+resolved（或fulfilled）：任务完成并且没有任何问题；
+rejected：任务完成，但是出现问题。
+
+Promise的静态方法：
+
+Promise.resolve 返回一个fulfilled状态的promise对象
+Promise.reject 返回一个rejected状态的promise对象
+Promise.all 接收一个promise对象数组为参数，只有全部为resolve才会调用 通常会用来处理 多个并行异步操作
+Promise.race 接收一个promise对象数组为参数，只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理。
+```
+- promise原理
+
+- 实现promise
+``` 
+基础版本
+const PENDING = 'pending';
+    const FULFILLED = 'fulfilled';
+    const REJECTED = 'rejected';
+
+    function MyPromise(executor) {
+      this.state = PENDING;
+      this.value = null;
+      this.reason = null;
+
+      const resolve = (value) => {
+        if (this.state === PENDING) {
+          this.state = FULFILLED;
+          this.value = value;
+        }
+      }
+
+      const reject = (reason) => {
+        if (this.state === PENDING) {
+          this.state = REJECTED;
+          this.reason = reason;
+        }
+      }
+
+      try {
+        executor(resolve, reject);
+      } catch (reason) {
+        reject(reason);
+      }
+    }
+
+```
+- 实现promise.all的polyfill
+- 实现promise.all
+``` 
+Promise.all = function(arr){
+    if(!Array.isArray(arr)){
+        throw new TypeError(`argument must be a array`)
+    }
+    return new Promise((resolve,reject) => {
+        var resolveNum = 0;
+        var resolveResult = [];
+        for(let i = 0; i < arr.length; i++){
+           Promise.resolve(
+                arr[i].then((data) => {
+                    resolveNum++;
+                    resolveResult.push(data)
+                    if(resolveNum == arr.length){ // 如果都执行完了，把resolveResult返回
+                        return resolve(resolveResult)
+                    }
+                }，(e) => {
+                    return reject(e)
+                })
+        })
+    })
+    
+}
+```
+- 实现promise.race // Promise.race方法和Promise.all方法差不多，只是Promise.all需要等待所有的请求都完成，而Promise.race只要有一个请求完成就可以。
+
+``` 
+Promise.race = function(arr) {
+      if(!Array.isArray(arr)){
+          throw new TypeError(`argument must be a array`)
+      }
+    return new Promise(function(resolve, reject) {
+      for (let i = 0; i < arr.length; i++) {
+         Promise.resolve(
+            arr[i]).then(data => {
+                return resolve(data);
+            }, (e) => {
+                return reject(e);
+            });
+         }
+    })
+  }
+
+```
+
+- 实现promise.retry
+``` 
+Promise.retry = (fn, times, delay) => {
+  return new Promise((resolve, reject)=>{
+      var error;
+      var attempt = () => {
+          if (times == 0) {
+              reject(error);
+          } else {
+              fn().then(resolve).catch((e) => {
+                      times--;
+                      error = e;
+                      setTimeout(()=>
+                        {
+                            attempt()  
+                        }, delay);
+                  });
+          }
+      };
+      attempt();
+  });
+};
+
+```
+
+- 实现 promise.all 并发限制，每次只能并发5个请求
+
+- 写一个函数，每隔1000ms发送一次请求，如果promise未正确返回则继续发送，最多5次。
+- 可以手写一些Promise么？不是写Promise怎么用哦，让你实现一下Promise。  
+
+```
+var promise = new Promise((resolve,reject) => {
+    if (操作成功) {
+        resolve(value)
+    } else {
+        reject(error)
+    }
+})
+promise.then(function (value) {
+    // success
+},function (value) {
+    // failure
+})
+
+```
+- Promise 构造函数是同步执行还是异步执行，那么 then 方法呢？
+```   
+promise构造函数是同步执行的，then方法是异步执行的
+
+```
+
+- 用promise 实现genetator
+
+- promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
+
+``` 
+reject 是用来抛出异常的，catch 才是用来处理异常的
+
+```                                                                                                                 
+
+- promise是怎么实现的原理
+- Promise.then里抛出的错误能否被try...catch捕获，为什么
+
+- promise相关。resolve，reject，then，all，race了解过吗？
+- 现在有100个请求，怎么实现 Promise 串行化 。就是形如 [fn1, fn2, fn3] 这样， 然后 fn1 返回的是一个 promise ，resolve 之后再去执行 fn2
+- 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
+- Promise和Async处理失败的时候有什么区别
+- Async/await promise 和 generator区别。
+``` 
+Async/await是一个语法糖，内部实现还是generator + yield
+async function 代替了 function*，await 代替了 yield
+
+```
+- 写一个封装函数控制1000s访问一次，然后最多5次，直至拿到结果。
+- 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
+- 三个异步函数怎么知道彼此已经结束。不用promise.all
+- 用es5写promise
+- Promise 中抛出异常能否被 catch 捕获？
+```  
+let promise = new Promise((resolve, reject) => {
+  throw new Error()
+  reject()
+})
+promise.catch(err => {
+  console.log(err)
+})
+
+```
+- Promise.resolve(1)返回是一个什么
+- Promise.any()
+- Promise.reject()
+- Promise.allSettled()
+- 模拟实现一个 Promise.finally
+```  
+Promise.prototype.finally = function (callback) {
+  let P = this.constructor;
+  return this.then(
+    value  => P.resolve(callback()).then(() => value),
+    reason => P.resolve(callback()).then(() => { throw reason })
+  );
+};
+
+```
+- 设计并实现 Promise.race()
+```  
+Promise._race = promises => new Promise((resolve, reject) => {
+	promises.forEach(promise => {
+		promise.then(resolve, reject)
+	})
+})
+```
+
+- new Promise(() => {throw new Error()})能否抛出异常？  
+- 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch
+
+- ES6的generator函数来进行异步的调用，手写                             
+```                                                      
+yield怎么控制顺序                                              
+                                                         
+```                                                      
+- 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换    
 
 
 - 模块化Commonjs,AMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义

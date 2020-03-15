@@ -13,6 +13,20 @@ class Animal2 {
 }
 ```
 - es6 class怎么用es5实现
+- es5的继承 实现一下
+- 实现extend函数
+- 实现原型链继承
+``` 
+function myExtend(C, P) {
+    var F = function(){};
+    F.prototype = P.prototype;
+    C.prototype = new F();
+    C.prototype.constructor = C;
+    C.super = P.prototype;
+}
+
+```
+
 - new 实现和new 的过程
 ``` 
 (1) 创建一个新对象；
@@ -33,55 +47,8 @@ class Animal2 {
       return typeof res === 'object' ? res : obj;
   }
 ```
-- 实现原型链继承
-``` 
-function myExtend(C, P) {
-    var F = function(){};
-    F.prototype = P.prototype;
-    C.prototype = new F();
-    C.prototype.constructor = C;
-    C.super = P.prototype;
-}
 
-```
-- 实现promise
-``` 
-基础版本
-const PENDING = 'pending';
-    const FULFILLED = 'fulfilled';
-    const REJECTED = 'rejected';
 
-    function MyPromise(executor) {
-      this.state = PENDING;
-      this.value = null;
-      this.reason = null;
-
-      const resolve = (value) => {
-        if (this.state === PENDING) {
-          this.state = FULFILLED;
-          this.value = value;
-        }
-      }
-
-      const reject = (reason) => {
-        if (this.state === PENDING) {
-          this.state = REJECTED;
-          this.reason = reason;
-        }
-      }
-
-      try {
-        executor(resolve, reject);
-      } catch (reason) {
-        reject(reason);
-      }
-    }
-
-```
-
-- 实现 promise.all 并发限制，每次只能并发5个请求
-
-- 写一个函数，每隔1000ms发送一次请求，如果promise未正确返回则继续发送，最多5次。
 - 用call或者apply实现bind。
 - call、apply、bind 实现。
 
@@ -145,6 +112,270 @@ Function.prototype.mybind = function (context) {
 }
 
 ```
+- 实现 instanceof 
+```  
+// 思路：判断右边变量的原型是否存在于左边变量的原型链上
+
+function instanceOf(left, right) {
+  let leftValue = left.__proto__
+  let rightValue = right.prototype
+  while (true) {
+    if (leftValue === null) {
+      return false
+    }
+    if (leftValue === rightValue) {
+      return true
+    }
+    leftValue = leftValue.__proto__
+  }
+}
+
+```
+- Object.create 的基本实现
+``` 
+_create = function (o) {
+    let F = function () {}
+    F.prototype = o
+    return new F()
+}
+
+```
+- getOwnPropertyNames 实现
+``` 
+// 不能拿到不可枚举的属性
+
+if (typeof Object.getOwnPropertyNames !== 'function') {
+  Object.getOwnPropertyNames = function(o) {
+    if (o !== Object(o)) {
+      throw TypeError('Object.getOwnPropertyNames called on non-object');
+    }
+    var props = [],
+      p;
+    for (p in o) {
+      if (Object.prototype.hasOwnProperty.call(o, p)) {
+        props.push(p);
+      }
+    }
+    return props;
+  };
+}
+
+```
+
+- 手写一个防抖/节流函数
+
+``` 
+// 防抖函数 生存环境请用lodash.debounce， 防止连续频发操作，触发多次。只触发最后一次。
+const debounce = (fn, delay) => {
+  let timer = null;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
+};
+
+// 节流函数  间隔一段时间内触发一次。
+const throttle = (fn, delay = 500) => {
+  let flag = true;
+  return (...args) => {
+    if (!flag) return;
+    flag = false;
+    setTimeout(() => {
+      fn.apply(this, args);
+      flag = true;
+    }, delay);
+  };
+};
+
+```
+
+- 使用 reduce 方法实现 forEach、map、filter
+``` 
+// forEach
+ function forEachUseReduce(array, handler) {
+   array.reduce(function (pre, item, index) {
+     handler(item, index);
+   });
+ }
+ 
+ // map
+ function mapUseReduce(array, handler) {
+   let result = [];
+
+   array.reduce(function (pre, item, index) {
+     let mapItem = handler(item, index);
+     result.push(mapItem);
+   });
+
+   return result;
+ }
+ 
+ // filter
+ function filterUseReduce(array, handler) {
+   let result = [];
+
+   array.reduce(function (pre, item, index) {
+     if (handler(item, index)) {
+       result.push(item);
+     }
+   });
+
+   return result;
+ }
+
+```
+- 能不能改写一个数组的push方法，不是重写，也不是新写，保持原来的逻辑之外，再添加一个consle.log（arguements）在控制台打印出来，比如pushA。在工作台把A打印出来，push什么就打印什么。原来的逻辑不能改？
+
+- 实现数组的flat函数（数组拍平）
+``` 
+
+```
+- 实现在原型链上重写 flat 函数 （链接：https://juejin.im/post/5dff18a4e51d455804256d31#heading-15）
+``` 
+Array.prototype.myFlat = function(num = 1) {
+  if (Array.isArray(this)) {
+    let arr = [];
+    if (!Number(num) || Number(num) < 0) {
+      return this;
+    }
+    this.forEach(item => {
+      if(Array.isArray(item)){
+        let count = num
+        arr = arr.concat(item.myFlat(--count))
+      } else {
+        arr.push(item)
+      }  
+    });
+    return arr;
+  } else {
+    throw tihs + ".flat is not a function";
+  }
+};
+const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
+arr.myFlat(arr)
+
+```
+
+- 实现一个JS函数柯里化，函数柯里化使用场景
+``` 
+function currying(fn, ...args) {
+      if (args.length >= fn.length) {
+        return fn(...args);
+      } else {
+        return (...args2) => currying(fn, ...args, ...args2);
+      }
+    }
+```
+- 实现compose函数（实现函数compose，compose接受多个函数作为参数，并返回一个新的函数，新的函数会从右向左依次执行原函数， 并且上一次结果的返回值将会作为下一个函数的参数。）
+``` 
+function compose(...fns) {
+  return (...args) => fns.reduceRight((acc, cur) => cur(acc), ...args);
+}
+
+function a(msg) {
+  return msg + "a";
+}
+function b(msg) {
+  return msg + "b";
+}
+function c(msg) {
+  return msg + "c";
+}
+
+const f = compose(
+  a,
+  b,
+  c
+);
+console.log(f("hello"));
+
+```
+
+- Array.isArray实现
+``` 
+
+Array.isArray = function(obj){
+    return Object.prototype.toString.call(obj) == "[object Array]"
+}
+
+```
+- 实现一个JSON.stringify
+``` 
+todo
+
+```
+- 实现一个JSON.parse
+```  
+var jsonStr = '{"name":"cxk", "age":25}';
+var obj = eval("(" + json + ")");
+
+连接：https://www.jianshu.com/p/9cfe30d1a967
+
+```
+
+- 使用setTimeout实现setInterval
+
+``` 
+// 可避免setInterval因执行时间导致的间隔执行时间不一致
+setTimeout (function () {
+  // do something
+  setTimeout (arguments.callee, 500)
+}, 500)
+
+
+```
+- 原生js实现filter函数。
+``` 
+Array.prototype.filter = function(fn,context){
+    if(typeof fn != 'function'){
+        throw new TypeError(`${fn} is not a function`)
+    }
+    let arr = this;
+    let reuslt = []
+    for(var i = 0;i < arr.length; i++){
+        let temp= fn.call(context,arr[i],i,arr);
+        if(temp){
+            result.push(arr[i]);
+        }
+    }
+    return result
+}
+```
+- 手写reduce或者filter的polyfill
+- 手写parseInt的实现
+- 自己实现一个event类
+- 手写indexOf的实现
+- 手写 Proxy / Object.defineProperty
+- 写一个函数，可以控制最大并发数
+- 自己实现一个event类
+- 设计一个栈，不使用数组
+- 实现 memorize once 高阶函数
+- sum(2, 3)实现sum(2)(3)的效果
+- 实现Object.assign()函数
+- async/await 实现
+- reduce 实现
+- Iterator遍历器实现
+- promise封装ajax
+``` 
+var  myNewAjax=function(url){
+  return new Promise(function(resolve,reject){
+      var xhr = new XMLHttpRequest();
+      xhr.open('get',url);
+      xhr.send(data);
+      xhr.onreadystatechange=function(){
+           if(xhr.status==200&&readyState==4){
+                var json=JSON.parse(xhr.responseText);
+                resolve(json)
+           }else if(xhr.readyState==4&&xhr.status!=200){
+                reject('error');
+           }
+      }
+  })
+}
+
+```
 - 数据绑定最基本的实现
 ``` 
 题目：
@@ -180,119 +411,6 @@ function bindData(obj, fn) {
 
 
 ```
-- 实现数组的flat函数（数组拍平）
-``` 
-
-```
-- 能不能改写一个数组的push方法，不是重写，也不是新写，保持原来的逻辑之外，再添加一个consle.log（arguements）在控制台打印出来，比如pushA。在工作台把A打印出来，push什么就打印什么。原来的逻辑不能改？
-- 实现在原型链上重写 flat 函数 （链接：https://juejin.im/post/5dff18a4e51d455804256d31#heading-15）
-``` 
-Array.prototype.myFlat = function(num = 1) {
-  if (Array.isArray(this)) {
-    let arr = [];
-    if (!Number(num) || Number(num) < 0) {
-      return this;
-    }
-    this.forEach(item => {
-      if(Array.isArray(item)){
-        let count = num
-        arr = arr.concat(item.myFlat(--count))
-      } else {
-        arr.push(item)
-      }  
-    });
-    return arr;
-  } else {
-    throw tihs + ".flat is not a function";
-  }
-};
-const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
-arr.myFlat(arr)
-
-```
-- instanceof 实现
-```  
-// 思路：判断右边变量的原型是否存在于左边变量的原型链上
-
-function instanceOf(left, right) {
-  let leftValue = left.__proto__
-  let rightValue = right.prototype
-  while (true) {
-    if (leftValue === null) {
-      return false
-    }
-    if (leftValue === rightValue) {
-      return true
-    }
-    leftValue = leftValue.__proto__
-  }
-}
-
-```
-- Array.isArray实现
-``` 
-
-Array.isArray = function(obj){
-    return Object.prototype.toString.call(obj) == "[object Array]"
-}
-
-```
-- getOwnPropertyNames 实现
-``` 
-// 不能拿到不可枚举的属性
-
-if (typeof Object.getOwnPropertyNames !== 'function') {
-  Object.getOwnPropertyNames = function(o) {
-    if (o !== Object(o)) {
-      throw TypeError('Object.getOwnPropertyNames called on non-object');
-    }
-    var props = [],
-      p;
-    for (p in o) {
-      if (Object.prototype.hasOwnProperty.call(o, p)) {
-        props.push(p);
-      }
-    }
-    return props;
-  };
-}
-
-
-
-```
-- 使用setTimeout实现setInterval
-
-``` 
-// 可避免setInterval因执行时间导致的间隔执行时间不一致
-setTimeout (function () {
-  // do something
-  setTimeout (arguments.callee, 500)
-}, 500)
-
-
-```
-- Javascript中callee和caller的作用？
-```  
-caller是返回一个对函数的引用，该函数调用了当前函数；
-callee是返回正在被执行的function函数，也就是所指定的function对象的正文
-```
-
-- JSON转换为URL
-``` 
- // data={name : 'zhangsan', age : 'lisi'}
-  function parseParams(data){
-    var key, i, value, tempArr = [];
-    for (i in data) {
-      key = encodeURIComponent(i);
-      value = encodeURIComponent(data[i]);
-      tempArr.push(key + '=' + value);
-    }
-    return tempArr.join('&');
-  }
-
-
-```
-- 实现一个基本的Event Bus，如何实现一个事件的发布订阅
 - 实现一个双向数据绑定
 
 ```
@@ -340,236 +458,22 @@ input.addEventListener('keyup', function(e) {
 
 ```
 
-- 手写AJAX实现（要求带cookie）
-  
-```
-var xhr = new XMLHttpRequest()
-// 初始化
-xhr.open("GET","/api",false)
-
-// 发送请求
-xhr.send(data)
-
-xhr.onreadystatechange = function(){
-    //这里的函数异步执行，可参考之前JS基础中的异步模块
-    if(xhr.readyState == 4){
-        if(xhr.status == 200){
-            alert(xhr.responseText)
-        }
+- JSON转换为URL
+``` 
+ // data={name : 'zhangsan', age : 'lisi'}
+  function parseParams(data){
+    var key, i, value, tempArr = [];
+    for (i in data) {
+      key = encodeURIComponent(i);
+      value = encodeURIComponent(data[i]);
+      tempArr.push(key + '=' + value);
     }
-}
-
-xhr.send(null)
-
-如何发送同步ajax
-
-```
-- 使用 reduce 方法实现 forEach、map、filter
-``` 
-// forEach
- function forEachUseReduce(array, handler) {
-   array.reduce(function (pre, item, index) {
-     handler(item, index);
-   });
- }
- 
- // map
- function mapUseReduce(array, handler) {
-   let result = [];
-
-   array.reduce(function (pre, item, index) {
-     let mapItem = handler(item, index);
-     result.push(mapItem);
-   });
-
-   return result;
- }
- 
- // filter
- function filterUseReduce(array, handler) {
-   let result = [];
-
-   array.reduce(function (pre, item, index) {
-     if (handler(item, index)) {
-       result.push(item);
-     }
-   });
-
-   return result;
- }
-
-```
-- 实现compose函数（实现函数compose，compose接受多个函数作为参数，并返回一个新的函数，新的函数会从右向左依次执行原函数， 并且上一次结果的返回值将会作为下一个函数的参数。）
-``` 
-function compose(...fns) {
-  return (...args) => fns.reduceRight((acc, cur) => cur(acc), ...args);
-}
-
-function a(msg) {
-  return msg + "a";
-}
-function b(msg) {
-  return msg + "b";
-}
-function c(msg) {
-  return msg + "c";
-}
-
-const f = compose(
-  a,
-  b,
-  c
-);
-console.log(f("hello"));
-
-```
-- 实现拖拽
-
-``` 
-todo
-
-```
-- 在线编程，getUrlParams(url,key); 就是很简单的获取url的某个参数的问题，但要考虑边界情况，多个返回值等等
-- 手写一个防抖/节流函数
-
-``` 
-// 防抖函数 生存环境请用lodash.debounce， 防止连续频发操作，触发多次。只触发最后一次。
-const debounce = (fn, delay) => {
-  let timer = null;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      fn.apply(this, args);
-    }, delay);
-  };
-};
-
-// 节流函数  间隔一段时间内触发一次。
-const throttle = (fn, delay = 500) => {
-  let flag = true;
-  return (...args) => {
-    if (!flag) return;
-    flag = false;
-    setTimeout(() => {
-      fn.apply(this, args);
-      flag = true;
-    }, delay);
-  };
-};
-
-```
-
-
-
-
-- js实现css的:hover效果
-
-``` 
-$("el").onmouseover = function() {
-  //
-}
-$("el").onmouseout = function() {
-  //
-}
-
-```
-- 实现一个JSON.stringify
-``` 
-todo
-
-```
-- 实现一个JSON.parse
-```  
-var jsonStr = '{"name":"cxk", "age":25}';
-var obj = eval("(" + json + ")");
-```
-
-
-``` 
-
-连接：https://www.jianshu.com/p/9cfe30d1a967
-
-```
-- es5的继承 实现一下
-- 实现extend函数
-- 手写jsonp实现
-``` 
-function handleResponse(response){
-    alert(“You’re at IP address ” + response.ip + ”, which is in ” + response.city + ”, ” + response.region_name);
-}
-var script = document.createElement(“script”);
-script.src = “http://freegeoip.net/json/?callback=handleResponse”;
-document.body.insertBefore(script, document.body.firstChild);
+    return tempArr.join('&');
+  }
 
 
 ```
-- 基于promise实现jsonp
-- Object.create 的基本实现
-``` 
-_create = function (o) {
-    let F = function () {}
-    F.prototype = o
-    return new F()
-}
-
-```
-
-- 实现instance of
-```  
-
-function new_instance_of(leftVaule, rightVaule) { 
-    let rightProto = rightVaule.prototype; // 取右表达式的 prototype 值
-    leftVaule = leftVaule.__proto__; // 取左表达式的__proto__值
-    while (true) {
-    	if (leftVaule === null) {
-            return false;	
-        }
-        if (leftVaule === rightProto) {
-            return true;	
-        } 
-        leftVaule = leftVaule.__proto__ 
-    }
-}
-
-
-```
-- 实现promise.all
-
-``` 
-function isPromise(obj) {       // 这个方法是为了判断不是promise的时候直接返回。
-    return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';  
-}
-
-const myPromiseAll = (arr)=>{
-    let result = [];
-    return new Promise((resolve,reject)=>{
-        for(let i = 0;i < arr.length;i++){
-            if(isPromise(arr[i])){
-                arr[i].then((data)=>{
-                    result[i] = data;
-                    if(result.length === arr.length){
-                        resolve(result)
-                    }
-                },reject)
-            }else{
-                result[i] = arr[i];
-            }
-        }    
-    })
-}
-
-```
-- 实现一个JS函数柯里化，函数柯里化使用场景
-``` 
-function currying(fn, ...args) {
-      if (args.length >= fn.length) {
-        return fn(...args);
-      } else {
-        return (...args2) => currying(fn, ...args, ...args2);
-      }
-    }
-```
-
+- 实现一个基本的Event Bus，如何实现一个事件的发布订阅
 - 手写代码实现一下Array.prototype.trim这个函数，并写个测试用例跑给我看下
 ``` 
 String.prototype.trim = function () {
@@ -610,6 +514,67 @@ function render(template, data) {
 }
 
 ```
+- 手写jsonp实现
+``` 
+function handleResponse(response){
+    alert(“You’re at IP address ” + response.ip + ”, which is in ” + response.city + ”, ” + response.region_name);
+}
+var script = document.createElement(“script”);
+script.src = “http://freegeoip.net/json/?callback=handleResponse”;
+document.body.insertBefore(script, document.body.firstChild);
+
+```
+- 手写AJAX实现（要求带cookie）
+  
+```
+var xhr = new XMLHttpRequest()
+// 初始化
+xhr.open("GET","/api",false)
+
+// 发送请求
+xhr.send(data)
+
+xhr.onreadystatechange = function(){
+    //这里的函数异步执行，可参考之前JS基础中的异步模块
+    if(xhr.readyState == 4){
+        if(xhr.status == 200){
+            alert(xhr.responseText)
+        }
+    }
+}
+
+xhr.send(null)
+
+如何发送同步ajax
+
+```
+
+- 实现拖拽
+
+``` 
+todo
+
+```
+- 在线编程，getUrlParams(url,key); 就是很简单的获取url的某个参数的问题，但要考虑边界情况，多个返回值等等
+
+- js实现css的:hover效果
+
+``` 
+$("el").onmouseover = function() {
+  //
+}
+$("el").onmouseout = function() {
+  //
+}
+
+```
+
+
+
+- 基于promise实现jsonp
+
+
+
 
 - 实现一个简单的虚拟 DOM 渲染
 ``` 
@@ -688,98 +653,19 @@ String.prototype.f = function(){
 }
 
 ```
-- 手写 Proxy / Object.defineProperty
-- 写一个函数，可以控制最大并发数
-- 自己实现一个event类
-- 设计一个栈，不使用数组
-- 实现 memorize once 高阶函数
-- sum(2, 3)实现sum(2)(3)的效果
-- 实现Object.assign()函数
-- async/await 实现
-- reduce 实现
-- Iterator遍历器实现
+
+
+
 - Thunk函数实现（结合Generator实现异步）
 - 实现一个方法遍历输出Object所有属性
 - js实现before，after这样的钩子函数
 - 手写一个基于hash路由函数
 - 实现一个repeat函数，主要是闭包的应用
-1. Promise（A+规范）、then、all方法
 
 3. Thunk函数实现（结合Generator实现异步）
 4. async实现原理（spawn函数）
 - 手写实现inherit函数
 - 手写实现以下事件委托函数 function delegate(parent, selector, handle) {}
-- 实现promise.all的polyfill
-- 实现promise.all
-``` 
-Promise.all = function(arr){
-    if(!Array.isArray(arr)){
-        throw new TypeError(`argument must be a array`)
-    }
-    return new Promise((resolve,reject) => {
-        var resolveNum = 0;
-        var resolveResult = [];
-        for(let i = 0; i < arr.length; i++){
-           Promise.resolve(
-                arr[i].then((data) => {
-                    resolveNum++;
-                    resolveResult.push(data)
-                    if(resolveNum == arr.length){ // 如果都执行完了，把resolveResult返回
-                        return resolve(resolveResult)
-                    }
-                }，(e) => {
-                    return reject(e)
-                })
-        })
-    })
-    
-}
-```
-- 实现promise.race // Promise.race方法和Promise.all方法差不多，只是Promise.all需要等待所有的请求都完成，而Promise.race只要有一个请求完成就可以。
-
-``` 
-Promise.race = function(arr) {
-      if(!Array.isArray(arr)){
-          throw new TypeError(`argument must be a array`)
-      }
-    return new Promise(function(resolve, reject) {
-      for (let i = 0; i < arr.length; i++) {
-         Promise.resolve(
-            arr[i]).then(data => {
-                return resolve(data);
-            }, (e) => {
-                return reject(e);
-            });
-         }
-    })
-  }
-
-```
-
-- 实现promise.retry
-``` 
-Promise.retry = (fn, times, delay) => {
-  return new Promise((resolve, reject)=>{
-      var error;
-      var attempt = () => {
-          if (times == 0) {
-              reject(error);
-          } else {
-              fn().then(resolve).catch((e) => {
-                      times--;
-                      error = e;
-                      setTimeout(()=>
-                        {
-                            attempt()  
-                        }, delay);
-                  });
-          }
-      };
-      attempt();
-  });
-};
-
-```
 
 
 
@@ -808,54 +694,15 @@ function promisify(fn,context){
 }
 ```
 - 写一个函数，可以控制最大并发数
-- 手写reduce或者filter的polyfill
-- 手写parseInt的实现
-- 自己实现一个event类
-- 用reduce实现map的功能
-- 手写indexOf的实现
+
 - 手撕代码--前端路由实现（JS原生）
 - 手撕代码--图片懒加载实现（JS原生）
 - cookie封装
 - 实现一个循环监听
 - 实现 memorize once 高阶函数
 - 如果我需要设计一个拖拽的dialog，怎么实现？手写代码
-- 原生js实现filter函数。
-``` 
-Array.prototype.filter = function(fn,context){
-    if(typeof fn != 'function'){
-        throw new TypeError(`${fn} is not a function`)
-    }
-    let arr = this;
-    let reuslt = []
-    for(var i = 0;i < arr.length; i++){
-        let temp= fn.call(context,arr[i],i,arr);
-        if(temp){
-            result.push(arr[i]);
-        }
-    }
-    return result
-}
-```
-- promise封装ajax
-``` 
-var  myNewAjax=function(url){
-  return new Promise(function(resolve,reject){
-      var xhr = new XMLHttpRequest();
-      xhr.open('get',url);
-      xhr.send(data);
-      xhr.onreadystatechange=function(){
-           if(xhr.status==200&&readyState==4){
-                var json=JSON.parse(xhr.responseText);
-                resolve(json)
-           }else if(xhr.readyState==4&&xhr.status!=200){
-                reject('error');
-           }
-      }
-  })
-}
 
 
-```
 - 手写闭包里怎么用setTimeout
 - 实现 (5).add(3).minus(2) 功能
 ``` 
@@ -932,28 +779,7 @@ class EventEmitter {
     }
 }
 ```
-- 使用reduce实现map
-``` 
 
-Array.prototype.reduceToMap = function (handler) {
-      return this.reduce((target, current, index) => {
-        target.push(handler.call(this, current, index))
-        return target;
-      }, [])
-    };
-```
-- 使用reduce实现filter
-``` 
-Array.prototype.reduceToFilter = function (handler) {
-      return this.reduce((target, current, index) => {
-        if (handler.call(this, current, index)) {
-          target.push(current);
-        }
-        return target;
-      }, [])
-    };
-
-```
 - js实现继承的几种方式
 ```  
 
@@ -1273,4 +1099,6 @@ console.log(queryString(urlStr));
 
 ```
 - 5个feach请求，请求完成后要求立即执行，但最终的输出顺序要按照要求输出ABCDE
+
+
 

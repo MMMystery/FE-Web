@@ -24,72 +24,17 @@ console.log(obj1.name); // 小鹿
 
 
 ```
-- 如何准确判断一个变量是否是数组类型
 
+- js类型判断方式有哪些
 ``` 
-1.instanceof  
+1.typeof
+2.instanceof
+3.constructor
+4.Object.prototype.toString.call() === [object Array]  （这种方式最精准）
 
-var a = []
-a instanceof Array //a是否Array的实例？true or false 
-总结：判断实例对象的proto属性与构造函数的prototype是不是用一个引用。如果不是，他会沿着对象的proto向上查找的，直到顶端Object。
-f.proto 一层一层向上寻找，能否找到FOO.prototype，找到为true，否则为false
-
-2.数组方法 isArray()
-Array.isArray(a)
-
-
-3.利用构造函数constructor
-var arr = [1,2,3];
-arr.constructor === Array // a实例所对应的构造函数是否为Array
-
-4.Object.prototype.toString.call(obj)  （这种方式最精准）// “[object Number]”
+typeof有什么不好的地方, typeof 与 instanceof 区别
 
 ```
-- 怎么判断对象类型？判断一个对象是否是函数
-``` 
-typeof操作符
-instanceof 
-利用构造函数constructor 
-Object.prototype.toString.call() // “[object Number]”
-
-```
-- 利用typeof instance of来判断数组还是对象
-- JS中的内置函数有哪些？
-```  
-内置函数： Object Array Boolean Number String Function Date RegExp Error
-内置对象：Math, JSON
-```
-- js继承的几种方式以及区别
-```
-
-- 组合继承和寄生组合继承的优缺点
-- class继承和原型链继承的区别
-
-```
-- 数值运算
-```  
-1 + "1"
-加性操作符：如果只有一个操作数是字符串，则将另一个操作数转换为字符串，然后再将两个字符串拼接起来
-
-所以值为：“11”
-
-2 * "2" // 4
-乘性操作符：如果有一个操作数不是数值，则在后台调用 Number()将其转换为数值
-
-[1, 2] + [2, 1]
-Javascript中所有对象基本都是先调用valueOf方法，如果不是数值，再调用toString方法。
-
-所以两个数组对象的toString方法相加，值为："1,22,1"
-
-"a" + + "b"
-后边的“+”将作为一元操作符，如果操作数是字符串，将调用Number方法将该操作数转为数值，如果操作数无法转为数值，则为NaN。
-
-所以值为："aNaN"
-
-```
-- javascript的执行上下文
-
-
 
 - console.log(typeof null, typeof [])等等类型判断
 
@@ -120,6 +65,166 @@ alert(“is null”);
 
 ```
 
+- 如何准确判断一个变量是否是数组类型
+
+``` 
+
+1.数组方法 isArray()
+Array.isArray(a)
+
+2.instanceof  
+
+var a = []
+a instanceof Array //a是否Array的实例？true or false 
+总结：判断实例对象的proto属性与构造函数的prototype是不是用一个引用。如果不是，他会沿着对象的proto向上查找的，直到顶端Object。
+f.proto 一层一层向上寻找，能否找到FOO.prototype，找到为true，否则为false
+
+3.利用构造函数constructor
+var arr = [1,2,3];
+arr.constructor === Array // a实例所对应的构造函数是否为Array
+
+4.Object.prototype.toString.call(obj)  （这种方式最精准）// “[object Number]”
+
+```
+- 怎么判断对象类型？判断一个对象是否是函数
+``` 
+typeof操作符
+instanceof 
+利用构造函数constructor 
+Object.prototype.toString.call() // “[object Number]”
+
+```
+- 利用typeof instanceof来判断数组还是对象
+
+
+
+---
+
+
+- JS中的内置函数有哪些？
+```  
+内置函数： Object Array Boolean Number String Function Date RegExp Error
+内置对象：Math, JSON
+```
+- 数值运算
+```  
+1 + "1"
+加性操作符：如果只有一个操作数是字符串，则将另一个操作数转换为字符串，然后再将两个字符串拼接起来
+
+所以值为：“11”
+
+2 * "2" // 4
+乘性操作符：如果有一个操作数不是数值，则在后台调用 Number()将其转换为数值
+
+[1, 2] + [2, 1]
+Javascript中所有对象基本都是先调用valueOf方法，如果不是数值，再调用toString方法。
+
+所以两个数组对象的toString方法相加，值为："1,22,1"
+
+"a" + + "b"
+后边的“+”将作为一元操作符，如果操作数是字符串，将调用Number方法将该操作数转为数值，如果操作数无法转为数值，则为NaN。
+
+所以值为："aNaN"
+
+```
+- == 和 ===
+``` 
+==存在类型转换
+
+===的话
+1、如果是引用类型，则两个变量必须指向同一个对象（同一个地址）；
+2.、如果是基本类型，则两个变量除了类型必须相同外，值还必须相等。
+```
+- 怎么判断两个对象相等
+```
+通过ES6的Object.is(a,b) // true
+
+JSON.stringify(obj)==JSON.stringify(obj2);//true
+
+
+通用方法:
+首先判断是不是引用类型的，如果有一个不是，那就进行直接判断。
+若全是引用类型的，那就先看一下属性值的长度是否相等，若不相等，就直接false啦。
+若相等，就接着遍历里边的每一个属性，还是先看里边的属性是哪一个类型，如果全是引用类型，那就接着对里边的属性调用equals递归函数。如果不全是引用类型，那就比较这两个值是否相等，若不相等就直接false啦。
+
+```
+
+- js的单线程、EventLoop机制、宏队列、微队列
+``` 
+JS的本质是单线：
+
+1. 一般来说，非阻塞性的任务采取同步的方式，直接在主线程的执行栈完成。
+
+2. 一般来说，阻塞性的任务都会采用异步来执行，异步的工作一般会交给其他线程完成，然后回调函数会放到事件队列中。
+
+
+- 异步任务里又分为：宏任务与微任务
+宏任务：
+主代码块（包含new Promise）注意：new Promise() 是同步任务，resolve才是异步方法。
+setTimeout
+setInterval
+setImmediate (Node独有)
+requestAnimationFrame (浏览器独有)
+I/O
+UI rendering (浏览器独有)
+
+
+微任务：
+process.nextTick (Node独有)
+Promise
+Object.observe
+MutationObserver
+
+看链接；https://juejin.im/post/59e85eebf265da430d571f89
+
+```
+
+- js原型链
+
+``` 
+文章：https://www.jianshu.com/p/be7c95714586
+
+```
+
+
+- 手写一个闭包
+``` 
+function fn1(){
+ var count = 0;
+ 
+ return (){
+   return count++;
+ }
+}
+
+var a = fn1();
+a()  // 1
+a()  // 2
+
+```
+- 说一下对闭包的理解，以及你在什么场景下会用到闭包？JS 没有闭包的话会怎么样？
+``` 
+匿名自执行函数的时候用到
+闭包就是能够读取其他函数内部变量的函数
+闭包是指有权访问另⼀个函数作⽤域中变量的函数，创建闭包的最常⻅的⽅式就是在⼀个
+函数内创建另⼀个函数，通过另⼀个函数访问这个函数的局部变量,利⽤闭包可以突破作⽤链域
+闭包的特性：
+
+函数内再嵌套函数
+内部函数可以引⽤外层的参数和变量
+参数和变量不会被垃圾回收机制回收
+
+闭包优点
+可以让一个变量保存在内存中，不被垃圾回收机制清除
+可以避免变量的全局污染
+创建执行匿名函数，他可以围绕文件中的上下文创建一个闭包环境，为这个文件创建私有的命名空间。这样就可以避免不同的 JavaScript 模块和库在命名上产生冲突。
+闭包缺点
+容易造成内存泄漏
+闭包对性能会产生负面影响，包括处理速度和内存消耗
+
+```
+- 实际中遇到的闭包问题
+
 - js this
 ```  
 this和作用域不一样,作用域是声明的时候就定下来了,this是在调用的时候才确定下来
@@ -146,7 +251,169 @@ j();
 箭头函数 > new > 显式 > 隐式 > 默认绑定
 ```
 
+- javascript的执行上下文
 - JS的原型
+- js的变量提升和函数提升，暂时性死区
+```  
+JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量(函数也是变量)，然后再一行一行地运行。这造成的结果，就是所有的变量的声明语句，都会被提升到代码的头部，这就叫做变量提升（hoisting）。
+
+例如：
+console.log(a);
+var a =1;
+
+实际是：
+var a;
+console.log(a);
+a =1;
+
+js里的function也可看做变量，也存在变量提升情况，比如：
+a();
+
+var a = function(){
+    console.log(1);
+};
+
+// TypeError: a is not a function
+
+实际是：
+var a;
+a();
+a = function(){
+   console.log(1);
+};
+
+
+示例：
+function hah(number){
+
+        var a="show";
+
+        alert(a);//show
+
+        var a=4;
+
+        alert(a);//4
+
+        number--;
+
+    }
+
+ hah(1);
+ 
+实际是：
+function hah(number){
+
+    var a;
+
+    var a;
+
+    a = "show";
+
+    alert(a);//show
+
+    a=4;
+
+    alert(a);//4
+
+    number--;
+
+}
+
+hah(1);
+
+```
+
+- 深拷贝和浅拷贝的实现方式分别有哪些？什么时候需要深拷贝，深拷贝需要注意的地方
+```
+
+浅拷贝只复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存。修改新对象也会改动原对象。
+但深拷贝会另外创造一个一模一样的对象，新对象跟原对象不共享内存，修改新对象不会改到原对象。
+
+
+
+浅拷贝：(1) Object.assign的方式 (2) 通过对象扩展运算符 (3) 通过数组的slice方法 (4) 通过数组的concat方法。
+
+// 1. ...实现
+let copy1 = {...{x:1}}
+
+// 2. Object.assign实现
+
+let copy2 = Object.assign({}, {x:1})
+
+
+
+
+深拷贝：(1) 通过JSON.stringify来序列化对象 (2) 手动实现递归的方式。
+
+// 1. JOSN.stringify()/JSON.parse()
+let obj = {a: 1, b: {x: 3}}
+JSON.parse(JSON.stringify(obj))
+
+// 2. 递归拷贝
+function deepClone(obj) {
+  let copy = obj instanceof Array ? [] : {}
+  for (let i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      copy[i] = typeof obj[i] === 'object' ? deepClone(obj[i]) : obj[i]
+    }
+  }
+  return copy
+}
+
+
+问：深拷贝(数组，对象，dom元素)
+
+数组深拷贝的方式 for循环 、concat方法 、...扩展符
+
+对象的深拷贝  for...in 、 JSON.parse(JSON.stringify(obj)) 、 ...扩展符
+
+
+问：怎么实现this对象的深拷贝
+
+```
+
+- 数组中的forEach和map的区别
+- for in和for of,forEach的区别
+
+```
+for in 一般常用来遍历对象或json
+for of数组对象都可以遍历
+forEach
+
+for in循环出的是key，for of循环出的是value
+```
+- obj对象和map对象区别
+``` 
+obj对象就是键必须是字符串，这给它的使用带来了很大的限制，所以引入了Map，它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
+```
+- Set、Map和weakset、WeakMap分别是什么
+
+```
+Set
+成员唯一、无序且不重复
+[value, value]，键值与键名是一致的（或者说只有键值，没有键名）
+可以遍历，方法有：add、delete、has
+
+WeakSet
+成员都是对象
+成员都是弱引用，可以被垃圾回收机制回收，可以用来保存DOM节点，不容易造成内存泄漏
+不能遍历，方法有add、delete、has
+
+Map
+本质上是键值对的集合，类似集合,键的数据类型可以是基本类型数据也可以是对象，而值也可以是任意类型数据。
+可以遍历，方法很多可以跟各种数据格式转换
+
+WeakMap
+只接受对象作为键名（null除外），不接受其他类型的值作为键名
+键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
+不能遍历，方法有get、set、has、delete
+
+
+问：Set去重的原理？
+
+```
+
+- Map类型和obj的区别，什么时候只可以用map类型
 - 对象遍历 和 数组遍历
 ``` 
 
@@ -202,41 +469,23 @@ Object.keys遍历对象所有可枚举属性 不包括原型链上的属性
 
 hasOwnProperty 检查对象是否包含属性名，无法检查原型链上是否具有此属性名
 ```
-- JavaScript中的arguments， 如何arguments转数组
-``` 
-arguments 是一个类数组对象 代表传给一个function的参数列表。
-const obj = { 0: "a", 1: "b" }; // 这种是类数组
-const arr = [ "a", "b" ]; // 正常数组
+- 写一个能遍历对象和数组的通用forEach函数
 
-
-function printArgs() {
-    console.log(arguments);
+```
+function forEach(obj,fn){
+	var key
+	if(obj instanceof Array){
+    	//准备判断是不是数组
+    	obj.forEach(function(item,index){
+    		fn(index,item)
+    	})
+	}else{
+    	//不是数组就是对象
+    	for(key in obj){
+    		fn(key,obj[k])
+    	}
+	}
 }
-printArgs("A", "a", 0, { foo: "Hello, arguments" });
-执行结果是：
-["A", "a", 0, Object]
-
-arguments 操作
-arguments.length //参数个数
-
-
-
-转数组方法：
-方法一：通过Array.prototype属性调用slice方法
-方法二：通过调用[]的slice方法
-方法三：通过遍历arguments,返回数组
-
-1、var args = Array.prototype.slice.call(arguments);
-2、var args = [].slice.call(arguments);
-3、function toArray(){
-    var args = []; 
-    for (var i = 1; i < arguments.length; i++) { 
-        args.push(arguments[i]); 
-    } 
-    return args;
-}
-
-
 
 ```
 
@@ -386,16 +635,59 @@ function myFunction(a, b) {
 myObject = myFunction.call(myObject, 10, 2);  
 
 ```
-- js类型判断方式有哪些
-``` 
-1.typeof
-2.instanceof
-3.constructor
-4.Object.prototype.toString.call() === [object Array]  （这种方式最精准）
 
-typeof有什么不好的地方
+
+
+- js继承的几种方式以及区别
+```
+
+- 组合继承和寄生组合继承的优缺点
+- class继承和原型链继承的区别
 
 ```
+
+
+
+- JavaScript中的arguments， 如何arguments转数组
+``` 
+arguments 是一个类数组对象 代表传给一个function的参数列表。
+const obj = { 0: "a", 1: "b" }; // 这种是类数组
+const arr = [ "a", "b" ]; // 正常数组
+
+
+function printArgs() {
+    console.log(arguments);
+}
+printArgs("A", "a", 0, { foo: "Hello, arguments" });
+执行结果是：
+["A", "a", 0, Object]
+
+arguments 操作
+arguments.length //参数个数
+
+
+
+转数组方法：
+方法一：通过Array.prototype属性调用slice方法
+方法二：通过调用[]的slice方法
+方法三：通过遍历arguments,返回数组
+
+1、var args = Array.prototype.slice.call(arguments);
+2、var args = [].slice.call(arguments);
+3、function toArray(){
+    var args = []; 
+    for (var i = 1; i < arguments.length; i++) { 
+        args.push(arguments[i]); 
+    } 
+    return args;
+}
+
+
+
+```
+
+
+
 
 - 0.1+0.2等于多少，精度丢失的原因
 ``` 
@@ -424,75 +716,7 @@ for…in 遍历（当前对象及其原型上的）每一个属性名称
 for…of遍历（当前对象上的）每一个属性值:
 ```
 
-- js的变量提升和函数提升，暂时性死区
-```  
-JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量(函数也是变量)，然后再一行一行地运行。这造成的结果，就是所有的变量的声明语句，都会被提升到代码的头部，这就叫做变量提升（hoisting）。
 
-例如：
-console.log(a);
-var a =1;
-
-实际是：
-var a;
-console.log(a);
-a =1;
-
-js里的function也可看做变量，也存在变量提升情况，比如：
-a();
-
-var a = function(){
-    console.log(1);
-};
-
-// TypeError: a is not a function
-
-实际是：
-var a;
-a();
-a = function(){
-   console.log(1);
-};
-
-
-示例：
-function hah(number){
-
-        var a="show";
-
-        alert(a);//show
-
-        var a=4;
-
-        alert(a);//4
-
-        number--;
-
-    }
-
- hah(1);
- 
-实际是：
-function hah(number){
-
-    var a;
-
-    var a;
-
-    a = "show";
-
-    alert(a);//show
-
-    a=4;
-
-    alert(a);//4
-
-    number--;
-
-}
-
-hah(1);
-
-```
 - JavaScript 中的真值和假值是什么？
 ``` 
 
@@ -515,35 +739,6 @@ map（）会返回一个新数组。
 如果你只是对数字进行遍历时，也可以使用 forEach()
 map() 是保持原有数组不变的正确选择，他可以让原始数组的每一个值都映射到新的数组上
 map() 运行的较快，且返回的新数组可以让你继续使用 map()、filter()、reduce() 等方法，
-
-```
-- js的赋值底层逻辑，js传值和传址的区别
-``` 
-
-传值：
-var a = 5,b = a;  // 这里赋值基本数据类型（数字、字符串、布尔值）的值
-b = 8;
-alert( a);  // 5
-
-
-传址：
-var obj1 = {
-      name: '张三',
-      age: 18,
-      sex: '男'
-    }
-    var obj2 = obj1; // 这里是赋值引用类型(对象、数组、函数)的值
- 
-    console.log('obj2：', obj2) // {name:张三，age:18,sex:男}
-    obj2.age = 22
-    console.log('obj2：', obj2) // {name:张三，age:22,sex:男}
-    console.log('obj1：', obj1) // {name:张三，age:22,sex:男}
-
-重点：根据数据的操作方式不同，可以将数据分为两大类型：基础类型和引用类型
-
-基础类型：number类型、boolean类型和string类型，其操作方式为传值
-
-引用类型：array类型、object类型、function类型，其操作方式为传址
 
 ```
 
@@ -608,8 +803,6 @@ function isEven(num) {
 
 ```
 
-- router分为hash和history，它们有什么区别？
-
 
 - 什么是NaN？以及如何检查值是否为 NaN？
 ``` 
@@ -655,54 +848,7 @@ call和apply改变了函数的this上下文后便执行该函数,而bind则是�
 
 
 
-- 深拷贝和浅拷贝的实现方式分别有哪些？什么时候需要深拷贝，深拷贝需要注意的地方
-```
 
-浅拷贝只复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存。修改新对象也会改动原对象。
-但深拷贝会另外创造一个一模一样的对象，新对象跟原对象不共享内存，修改新对象不会改到原对象。
-
-
-
-浅拷贝：(1) Object.assign的方式 (2) 通过对象扩展运算符 (3) 通过数组的slice方法 (4) 通过数组的concat方法。
-
-// 1. ...实现
-let copy1 = {...{x:1}}
-
-// 2. Object.assign实现
-
-let copy2 = Object.assign({}, {x:1})
-
-
-
-
-深拷贝：(1) 通过JSON.stringify来序列化对象 (2) 手动实现递归的方式。
-
-// 1. JOSN.stringify()/JSON.parse()
-let obj = {a: 1, b: {x: 3}}
-JSON.parse(JSON.stringify(obj))
-
-// 2. 递归拷贝
-function deepClone(obj) {
-  let copy = obj instanceof Array ? [] : {}
-  for (let i in obj) {
-    if (obj.hasOwnProperty(i)) {
-      copy[i] = typeof obj[i] === 'object' ? deepClone(obj[i]) : obj[i]
-    }
-  }
-  return copy
-}
-
-
-问：深拷贝(数组，对象，dom元素)
-
-数组深拷贝的方式 for循环 、concat方法 、...扩展符
-
-对象的深拷贝  for...in 、 JSON.parse(JSON.stringify(obj)) 、 ...扩展符
-
-
-问：怎么实现this对象的深拷贝
-
-```
 
 
 
@@ -720,115 +866,7 @@ JSON.retrocycle 还原
 ```
 
 
-
-
-
-
 - 手写代码实现事件委托
-``` 
- <ul id="list">
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
- </ul>
-
-let ul = document.querySelector('#list');
-
-ul.addEventListener('click', function(e){
-    let target = e.target;
-
-    while( target.tagName !== 'LI' ){
-           if ( target.tagName === 'UL' ){
-                target = null;
-                break;
-           }
-
-           target = target.parentNode;
-    }
-
-    if ( target ){
-        console.log('你点击了ui里的li')
-    }
-})
-
-```
-
-- 手写一个闭包
-``` 
-function fn1(){
- var count = 0;
- 
- return (){
-   return count++;
- }
-}
-
-var a = fn1();
-a()  // 1
-a()  // 2
-
-```
-- 说一下对闭包的理解，以及你在什么场景下会用到闭包？JS 没有闭包的话会怎么样？
-``` 
-匿名自执行函数的时候用到
-闭包就是能够读取其他函数内部变量的函数
-闭包是指有权访问另⼀个函数作⽤域中变量的函数，创建闭包的最常⻅的⽅式就是在⼀个
-函数内创建另⼀个函数，通过另⼀个函数访问这个函数的局部变量,利⽤闭包可以突破作⽤链域
-闭包的特性：
-
-函数内再嵌套函数
-内部函数可以引⽤外层的参数和变量
-参数和变量不会被垃圾回收机制回收
-
-闭包优点
-可以让一个变量保存在内存中，不被垃圾回收机制清除
-可以避免变量的全局污染
-创建执行匿名函数，他可以围绕文件中的上下文创建一个闭包环境，为这个文件创建私有的命名空间。这样就可以避免不同的 JavaScript 模块和库在命名上产生冲突。
-闭包缺点
-容易造成内存泄漏
-闭包对性能会产生负面影响，包括处理速度和内存消耗
-
-```
-- 实际中遇到的闭包问题
-- 说说你对闭包的理解,闭包为什么会造成内存泄漏？
-
-
-
-
-- js的单线程、EventLoop机制、宏队列、微队列
-``` 
-JS的本质是单线：
-
-1. 一般来说，非阻塞性的任务采取同步的方式，直接在主线程的执行栈完成。
-
-2. 一般来说，阻塞性的任务都会采用异步来执行，异步的工作一般会交给其他线程完成，然后回调函数会放到事件队列中。
-
-
-- 异步任务里又分为：宏任务与微任务
-宏任务：
-主代码块（包含new Promise）注意：new Promise() 是同步任务，resolve才是异步方法。
-setTimeout
-setInterval
-setImmediate (Node独有)
-requestAnimationFrame (浏览器独有)
-I/O
-UI rendering (浏览器独有)
-
-
-微任务：
-process.nextTick (Node独有)
-Promise
-Object.observe
-MutationObserver
-
-看链接；https://juejin.im/post/59e85eebf265da430d571f89
-
-
-
-
-```
-
 
 
 - rem基本设置
@@ -861,108 +899,19 @@ var f = function(s) {
 ```
 
 
-- js原型链
 
-``` 
-文章：https://www.jianshu.com/p/be7c95714586
-
-```
-
-- generator 原理
-- async、await 原理和优缺点
-``` 
-Async、await运行的时候会解析成什么样来运行
-```
-
-
-- typeof 于 instanceof 区别
 - 怎么判断页面是否加载完成？
 
-- 说说重绘（Repaint）和回流（Reflow）
+
 
  
-- 数组中的forEach和map的区别
-- for in和for of,forEach的区别
-
-```
-for in 一般常用来遍历对象或json
-for of数组对象都可以遍历
-forEach
-
-for in循环出的是key，for of循环出的是value
-```
-- obj对象和map对象区别
-``` 
-obj对象就是键必须是字符串，这给它的使用带来了很大的限制，所以引入了Map，它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
-```
-- Set、Map和weakset、WeakMap分别是什么
-
-```
-Set
-成员唯一、无序且不重复
-[value, value]，键值与键名是一致的（或者说只有键值，没有键名）
-可以遍历，方法有：add、delete、has
-
-WeakSet
-成员都是对象
-成员都是弱引用，可以被垃圾回收机制回收，可以用来保存DOM节点，不容易造成内存泄漏
-不能遍历，方法有add、delete、has
-
-Map
-本质上是键值对的集合，类似集合,键的数据类型可以是基本类型数据也可以是对象，而值也可以是任意类型数据。
-可以遍历，方法很多可以跟各种数据格式转换
-
-WeakMap
-只接受对象作为键名（null除外），不接受其他类型的值作为键名
-键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
-不能遍历，方法有get、set、has、delete
-
-
-问：Set去重的原理？
-
-```
-
-- Map类型和obj的区别，什么时候只可以用map类型
-
- 
-- 可以手写一些Promise么？不是写Promise怎么用哦，让你实现一下Promise。  
-
-```
-var promise = new Promise((resolve,reject) => {
-    if (操作成功) {
-        resolve(value)
-    } else {
-        reject(error)
-    }
-})
-promise.then(function (value) {
-    // success
-},function (value) {
-    // failure
-})
-
-```
 
 
 
 
 
-- 组件化和模块化
-```
- 为什么要组件化开发
 
-有时候页面代码量太大，逻辑太多或者同一个功能组件在许多页面均有使用，维护起来相当复杂，这个时候，就需要组件化开发来进行功能拆分、组件封装，已达到组件通用性，增强代码可读性，维护成本也能大大降低
 
-为什么要模块化
-早期的javascript版本没有块级作用域、没有类、没有包、也没有模块，这样会带来一些问题，如复用、依赖、冲突、代码组织混乱等，随着前端的膨胀，模块化显得非常迫切
-模块化的好处
-
-避免变量污染，命名冲突
-提高代码复用率
-提高了可维护性
-方便依赖关系管理
-
-```
 
 - mouseover和mouseenter的区别
   
@@ -973,25 +922,7 @@ mouseenter：当鼠标移除元素本身（不包含元素的子元素）会触�
 ```
 
 
-- 写一个能遍历对象和数组的通用forEach函数
 
-```
-function forEach(obj,fn){
-	var key
-	if(obj instanceof Array){
-    	//准备判断是不是数组
-    	obj.forEach(function(item,index){
-    		fn(index,item)
-    	})
-	}else{
-    	//不是数组就是对象
-    	for(key in obj){
-    		fn(key,obj[k])
-    	}
-	}
-}
-
-```
 
 - setTimeout、setInterval和requestAnimationFrame；前端的requestAnimationFrame了解吗？有使用过吗？说一下使用场景。
 
@@ -1014,7 +945,7 @@ requestAnimationFrame会申请绘制下一帧，只是执行时间由浏览器�
 
 
 - 说说js的垃圾回收(GC)
-- Async/Await 如何通过同步的方式实现异步
+
 - 获取页面滚动高度
 ``` 
 window.pageYOffset
@@ -1043,36 +974,15 @@ function lazyLoad () {
 方案三：IntersectionObserver // 浏览器api，能直接判断是否在视口中。
 
 ```
-- div中两个button，div上事件代理，如何判断点击的是哪个button
-
-``` 
-$(docuement).on('click',function(e){
-      e.target// 就能看出点击的是哪个
-})
-```
-- 实现拖拽的功能，自己的思路，pc的思路和移动端思路
-```  
-onmousedown：鼠标按下事件
-onmousemove：鼠标移动事件
-onmouseup：鼠标抬起事件
-
-计算点的坐标
-
-```
 
 
 
 
 
 
-- offsetWidth/offsetHeight,clientWidth/clientHeight与scrollWidth/scrollHeight的区别
-```
-offsetWidth/offsetHeight 返回值为content + padding + border (和getBoundingClentRect()相同)
 
-clientWidth/clientHeight 返回值为content + padding // 如果有滚动条 ，也不会包含滚动条
 
-scrollWidth/scrollHeight 返回值为content + padding + 溢出内容尺寸
-```
+
 
 - 怎么从十万个节点中找到想要的节点，怎么快速在某个节点前插入一个节点？
 - 怎么用原生js实现一个轮播图，以及滚动滑动
@@ -1180,17 +1090,6 @@ const ul = document.getElementById('list');
 ul.style.display = 'none';
 appendDataToElement(ul, data);
 ul.style.display = 'block';
-
-```
-
-
-- setTimout promise等异步方案的加载顺序
-
-``` 
-
-Promise和setTimeout，process.nextTick, setImmediate的调用优先级：
-
-script(主程序代码) > process.nextTick() > promise.then() > setTimeout() > setImmediate
 
 ```
 
@@ -1334,40 +1233,8 @@ Array.prototype.push // 数组的实例方法
 
 ```
 
-- this指向题目
-``` 
-obj = {
-    name: 'a',
-    getName : function () {
-        console.log(this.name);
-    }
-}
 
-var fn = obj.getName
-obj.getName()
-var fn2 = obj.getName()
-fn()
-fn2()
 
-```
-- == 和 ===
-``` 
-==存在类型转换
-
-===的话
-1、如果是引用类型，则两个变量必须指向同一个对象（同一个地址）；
-2.、如果是基本类型，则两个变量除了类型必须相同外，值还必须相等。
-```
-- 怎么判断两个对象相等
-```
-序列化JSON.stringify(obj)
-
-通用方法:
-首先判断是不是引用类型的，如果有一个不是，那就进行直接判断。
-若全是引用类型的，那就先看一下属性值的长度是否相等，若不相等，就直接false啦。
-若相等，就接着遍历里边的每一个属性，还是先看里边的属性是哪一个类型，如果全是引用类型，那就接着对里边的属性调用equals递归函数。如果不全是引用类型，那就比较这两个值是否相等，若不相等就直接false啦。
-
-```
 
 - 0.1+0.2===0.3吗，为什么？
 ``` 
@@ -1384,15 +1251,6 @@ JavaScript的Number类型有个最大值（安全值），即2的53次方，为9
 解决：
 后端使用字符串格式发送数据
 控制用户新建数据时id的长度
-
-```
-
-- 判断对象是否相等的办法
-``` 
-
-通过ES6的Object.is(a,b) // true
-
-JSON.stringify(obj)==JSON.stringify(obj2);//true
 
 ```
 
@@ -1581,6 +1439,12 @@ const pipe = (...fns) => x => fns.reduce((v, fn) => fn(v), x)
 Memoization 是用来缓存函数调用的输出结果，以便减少后续再次调用时的运算，进而加快运算速度的一种优化技术。Memoization 在再次调用有相同输入的同一函数时将直接返回缓存的该函数的输出结果，但第一次的计算当然是必不可少的。
 ```
 - 对JavaScript和Java两者的怎么看
+
+- Javascript中callee和caller的作用？
+```  
+caller是返回一个对函数的引用，该函数调用了当前函数；
+callee是返回正在被执行的function函数，也就是所指定的function对象的正文
+```
 
 ----------------------------------------------暂时不处理-----------------------------------------------
 - canvas优化绘制性能

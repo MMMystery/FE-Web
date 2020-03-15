@@ -45,7 +45,14 @@ window.navigator对象：常常用来获取浏览器信息、是否移动端访�
 
 ```
 
+- offsetWidth/offsetHeight,clientWidth/clientHeight与scrollWidth/scrollHeight的区别
+```
+offsetWidth/offsetHeight 返回值为content + padding + border (和getBoundingClentRect()相同)
 
+clientWidth/clientHeight 返回值为content + padding // 如果有滚动条 ，也不会包含滚动条
+
+scrollWidth/scrollHeight 返回值为content + padding + 溢出内容尺寸
+```
 - 怎么获取一个元素到视图顶部的距离
 - getBoundingClientRect获取的top和offsetTop获取的top区别
 ``` 
