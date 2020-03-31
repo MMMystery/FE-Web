@@ -47,3 +47,18 @@ fn()
 fn2()
 
 ```
+- this指向题目
+``` 
+function foo() {
+	console.log(this.a)
+}
+var a = 1
+foo()  // this指向window，a已经赋值了，所以是1；
+
+var obj = {
+	a: 2,
+	foo: foo
+}
+obj.foo() // this指向obj对象。打印输出2
+
+```

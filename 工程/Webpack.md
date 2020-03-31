@@ -350,6 +350,26 @@ SCSS 源代码会先交给 sass-loader 把 SCSS 转换成 CSS；
 - webpack里面的插件是怎么实现的
 - 实现webpack的vconsole的插件
 - 写过 webpack 插件吗？知道 webpack 插件的组成吗？
+``` 
+调用插件 apply 函数传入 compiler 对象
+通过 compiler 对象监听事件
+
+比如你想实现一个编译结束退出命令的插件
+apply (compiler) {
+  const afterEmit = (compilation, cb) => {
+    cb()
+    setTimeout(function () {
+      process.exit(0)
+    }, 1000)
+  }
+
+  compiler.plugin('after-emit', afterEmit)
+}
+}
+
+module.exports = BuildEndPlugin
+
+```
 - 如何编写loaders和plugins
 - 自己写过什么loader和plugins？
 
@@ -361,7 +381,7 @@ SCSS 源代码会先交给 sass-loader 把 SCSS 转换成 CSS；
 
 - 使用 Webpack 优化项目
 ``` 
-loader （使用exclude排除node_modules中的文件，减小 Loader 的文件搜索范围，那么需要去搜索的文件量就减小了）
+loader （使用include & exclude排除node_modules中的文件，减小 Loader 的文件搜索范围，那么需要去搜索的文件量就减小了）
 
 DllPlugin
 DllPlugin 可以将特定的类库提前打包然后引入。这种方式可以极大的减少打包类库的次数，只有当类库更新版本才有需要重新打包，并且也实现了将公共代码抽离成单独文件的优化方案。
@@ -377,6 +397,7 @@ tree shaking树摇 （Tree Shaking 可以实现删除项目中未被引用的代
 scope hoisting  （Scope Hoisting 会分析出模块之间的依赖关系，尽可能的把打包出来的模块合并到一个函数中去。）
 
 code splitting代码分割和按需加载 提取公共代码。webpack4移除了CommonsChunkPlugin (提取公共代码)，用optimization.splitChunks和optimization.runtimeChunk来代替
+按照路由或者组件拆分代码，实现按需加载
 
 ```
 - 最后可以在聊聊webpack的优化，例如babel-loader的优化，gzip压缩等等

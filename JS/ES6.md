@@ -68,9 +68,10 @@ const team = {
 console.log(team.teamSummary())
 
 
-键头函数的this指向和普通函数的区别？箭头函数有作用域吗？可以new吗？可以放argument吗？
+箭头函数的this指向和普通函数的区别？箭头函数有作用域吗？可以new吗？可以放argument吗？
 
-箭头函数没有自己的this，箭头函数中的this是在定义函数的时候绑定，它会捕获其所在的上下文的this作为自己的this，而不像普通函数那样是在执行函数的时候绑定。
+箭头函数没有自己的this，箭头函数中的this是在定义函数的时候绑定，它会捕获其所在的上下文的this作为自己的this(this 只取决于他外面的第一个不是箭头函数的函数的 this)
+并且 this一旦绑定了上下文，就不会被任何代码改变,而不像普通函数那样是在执行函数的时候绑定。
 
 1、函数体内的 this 对象，就是定义时所在的对象，而不是使用时所在的对象。
 
@@ -228,8 +229,37 @@ console.log(k.next());//{value: undefined, done: true}
 
 ```
 
-- Set 和 Map 数据结构
+- Set、Map数据结构和weakset、WeakMap分别是什么
+
+```
+Set
+成员唯一、无序且不重复
+[value, value]，键值与键名是一致的（或者说只有键值，没有键名）
+可以遍历，方法有：add、delete、has
+
+WeakSet
+成员都是对象
+成员都是弱引用，可以被垃圾回收机制回收，可以用来保存DOM节点，不容易造成内存泄漏
+不能遍历，方法有add、delete、has
+
+Map
+本质上是键值对的集合，类似集合,键的数据类型可以是基本类型数据也可以是对象，而值也可以是任意类型数据。
+可以遍历，方法很多可以跟各种数据格式转换
+
+WeakMap
+只接受对象作为键名（null除外），不接受其他类型的值作为键名
+键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
+不能遍历，方法有get、set、has、delete
+
+
+问：Set去重的原理？
+
+```
 - Proxy
+``` 
+Proxy 是 ES6 中新增的功能，可以用来自定义对象中的操作
+
+```
 - Proxy对象能拦截什么
 ```            
 
@@ -319,8 +349,17 @@ set
 ```
 
 
+- generator 原理
+``` 
+Generator 是 ES6中新增的语法，和 Promise 一样，都可以用来异步编程
 
+generator:
+yield: 暂停代码
+next(): 继续执行代码                                            
+   
+yield怎么控制顺序 
 
+```
 
 
 - promise（promise A+规范）
@@ -344,7 +383,7 @@ Promise.race 接收一个promise对象数组为参数，只要有一个promise�
 - 实现promise
 ``` 
 基础版本
-const PENDING = 'pending';
+    const PENDING = 'pending';
     const FULFILLED = 'fulfilled';
     const REJECTED = 'rejected';
 
@@ -491,8 +530,10 @@ reject 是用来抛出异常的，catch 才是用来处理异常的
 - Promise和Async处理失败的时候有什么区别
 - Async/await promise 和 generator区别。
 ``` 
+
 Async/await是一个语法糖，内部实现还是generator + yield
 async function 代替了 function*，await 代替了 yield
+
 
 ```
 - 写一个封装函数控制1000s访问一次，然后最多5次，直至拿到结果。
@@ -537,10 +578,7 @@ Promise._race = promises => new Promise((resolve, reject) => {
 - new Promise(() => {throw new Error()})能否抛出异常？  
 - 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch
 
-- ES6的generator函数来进行异步的调用，手写                             
-```                                                      
-yield怎么控制顺序                                              
-                                                         
+                                                   
 ```                                                      
 - 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换    
 
@@ -557,72 +595,28 @@ IIFE： 使用自执行函数来编写模块化，特点：在一个单独的函
 	data:[]
   }
 })()
-AMD： 使用requireJS 来编写模块化，特点：依赖必须提前声明好。
 
+
+AMD： 使用requireJS 来编写模块化，特点：依赖必须提前声明好。--非同步加载模块
+AMD: require / defined
 define('./index.js',function(code){
 	// code 就是index.js 返回的内容
 })
-CMD： 使用seaJS 来编写模块化，特点：支持动态引入依赖文件。
-
-define(function(require, exports, module) {  
-  var indexCode = require('./index.js');
-});
-
-CommonJS： nodejs 中自带的模块化。
-
-var fs = require('fs');
-
-ES Modules： ES6 引入的模块化，支持import 来引入另一个 js 。
-
-import a from 'a';
-
-
-Commonjs
-
-暴露模块：module.exports = value或exports.xxx = value；
-
-引入模块：require(xxx), 如果是第三方模块，xxx 为模块名；如果是自定义模块，xxx 为模块文件路径
-
-AMD--非同步加载模块
-
-// 定义没有依赖的模块
-define(function(){
-   return 模块
-})
- 
-// 定义有依赖的模块
-define(['module1', 'module2'], function(m1, m2){
-   return 模块
-})
- 
 //引入使用模块：
- 
 require(['module1', 'module2'], function(m1, m2){
    使用 m1/m2
 })
 
-CMD--专门用于浏览器端，模块的加载是异步的，模块使用时才会加载执行。整合了 CommonJS 和 AMD 规范的特点
-/ 定义没有依赖的模块
+
+
+CMD： 使用seaJS 来编写模块化，特点：支持动态引入依赖文件。--专门用于浏览器端，模块的加载是异步的，模块使用时才会加载执行。整合了 CommonJS 和 AMD 规范的特点
+//导出模块
 define(function(require, exports, module){
   exports.xxx = value
   module.exports = value
 })
- 
- 
-// 定义有依赖的模块
-define(function(require, exports, module){
-  // 引入依赖模块 (同步)
-  var module2 = require('./module2')
-  // 引入依赖模块 (异步)
-    require.async('./module3', function (m3) {
-    })
-  // 暴露模块
-  exports.xxx = value
-})
- 
- 
 //引入模块	
-define(function (require) {
+define(function (require, exports, module) {
   var m1 = require('./module1')
   var m4 = require('./module4')
   m1.show()
@@ -630,12 +624,27 @@ define(function (require) {
 })
 
 
+CommonJS： nodejs 中自带的模块化。
+require / module.exports / exports
+暴露模块：module.exports = value或exports.xxx = value；
+引入模块：require(xxx), 如果是第三方模块，xxx 为模块名；如果是自定义模块，xxx 为模块文件路径
+
+
+
+
 ES6 模块化
 1，设计思想：静态化
 2，在编译时就能确定模块的依赖关系，以及输入和输出的变量
+
+
 ```
 
-
+- require与import的区别
+``` 
+require支持 动态导入，import不支持，正在提案 (babel 下可支持)
+require是 同步 导入，import属于 异步 导入
+require是 值拷贝，导出值变化不会影响导入值；import指向 内存地址，导入值会随导出值而变化
+```
 
 
 

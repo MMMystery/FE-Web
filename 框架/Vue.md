@@ -21,9 +21,35 @@ vue编译Compile的过程主要分以下几步
 parse(生成AST)=> optimize(优化静态节点) => generate(生成render function)
 
 ```
-- 除了Object.defineProperty,还有什么能实现数据劫持（双向绑定，proxy和defineProperty对比）
+- 除了Object.defineProperty,还有什么能实现数据劫持（双向绑定，proxy和defineProperty对比），Proxy 相比于 defineProperty 的优势
+``` 
+
+Object.defineProperty只能对属性进行数据劫持，所以需要深度遍历整个对象 对于数组不能监听到数据的变化
+
+数组变化也能监听到
+不需要深度遍历监听
+
+let data = { a: 1 }
+let reactiveData = new Proxy(data, {
+	get: function(target, name){
+		// ...
+	},
+	// ...
+})
+
+
+```
 - vue的生命周期
 - vue的双向绑定如何实现
 - scoped // 防止样式污染
 - computer和watch如何实现的，区别，原理。
 - $nextTrick原理 和 使用场景 ？
+
+- vuex
+``` 
+state: 状态中心
+mutations: 更改状态
+actions: 异步更改状态
+getters: 获取状态
+modules: 将state分成多个modules，便于管理
+```

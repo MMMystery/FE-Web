@@ -1,13 +1,32 @@
 - 堆和栈区别
+
+- 函数提升和变量提升
+``` 
+// 在提升的过程中，相同的函数会覆盖上一个函数，并且函数优先于变量提升
+
+b() // call b second
+console.log(b) // b() {console.log('call b second')}
+console.log(a) // undefined
+
+function b() {
+    console.log('call b fist')
+}
+function b() {
+    console.log('call b second')
+}
+var b = 'Hello'
+var a = 'world'
+
+```
 - JavaScript有⼏种类型的值
 ``` 
 
-栈：原始数据类型（ Undefined ， Null ， Boolean ， Number 、 String  ）
+栈：原始数据类型（ Undefined ， Null ， Boolean ， Number 、 String、 symbol  ）
 堆：引⽤数据类型（对象、数组和函数,Data,RegExp）
 两种类型的区别是：存储位置不同
 
-原始数据类型直接存储在栈( stack )中的简单数据段，占据空间⼩、⼤⼩固定，属于被频 繁使⽤数据，所以放⼊栈中存储；
-引⽤数据类型存储在堆( heap )中的对象,占据空间⼤、⼤⼩不固定,如果存储在栈中，将会 影响程序运⾏的性能；引⽤数据类型在栈中存储了指针，该指针指向堆中该实体的起始地 址。当解释器寻找引⽤值时，会⾸先检索其 在栈中的地址，取得地址后从堆中获得实体
+原始数据类型直接存储在栈( stack )中的简单数据段，占据空间⼩、⼤⼩固定，属于被频繁使⽤数据，所以放⼊栈中存储；
+引⽤数据类型存储在堆( heap )中的对象,占据空间⼤、⼤⼩不固定,如果存储在栈中，将会 影响程序运⾏的性能；引⽤数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址。当解释器寻找引⽤值时，会⾸先检索其在栈中的地址，取得地址后从堆中获得实体
 
 原始数据类型（是真正的复制一份出来）：
 var a = 10;
@@ -204,6 +223,9 @@ a()  // 2
 ```
 - 说一下对闭包的理解，以及你在什么场景下会用到闭包？JS 没有闭包的话会怎么样？
 ``` 
+闭包的定义很简单：函数 A 返回了一个函数 B，并且函数 B 中使用了函数 A 的变量，这就形成了一个闭包。函数 B 就被称为闭包。
+
+
 匿名自执行函数的时候用到
 闭包就是能够读取其他函数内部变量的函数
 闭包是指有权访问另⼀个函数作⽤域中变量的函数，创建闭包的最常⻅的⽅式就是在⼀个
@@ -221,6 +243,36 @@ a()  // 2
 闭包缺点
 容易造成内存泄漏
 闭包对性能会产生负面影响，包括处理速度和内存消耗
+
+
+for ( var i=1; i<=5; i++) {
+	setTimeout( function timer() {
+		console.log( i );
+	}, i*1000 );
+}
+
+怎么让它输出1，2，3，4，5
+1.改为let
+for ( let i=1; i<=5; i++) {
+	setTimeout( function timer() {
+		console.log( i );
+	}, i*1000 );
+}
+
+2.使用闭包
+for ( var i=1; i<=5; i++) {
+    (function(j) {
+        setTimeout( function timer() {
+                console.log( j );
+            }, j*1000 );
+        })(i)
+}
+3.使用setTimeOut的第三个参数
+for ( var i=1; i<=5; i++) {
+	setTimeout( function timer(j) {
+		console.log( j );
+	}, i*1000, i);
+}
 
 ```
 - 实际中遇到的闭包问题
@@ -349,6 +401,13 @@ let copy2 = Object.assign({}, {x:1})
 let obj = {a: 1, b: {x: 3}}
 JSON.parse(JSON.stringify(obj))
 
+该方法也是有局限性的：
+
+会忽略 undefined
+会忽略 symbol
+不能序列化函数
+不能解决循环引用的对象
+
 // 2. 递归拷贝
 function deepClone(obj) {
   let copy = obj instanceof Array ? [] : {}
@@ -360,12 +419,14 @@ function deepClone(obj) {
   return copy
 }
 
+// 3. lodash有一个深拷贝函数
+
 
 问：深拷贝(数组，对象，dom元素)
 
 数组深拷贝的方式 for循环 、concat方法 、...扩展符
 
-对象的深拷贝  for...in 、 JSON.parse(JSON.stringify(obj)) 、 ...扩展符
+对象的深拷贝  for...in 、 JSON.parse(JSON.stringify(obj)) 、 ...扩展符（只能拷贝第一层）
 
 
 问：怎么实现this对象的深拷贝
@@ -386,32 +447,7 @@ for in循环出的是key，for of循环出的是value
 ``` 
 obj对象就是键必须是字符串，这给它的使用带来了很大的限制，所以引入了Map，它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
 ```
-- Set、Map和weakset、WeakMap分别是什么
 
-```
-Set
-成员唯一、无序且不重复
-[value, value]，键值与键名是一致的（或者说只有键值，没有键名）
-可以遍历，方法有：add、delete、has
-
-WeakSet
-成员都是对象
-成员都是弱引用，可以被垃圾回收机制回收，可以用来保存DOM节点，不容易造成内存泄漏
-不能遍历，方法有add、delete、has
-
-Map
-本质上是键值对的集合，类似集合,键的数据类型可以是基本类型数据也可以是对象，而值也可以是任意类型数据。
-可以遍历，方法很多可以跟各种数据格式转换
-
-WeakMap
-只接受对象作为键名（null除外），不接受其他类型的值作为键名
-键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
-不能遍历，方法有get、set、has、delete
-
-
-问：Set去重的原理？
-
-```
 
 - Map类型和obj的区别，什么时候只可以用map类型
 - 对象遍历 和 数组遍历
@@ -552,6 +588,12 @@ proxy
 
 - js的函数式特性（弱类型？函数式的可置换性是什么
 - 写一个四则运算，输入字符串输入结果，如果有括号呢
+``` 
+1 + '1' // '11'
+2 * '2' // 4
+[1, 2] + [2, 1] // '1,22,1'
+'a' + + 'b' // -> "aNaN"
+```
 - JavaScript 创建构造函数的过程中发生了什么(其实问的就是new的过程)
 ``` 
 创建一个新的对象 obj;
@@ -758,6 +800,7 @@ map() 运行的较快，且返回的新数组可以让你继续使用 map()、fi
 event.stopPropagation()  // 方法用于阻止捕获和冒泡阶段中当前事件的进一步传播。
 event.preventDefault()  // 方法可防止元素的默认行为。 如果在表单元素中使用，它将阻止其提交。 如果在锚元素中使用，它将阻止其导航。 如果在上下文菜单中使用，它将阻止其显示或显示。
 
+event.stopImmediatePropagation()  // 阻止相同事件的其他侦听器被调用
 ```
 - setTimeout用作倒计时为何会产生误差
 ``` 
@@ -767,8 +810,35 @@ setTimeout(function () {
 
 某个执行时间很长的函数();
 
-
 如果定时器下面的函数执行要 5秒钟，那么定时器里的log 则需要 5秒之后再执行，函数占用了当前执行栈 ，要等执行栈执行完毕后再去读取 微任务(microtask)，等 微任务(microtask) 完成，这个时候才会去读取 宏任务(macrotask) 里面的 setTimeout 回调函数执行。
+
+
+// 以下是一个相对准备的倒计时实现
+var period = 60 * 1000 * 60 * 2
+var startTime = new Date().getTime();
+var count = 0
+var end = new Date().getTime() + period
+var interval = 1000
+var currentInterval = interval
+
+function loop() {
+  count++
+  var offset = new Date().getTime() - (startTime + count * interval); // 代码执行所消耗的时间
+  var diff = end - new Date().getTime()
+  var h = Math.floor(diff / (60 * 1000 * 60))
+  var hdiff = diff % (60 * 1000 * 60)
+  var m = Math.floor(hdiff / (60 * 1000))
+  var mdiff = hdiff % (60 * 1000)
+  var s = mdiff / (1000)
+  var sCeil = Math.ceil(s)
+  var sFloor = Math.floor(s)
+  currentInterval = interval - offset // 得到下一次循环所消耗的时间
+  console.log('时：'+h, '分：'+m, '毫秒：'+s, '秒向上取整：'+sCeil, '代码执行时间：'+offset, '下次循环间隔'+currentInterval) // 打印 时 分 秒 代码执行时间 下次循环间隔
+
+  setTimeout(loop, currentInterval)
+}
+
+setTimeout(loop, currentInterval)
 
 ```
 
@@ -815,9 +885,12 @@ Number.isNaN() 可以检测
 
 
 总之三种方法都是改变函数内this的指向
-call：调用一个对象的一个方法，用另一个对象替换当前对象。例如：B.call(A, args1,args2);即A对象调用B对象的方法。
-apply：调用一个对象的一个方法，用另一个对象替换当前对象。例如：B.apply(A, arguments);即A对象应用B对象的方法。
-bind除了返回是函数以外，它的参数和call一样。
+call：call 可以接收多个参数。B.call(A, args1,args2);
+apply：apply 只接受一个参数数组。例如：B.apply(A, arguments);
+bind：除了返回是函数以外，它的参数和call一样。可以通过 bind 实现柯里化
+
+call、apply、bind最大的区别就是bind不会立即调用，会返回一个函数，apply、call会立即调用。
+call和apply改变了函数的this上下文后便执行该函数,而bind则是返回改变了上下文后的一个函数。
 
 
 1.fn.call (context, arg1, arg2, .....) 
@@ -832,9 +905,6 @@ apply同call类似，第一个参数也是fn的上下文，和call不同的是�
 
 bind会创建一个函数，称之为绑定函数，调用这个函数时，绑定函数会以创建它是bind方法传入的第一个参数作为自己的上下文，第二个及第二个以后的参数并且加上绑定函数运行时传递进来的参数作为原函数的参数来调用原函数。 （有点绕哈，不过对下一道题有帮助）
 
-
-4.call、apply、bind最大的区别就是bind不会立即调用，会返回一个函数，apply、call会立即调用。
-call和apply改变了函数的this上下文后便执行该函数,而bind则是返回改变了上下文后的一个函数。
 
 ```
 
@@ -1021,6 +1091,14 @@ setInterval(animate,1000);
 
 若要实现先冒泡后捕获，给一个元素绑定两个addEventListener，其中一个第三个参数设置为false（即冒泡），另一个第三个参数设置为true（即捕获），调整它们的代码顺序，将设置为false的监听事件放在设置为true的监听事件前面即可。
 
+// 以下会先打印冒泡然后是捕获
+node.addEventListener('click',(event) =>{
+	console.log('冒泡')
+},false);
+node.addEventListener('click',(event) =>{
+	console.log('捕获 ')
+},true)
+
 ```
 
 - 浏览器事件循环和 node事件循环有什么差别
@@ -1137,6 +1215,11 @@ async函数(async await 是 promise 和 generator 函数组合的一个语法糖
 ``` 
 内存泄漏是资源未释放，内存溢出是满出来了。
 1、内存泄漏memory leak :是指程序在申请内存后，无法释放已申请的内存空间，一次内存泄漏似乎不会有大的影响，但内存泄漏堆积后的后果就是内存溢出。 
+意外的全局变量: 无法被回收
+定时器: 未被正确关闭，导致所引用的外部变量无法被释放
+事件监听: 没有正确销毁 (低版本浏览器可能出现)
+闭包: 会导致父级中的变量无法被释放
+
 2、内存溢出 out of memory :指程序申请内存时，没有足够的内存供申请者使用
 
 ```
@@ -1273,7 +1356,6 @@ sort 函数，可以接收一个函数，返回值是比较两个数的相对顺
 [3, 15, 8, 29, 102, 22].sort((a,b) => {return a - b});
 
 ```
-- 阻止相同事件的其他侦听器被调用（stopImmediatePropagation）
 
 - JSON的parse有几个参数
 ``` 

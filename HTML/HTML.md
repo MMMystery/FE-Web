@@ -166,7 +166,17 @@ submit
 
 ```
 
+- 预加载
+```  
+<link rel="preload" href="http://example.com">
+预加载可以一定程度上降低首屏的加载时间，因为可以将一些不影响首屏但重要的文件延后加载，唯一缺点就是兼容性不好
+```
 
+- 预渲染
+``` 
+<link rel="prerender" href="http://poetries.com">
+预渲染虽然可以提高页面的加载速度，但是要确保该页面百分百会被用户在之后打开，否则就白白浪费资源去渲染
+```
 
 - src和href的区别
 

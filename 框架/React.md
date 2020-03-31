@@ -63,6 +63,9 @@ element diff
 添加 key 之前： 发现 B != A，则创建并插入 B 至新集合，删除老集合 A；以此类推，创建并插入 A、D 和 C，删除 B、C 和 D。
 添加 key 之后： B、D 不做任何操作，A、C 进行移动操作，即可。
 建议：在开发过程中，尽量减少类似将最后一个节点移动到列表首部的操作，当节点数量过大或更新操作过于频繁时，在一定程度上会影响 React 的渲染性能。
+
+首先说说为什么要使用Virturl DOM，因为操作真实DOM的耗费的性能代价太高，所以react内部使用js实现了一套dom结构，在每次操作在和真实dom之前，使用实现好的diff算法，对虚拟dom进行比较，递归找出有变化的dom节点，然后对其进行更新操作。为了实现虚拟DOM，我们需要把每一种节点类型抽象成对象，每一种节点类型有自己的属性，也就是prop，每次进行diff的时候，react会先比较该节点类型，假如节点类型不一样，那么react会直接删除该节点，然后直接创建新的节点插入到其中，假如节点类型一样，那么会比较prop是否有更新，假如有prop不一样，那么react会判定该节点有更新，那么重渲染该节点，然后在对其子节点进行比较，一层一层往下，直到没有子节点
+
 ```
 - DIFF算法为什么是O(n)复杂度而不是O(n^3)
 - 写一下 diff 算法
@@ -74,12 +77,12 @@ element diff
 
 前端路由实现起来其实很简单，本质就是监听 URL 的变化，然后匹配路由规则，显示相应的页面，并且无须刷新。目前单页面使用的路由就只有两种实现方式
 
-hashHistory 模式（Hash路由）
-老浏览器的history: 主要通过hash来实现，对应createHashHistory
+hashHistory 模式（Hash路由，hash模式）
+老浏览器的history: 主要通过hash来实现，不会向服务器请求数据，可以通过 hashchange 事件来监听到 URL 的变化，从而进行跳转页面。对应createHashHistory
 createHashHistory: location.hash=*** location.replace()
 
 
-browserHistory 模式（Browser路由） （路径是真实的URL，会发送request，所以需要服务器端做特殊配置）
+browserHistory 模式（Browser路由，history模式） （路径是真实的URL，会发送request，所以需要服务器端做特殊配置）
 高版本浏览器: 通过html5里面的history，对应createBrowserHistory
 createBrowserHistory: pushState、replaceState
 
@@ -153,6 +156,12 @@ promise.then(() => {
   this.setState({a: true}); // 重新渲染 {a: true, b: false }
   this.setState({b: true}); // 重新渲染 {a: true, b: true }
 });
+
+```
+- setState 函数的第二个参数的作用是什么？
+``` 
+
+该函数会在setState函数调用完成并且组件开始重渲染的时候被调用，我们可以用该函数来监听渲染是否完成
 ```
 - react的setState后发生了什么
 - React V16 生命周期函数用法
@@ -220,6 +229,12 @@ useEffect() // 怎么保证是在Didmount之后使用？
 
 ```
 - React Hooks当中的useEffect是如何区分生命周期钩子的
+
+- 在生命周期中的哪一步你应该发起 AJAX 请求
+``` 
+React 下一代调和算法 Fiber 会通过开始或停止渲染的方式优化应用性能，其会影响到 componentWillMount 的触发次数。对于 componentWillMount 这个生命周期函数的调用次数会变得不确定，React 可能会多次频繁调用 componentWillMount。
+所以在componentDidMount函数中执行最好
+```
 
 - 介绍下 React Fiber 架构、调度原理(自己讲了下Fiber树中节点的具体数据结构、任务优先级、代码如何断开和重连)
 ``` 
@@ -439,6 +454,8 @@ redux中间件redux-saga
 
 redux-saga相当于在Redux原有数据流中多了一层，通过对Action进行监听，从而捕获到监听的Action，然后可以派生一个新的任务对state进行维护（这个看项目本身的需求），通过更改的state驱动View的变更。
 
+中间件提供第三方插件的模式，自定义拦截 action -> reducer 的过程。变为 action -> middlewares -> reducer。这种机制可以让我们改变数据流，实现如异步action ，action 过滤，日志输出，异常报告等功能
+
 ```
 
 - 介绍下 redux，以及和 mobx 区别是什么
@@ -454,7 +471,17 @@ State是只读的
 把reducer设计成纯函数，可以实现时间旅行，记录/回放或者热加载
 
 ```
+- redux有什么缺点
+``` 
+一个组件所需要的数据，必须由父组件传过来，而不能像flux中直接从store取。
+当一个组件相关数据更新时，即使父组件不需要用到这个组件，父组件还是会重新render，可能会有效率影响，或者需要写复杂的shouldComponentUpdate进行判断。
 
+```
+- createElement 与 cloneElement 的区别是什么
+``` 
+createElement 函数是 JSX 编译之后使用的创建 React Element 的函数，而 cloneElement 则是用于复制某个元素并传入新的 Props
+
+```
 
 - 用react/vue写一个组件，功能是反馈鼠标在整个页面的的位置
 

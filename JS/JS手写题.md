@@ -13,6 +13,14 @@ class Animal2 {
 }
 ```
 - es6 class怎么用es5实现
+``` 
+var _createClass = (function() {
+
+})()
+
+
+
+```
 - es5的继承 实现一下
 - 实现extend函数
 - 实现原型链继承
@@ -47,7 +55,35 @@ function myExtend(C, P) {
       return typeof res === 'object' ? res : obj;
   }
 ```
+- 实现 instanceof 
+```  
+// 思路：判断右边变量的原型是否存在于左边变量的原型链上
 
+function instanceof(left, right) {
+    // 获得类型的原型
+    let prototype = right.prototype
+    // 获得对象的原型
+    left = left.__proto__
+    // 判断对象的类型是否等于类型的原型
+    while (true) {
+    	if (left === null)
+    		return false
+    	if (prototype === left)
+    		return true
+    	left = left.__proto__
+    }
+}
+
+```
+- Object.create 的基本实现
+``` 
+_create = function (o) {
+    let F = function () {}
+    F.prototype = o
+    return new F()
+}
+
+```
 
 - 用call或者apply实现bind。
 - call、apply、bind 实现。
@@ -100,46 +136,19 @@ Function.prototype.mybind = function (context) {
     throw new TypeError('Error')
   }
   let _this = this
-  let arg = [...arguments].slice(1)
+  let args = [...arguments].slice(1)
   return function F() {
     // 处理函数使用new的情况
     if (this instanceof F) { 
-      return new _this(...arg, ...arguments)  // 若是用new操作符调用,则直接用new 调用原函数,并用扩展运算符传递参数
+      return new _this(...args, ...arguments)  // 若是用new操作符调用,则直接用new 调用原函数,并用扩展运算符传递参数
     } else {
-      return _this.apply(context, arg.concat(...arguments))
+      return _this.apply(context, args.concat(...arguments))
     }
   }
 }
 
 ```
-- 实现 instanceof 
-```  
-// 思路：判断右边变量的原型是否存在于左边变量的原型链上
 
-function instanceOf(left, right) {
-  let leftValue = left.__proto__
-  let rightValue = right.prototype
-  while (true) {
-    if (leftValue === null) {
-      return false
-    }
-    if (leftValue === rightValue) {
-      return true
-    }
-    leftValue = leftValue.__proto__
-  }
-}
-
-```
-- Object.create 的基本实现
-``` 
-_create = function (o) {
-    let F = function () {}
-    F.prototype = o
-    return new F()
-}
-
-```
 - getOwnPropertyNames 实现
 ``` 
 // 不能拿到不可枚举的属性
@@ -533,12 +542,23 @@ function render(template, data) {
 ```
 - 手写jsonp实现
 ``` 
-function handleResponse(response){
-    alert(“You’re at IP address ” + response.ip + ”, which is in ” + response.city + ”, ” + response.region_name);
+function jsonp(url, jsonpCallback, success) {
+  let script = document.createElement("script");
+  script.src = url;
+  script.async = true;
+  script.type = "text/javascript";
+  window[jsonpCallback] = function(data) {
+    success && success(data);
+  };
+  document.body.appendChild(script);
 }
-var script = document.createElement(“script”);
-script.src = “http://freegeoip.net/json/?callback=handleResponse”;
-document.body.insertBefore(script, document.body.firstChild);
+jsonp(
+  "http://xxx",
+  "callback",
+  function(value) {
+    console.log(value);
+  }
+);
 
 ```
 - 手写AJAX实现（要求带cookie）
@@ -1098,7 +1118,7 @@ function queryString(request){
 console.log(queryString(urlStr));
 
 ```
-- 5个feach请求，请求完成后要求立即执行，但最终的输出顺序要按照要求输出ABCDE
+- 5个fetch请求，请求完成后要求立即执行，但最终的输出顺序要按照要求输出ABCDE
 
 
 
