@@ -32,7 +32,7 @@ Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。�
 
 ```
 - 虚拟dom的缺点
-- diff 和patch 的过程
+- React的diff/patch算法原理, diff 和patch 的过程
 - diff （DIFF算法为什么是O(n)复杂度而不是O(n^3)）
 ```
 diff算法比较新旧节点的时候，比较只会在同层级比较，不会跨层级比较
@@ -238,15 +238,37 @@ React 下一代调和算法 Fiber 会通过开始或停止渲染的方式优化�
 
 - 介绍下 React Fiber 架构、调度原理(自己讲了下Fiber树中节点的具体数据结构、任务优先级、代码如何断开和重连)
 ``` 
+在之前的版本中，如果你拥有一个很复杂的复合组件，然后改动了最上层组件的 state，那么调用栈可能会很长
+调用栈过长，再加上中间进行了复杂的操作，就可能导致长时间阻塞主线程，带来不好的用户体验。Fiber 就是为了解决该问题而生
+Fiber 本质上是一个虚拟的堆栈帧，新的调度器会按照优先级自由调度这些帧，从而将之前的同步渲染改成了异步渲染，在不影响体验的情况下去分段计算更新
+
+
 Fiber 可以提升复杂React 应用的可响应性和性能。Fiber 即是React新的调度算法
 
 旧版：旧版 React 通过递归的方式进行渲染，使用的是 JS 引擎自身的函数调用栈，它会一直执行到栈空为止
 
 新版：Fiber实现了自己的组件调用栈，它以链表的形式遍历组件树，可以灵活的暂停、继续和丢弃执行的任务。实现方式是使用了浏览器的requestIdleCallback这一 API。
 
-
 每次有 state 的变化 React 重新计算，如果计算量过大，浏览器主线程来不及做其他的事情，比如 rerender 或者 layout，那例如动画就会出现卡顿现象。
 React 制定了一种名为 Fiber 的数据结构，加上新的算法，使得大量的计算可以被拆解，异步化，浏览器主线程得以释放，保证了渲染的帧率。从而提高响应性。
+
+对于如何区别优先级，React 有自己的一套逻辑。对于动画这种实时性很高的东西，也就是 16 ms 必须渲染一次保证不卡顿的情况下，React 会每 16 ms（以内） 暂停一下更新，返回来继续渲染动画
+对于异步渲染，现在渲染有两个阶段：reconciliation 和 commit 。前者过程是可以打断的，后者不能暂停，会一直更新界面直到完成。
+1. Reconciliation 阶段
+
+componentWillMount
+componentWillReceiveProps
+shouldComponentUpdate
+componentWillUpdate
+2. Commit 阶段
+
+componentDidMount
+componentDidUpdate
+componentWillUnmount
+因为 Reconciliation 阶段是可以被打断的，所以 Reconciliation 阶段会执行的生命周期函数就可能会出现调用多次的情况，从而引起 Bug。由此对于 Reconciliation 阶段调用的几个函数，除了 shouldComponentUpdate 以外，其他都应该避免去使用，并且 V16 中也引入了新的 API 来解决这个问题。
+
+getDerivedStateFromProps 用于替换 componentWillReceiveProps ，该函数会在初始化和 update 时被调用
+getSnapshotBeforeUpdate 用于替换 componentWillUpdate ，该函数会在 update 后 DOM 更新前被调用，用于读取最新的 DOM 数据
 
 
 
@@ -272,7 +294,7 @@ React patch、事件系统
 react的 Virtual Dom模型
 ```
 
-- 什么是高阶组件(HOC)
+- 什么是高阶组件(HOC)，相比 mixins 有什么优点？
 
 ```
 高阶组件(Higher Order Componennt)本身其实不是组件，而是一个函数，这个函数接收一个元组件作为参数，然后返回一个新的增强组件，高阶组件的出现本身也是为了逻辑复用
@@ -294,11 +316,21 @@ function logProps(WrappedComponent) {
   }
 }
 
+例子：
+function withLog (fn) {
+    function wrapper(a, b) {
+        const result = fn(a, b)
+        console.log(result)
+        return result
+    }
+    return wrapper
+}
+const withLogAdd = withLog(add)
+withLogAdd(1, 2)
 
-作者：Vanessa
-链接：https://hacpai.com/article/1552450398648
-来源：黑客派
-协议：CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
+
+其实 HOC 和 Vue 中的 mixins 作用是一致的，并且在早期 React 也是使用 mixins 的方式。但是在使用 class 的方式创建组件以后，mixins 的方式就不能使用了
+
 ```
 - react如何提高性能
 
@@ -318,12 +350,11 @@ key值的设定
 - 如何避免组件的重新渲染，react性能优化？
 
 ``` 
-React.memo():这可以防止不必要地重新渲染函数组件
+React.memo():这可以防止不必要地重新渲染函数组件，函数组件不能使用PureComponent，可以使用 React.memo 来实现相同的功能
 // React.memo()是一个高阶函数，它与 React.PureComponent类似，但是它是一个函数组件而非一个类
 
 
 PureComponent:这可以防止不必要地重新渲染类组件
-
 
 这两种方法都依赖于对传递给组件的props的浅比较，如果 props 没有改变，那么组件将不会重新渲染。虽然这两种工具都非常有用，但是浅比较会带来额外的性能损失，因此如果使用不当，这两种方法都会对性能产生负面影响。
 通过使用 React Profiler，可以在使用这些方法前后对性能进行测量，从而确保通过进行给定的更改来实际改进性能。
@@ -447,7 +478,7 @@ Redux数据流里，reduces其实是根据之前的状态（previous state）和
 
 
 ```
-- redux主要做什么的，用过redux的一些中间件吗，简单说一下(redux怎么处理异步操作)
+- redux主要做什么的，用过redux的一些中间件吗，简单说一下(redux怎么处理异步操作) ,说说中间件的意义
 
 ```   
 redux中间件redux-saga
@@ -577,6 +608,14 @@ serve -s build
   作用域的问题，foo() {} 与 const foo = () => {}里面的this作用域不一样，foo() {}里面使用外部成员，需要bind(this)，直接使用的this作用域仅在该方法内部
 ```
 - vue 和 react 谈谈区别和选型考虑
+``` 
+Vue 的表单可以使用 v-model 支持双向绑定，相比于 React 来说开发上更加方便，当然了 v-model 其实就是个语法糖，本质上和 React 写表单的方式没什么区别
+改变数据方式不同，Vue 修改状态相比来说要简单许多，React 需要使用 setState 来改变状态，并且使用这个 API 也有一些坑点。并且 Vue 的底层使用了依赖追踪，页面更新渲染已经是最优的了，但是 React 还是需要用户手动去优化这方面的问题。
+React 16以后，有些钩子函数会执行多次，这是因为引入 Fiber 的原因
+React 需要使用 JSX，有一定的上手成本，并且需要一整套的工具链支持，但是完全可以通过 JS 来控制页面，更加的灵活。Vue 使用了模板语法，相比于 JSX 来说没有那么灵活，但是完全可以脱离工具链，通过直接编写 render 函数就能在浏览器中运行。
+在生态上来说，两者其实没多大的差距，当然 React的用户是远远高于Vue 的
+
+```
 - 路由懒加载原理
 - context本质是什么
 - React16新特性
@@ -593,8 +632,6 @@ serve -s build
 - 手写实现一个 Redux 中的 reducer (state, action) => newState
 - Redux 怎么做到每个组件可以访问的 store 的
 - Redux跟全局对象有什么区别？
-- Proxy
-- react vs vue区别以及项目选型
 - 父组件state发生改变子组件是否跟着刷新
 - React componentWillMount 做 setState 会干嘛
 - react在更新了页面的时候，怎么实现将虚拟的DOMjs对象转到真正的DOM上面去呢
@@ -609,6 +646,8 @@ serve -s build
  容器组件会为展示组件或者其它容器组件提供数据和行为(behavior)，它们会调用 Flux actions，并将其作为回调提供给展示组件。容器组件经常是有状态的，因为它们是(其它组件的)数据源。
 
 ```
+- React的生命周期中的isBatchingUpdates了解吗？Transaction知道吗
+- React的vdom如何实现？jsx是怎样解析的？
 - 手写一个 React 高阶组件
 - forceUpdate经历了哪些生命周期，子组件呢?
 - vue和react谈谈区别和选型考虑

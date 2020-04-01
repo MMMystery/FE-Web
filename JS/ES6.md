@@ -6,14 +6,25 @@
 异步编程：Promise、Generator、Async
 ```
 
+0. class
+``` 
+class 只是语法糖，本质还是函数
 
+class Person {}
+Person instanceof Function // true
 
-1. let/const
+```
+
+1. let/const 与var
 ```    
+
+函数提升优先于变量提升，函数提升会把整个函数挪到作用域顶部，变量提升只会把声明挪到作用域顶部
+var 存在提升，我们能在声明之前使用。let、const 因为暂时性死区的原因，不能在声明前使用
+var 在全局作用域下声明变量会导致变量挂载在 window上，其他两者不会
 
 var存在变量提升 
 const定义常量，数组元素可以push添加，对象里的属性也可以修改（因为对象是引用类型的，P中保存的仅是对象的指针，这就意味着，const仅保证指针不发生改变，修改对象的属性不会改变对象的指针，所以是被允许的。）。
-let块级作用域，let 有暂时死区，不会被提升
+let是块级作用域
 
 const arr = []
 arr.push(1)
@@ -578,14 +589,24 @@ Promise._race = promises => new Promise((resolve, reject) => {
 - new Promise(() => {throw new Error()})能否抛出异常？  
 - 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch
 
-                                                   
-```                                                      
+                                                  
 - 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换    
 
 
 - 模块化Commonjs,AMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义
 
 ``` 
+作用：
+解决命名冲突
+提供复用性
+提高代码可维护性
+
+AMD：requirejs 在推广过程中对模块定义的规范化产出，提前执行，推崇依赖前置
+CMD：seajs 在推广过程中对模块定义的规范化产出，延迟执行，推崇依赖就近
+CommonJs：模块输出的是一个值的 copy，运行时加载，加载的是一个对象（module.exports 属性），该对象只有在脚本运行完才会生成
+ES6 Module：模块输出的是一个值的引用，编译时输出接口，ES6模块不是对象，它对外接口只是一种静态定义，在代码静态解析阶段就会生成。
+
+
 https://www.processon.com/view/link/5c8409bbe4b02b2ce492286a#map
 
 IIFE： 使用自执行函数来编写模块化，特点：在一个单独的函数作用域中执行代码，避免变量冲突。
@@ -624,7 +645,7 @@ define(function (require, exports, module) {
 })
 
 
-CommonJS： nodejs 中自带的模块化。
+CommonJS：(nodejs 中自带的模块化)。
 require / module.exports / exports
 暴露模块：module.exports = value或exports.xxx = value；
 引入模块：require(xxx), 如果是第三方模块，xxx 为模块名；如果是自定义模块，xxx 为模块文件路径

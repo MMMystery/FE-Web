@@ -1,3 +1,5 @@
+new 的方式优先级最高，接下来是 bind 这些函数(不管我们给函数 bind 几次，fn 中的 this 永远由第一次 bind 决定)，然后是 obj.foo() 这种调用方式，最后是 foo 这种调用方式，同时，箭头函数的 this 一旦被绑定，就不会再被任何方式所改变
+
 - 求输出
 ``` 
 
@@ -44,7 +46,7 @@ var fn = obj.getName
 obj.getName()
 var fn2 = obj.getName()
 fn()
-fn2()
+console.log(fn2)
 
 ```
 - this指向题目
@@ -60,5 +62,11 @@ var obj = {
 	foo: foo
 }
 obj.foo() // this指向obj对象。打印输出2
+const c = new foo() // undefined
+
+
+对于直接调用 foo 来说，不管 foo 函数被放在了什么地方，this 一定是window
+对于 obj.foo() 来说，我们只需要记住，谁调用了函数，谁就是 this，所以在这个场景下 foo 函数中的 this 就是 obj 对象
+对于 new 的方式来说，this 被永远绑定在了 c 上面，不会被任何方式改变 this
 
 ```

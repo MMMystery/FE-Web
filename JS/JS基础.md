@@ -1,4 +1,12 @@
 - 堆和栈区别
+- 位运算
+``` 
+10 << 1 // -> 20 可以把左移看成以下公式 a * (2 ^ b)
+10 >> 1 // -> 5  可以把右移看成以下公式 a / (2 ^ b)
+
+两个数不使用四则运算得出和
+
+```
 
 - 函数提升和变量提升
 ``` 
@@ -16,6 +24,72 @@ function b() {
 }
 var b = 'Hello'
 var a = 'world'
+
+JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量(函数也是变量)，然后再一行一行地运行。这造成的结果，就是所有的变量的声明语句，都会被提升到代码的头部，这就叫做变量提升（hoisting）。
+
+例如：
+console.log(a);
+var a =1;
+
+实际是：
+var a;
+console.log(a);
+a =1;
+
+js里的function也可看做变量，也存在变量提升情况，比如：
+a();
+
+var a = function(){
+    console.log(1);
+};
+
+// TypeError: a is not a function
+
+实际是：
+var a;
+a();
+a = function(){
+   console.log(1);
+};
+
+
+示例：
+function hah(number){
+
+        var a="show";
+
+        alert(a);//show
+
+        var a=4;
+
+        alert(a);//4
+
+        number--;
+
+    }
+
+ hah(1);
+ 
+实际是：
+function hah(number){
+
+    var a;
+
+    var a;
+
+    a = "show";
+
+    alert(a);//show
+
+    a=4;
+
+    alert(a);//4
+
+    number--;
+
+}
+
+hah(1);
 
 ```
 - JavaScript有⼏种类型的值
@@ -170,11 +244,20 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
 
 - js的单线程、EventLoop机制、宏队列、微队列
 ``` 
-JS的本质是单线：
+JS的本质是单线程：
 
 1. 一般来说，非阻塞性的任务采取同步的方式，直接在主线程的执行栈完成。
 
 2. 一般来说，阻塞性的任务都会采用异步来执行，异步的工作一般会交给其他线程完成，然后回调函数会放到事件队列中。
+
+一次完整的Event loop是这样的：
+
+执行同步代码，这属于宏任务
+执行栈为空，查询是否有微任务需要执行
+执行所有微任务
+必要的话渲染 UI
+然后开始下一轮 Event loop，执行宏任务中的异步代码
+
 
 
 - 异步任务里又分为：宏任务与微任务
@@ -202,6 +285,10 @@ MutationObserver
 
 ``` 
 文章：https://www.jianshu.com/p/be7c95714586
+
+实例.__proto__ === 原型
+原型.constructor === 构造函数
+构造函数.prototype === 原型
 
 ```
 
@@ -304,83 +391,17 @@ j();
 ```
 
 - javascript的执行上下文
-- JS的原型
-- js的变量提升和函数提升，暂时性死区
-```  
-JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量(函数也是变量)，然后再一行一行地运行。这造成的结果，就是所有的变量的声明语句，都会被提升到代码的头部，这就叫做变量提升（hoisting）。
-
-例如：
-console.log(a);
-var a =1;
-
-实际是：
-var a;
-console.log(a);
-a =1;
-
-js里的function也可看做变量，也存在变量提升情况，比如：
-a();
-
-var a = function(){
-    console.log(1);
-};
-
-// TypeError: a is not a function
-
-实际是：
-var a;
-a();
-a = function(){
-   console.log(1);
-};
-
-
-示例：
-function hah(number){
-
-        var a="show";
-
-        alert(a);//show
-
-        var a=4;
-
-        alert(a);//4
-
-        number--;
-
-    }
-
- hah(1);
- 
-实际是：
-function hah(number){
-
-    var a;
-
-    var a;
-
-    a = "show";
-
-    alert(a);//show
-
-    a=4;
-
-    alert(a);//4
-
-    number--;
-
-}
-
-hah(1);
-
-```
 
 - 深拷贝和浅拷贝的实现方式分别有哪些？什么时候需要深拷贝，深拷贝需要注意的地方
 ```
 
-浅拷贝只复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存。修改新对象也会改动原对象。
-但深拷贝会另外创造一个一模一样的对象，新对象跟原对象不共享内存，修改新对象不会改到原对象。
 
+|      |和原数据是否指向同一对象  第一层数据为基本数据类型         原数据中包含子对象
+赋值    |是                    改变会使原数据一同改变           改变会使原数据一同改变
+浅拷贝  |否                     改变不会使原数据一同改变        改变会使原数据一同改变
+深拷贝  |否                     改变不会使原数据一同改变        改变不会使原数据一同改变
+
+浅拷贝只拷贝了第一层，如果接下去的值中还有对象的话，两者享有相同的地址。改变会使原数据一同改变
 
 
 浅拷贝：(1) Object.assign的方式 (2) 通过对象扩展运算符 (3) 通过数组的slice方法 (4) 通过数组的concat方法。
@@ -556,7 +577,12 @@ var o3 = new function(){}
 // 第三种：Object.create()
 var o4 = Object.create({name: "p"})
 
-区别：
+区别：字面量创建的方式内部其实就是new 
+function Foo() {}
+// function 就是个语法糖
+// 内部等同于 new Function()
+let a = { b: 1 }
+// 这个字面量内部也是使用了 new Object()
 
 
 ```
@@ -682,10 +708,76 @@ myObject = myFunction.call(myObject, 10, 2);
 
 - js继承的几种方式以及区别
 ```
+组合继承：
+function Parent(value) {
+  this.val = value
+}
+Parent.prototype.getValue = function() {
+  console.log(this.val)
+}
+function Child(value) {
+  Parent.call(this, value)
+}
+Child.prototype = new Parent()
+
+const child = new Child(1)
+
+child.getValue() // 1
+child instanceof Parent // true
+
+寄生组合继承：
+function Parent(value) {
+  this.val = value
+}
+Parent.prototype.getValue = function() {
+  console.log(this.val)
+}
+
+function Child(value) {
+  Parent.call(this, value)
+}
+Child.prototype = Object.create(Parent.prototype, {
+  constructor: {
+    value: Child,
+    enumerable: false,
+    writable: true,
+    configurable: true
+  }
+})
+
+const child = new Child(1)
+
+child.getValue() // 1
+child instanceof Parent // true
+
+
+Class 继承：
+class Parent {
+  constructor(value) {
+    this.val = value
+  }
+  getValue() {
+    console.log(this.val)
+  }
+}
+class Child extends Parent {
+  constructor(value) {
+    super(value)
+    this.val = value
+  }
+}
+let child = new Child(1)
+child.getValue() // 1
+child instanceof Parent // true
+
 
 - 组合继承和寄生组合继承的优缺点
-- class继承和原型链继承的区别
 
+答案：组合继承缺点在于继承父类函数时调用了构造函数。寄生组合继承去掉了父类无用的属性。
+
+
+- class继承和原型链继承的区别
+答案：类继承的实现建立在原型继承之上，class 实现继承的核心在于使用 extends 表明继承自哪个父类
 ```
 
 
@@ -800,7 +892,7 @@ map() 运行的较快，且返回的新数组可以让你继续使用 map()、fi
 event.stopPropagation()  // 方法用于阻止捕获和冒泡阶段中当前事件的进一步传播。
 event.preventDefault()  // 方法可防止元素的默认行为。 如果在表单元素中使用，它将阻止其提交。 如果在锚元素中使用，它将阻止其导航。 如果在上下文菜单中使用，它将阻止其显示或显示。
 
-event.stopImmediatePropagation()  // 阻止相同事件的其他侦听器被调用
+event.stopImmediatePropagation()  // 阻止相同事件的其他侦听器被调用,阻止该事件目标执行别的注册事件
 ```
 - setTimeout用作倒计时为何会产生误差
 ``` 
@@ -1319,9 +1411,9 @@ Array.prototype.push // 数组的实例方法
 
 
 
-- 0.1+0.2===0.3吗，为什么？
+- 0.1+0.2!==0.3吗，为什么？
 ``` 
-因为计算机不能精确表示0.1， 0.2这样的浮点数，计算时使用的是带有舍入误差的数，并不是所有的浮点数在计算机内部都存在舍入误差，比如0.5就没有舍入误差，具有舍入误差的运算结可能会符合我们的期望，原因可能是“负负得正”。
+因为 JS 采用 IEEE 754双精度版本（64位）,二进制来存储东西不能精确表示0.1， 0.2这样的浮点数，计算时使用的是带有舍入误差的数，并不是所有的浮点数在计算机内部都存在舍入误差，比如0.5就没有舍入误差，具有舍入误差的运算结可能会符合我们的期望，原因可能是“负负得正”。
 
 解决办法：
 parseFloat((0.1+0.2).toFixed(10))
@@ -1522,7 +1614,7 @@ Memoization 是用来缓存函数调用的输出结果，以便减少后续再�
 ```
 - 对JavaScript和Java两者的怎么看
 
-- Javascript中callee和caller的作用？
+- Javascript中callee和caller的作用？（caller(调用者)，callee(被调用者)）
 ```  
 caller是返回一个对函数的引用，该函数调用了当前函数；
 callee是返回正在被执行的function函数，也就是所指定的function对象的正文

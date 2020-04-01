@@ -38,8 +38,8 @@ function myExtend(C, P) {
 - new 实现和new 的过程
 ``` 
 (1) 创建一个新对象；
-(2) 将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象） ；
-(3) 执行构造函数中的代码（为这个新对象添加属性） ；
+(2) 链接到原型（为这个新对象添加属性） ；
+(3) 将构造函数的作用域赋给新对象（绑定 this，因此 this 就指向了这个新对象） ；
 (4) 返回新对象。
 
 // v2 : 还需要判断返回的值是不是一个对象，如果是一个对象，我们就返回这个对象，如果没有，我们该返回什么就返回什么。
@@ -85,7 +85,6 @@ _create = function (o) {
 
 ```
 
-- 用call或者apply实现bind。
 - call、apply、bind 实现。
 
 ```  
@@ -377,6 +376,159 @@ Array.prototype.filter = function(fn,context){
 - 写一个函数，可以控制最大并发数
 - 自己实现一个event类
 - 设计一个栈，不使用数组
+- js实现栈、队列、链表、二叉树
+```  
+栈：
+class Stack {
+  constructor() {
+    this.stack = []
+  }
+  push(item) {
+    this.stack.push(item)
+  }
+  pop() {
+    this.stack.pop()
+  }
+  peek() {
+    return this.stack[this.getCount() - 1]
+  }
+  getCount() {
+    return this.stack.length
+  }
+  isEmpty() {
+    return this.getCount() === 0
+  }
+}
+队列：
+class Queue {
+  constructor() {
+    this.queue = []
+  }
+  enQueue(item) {
+    this.queue.push(item)
+  }
+  deQueue() {
+    return this.queue.shift()
+  }
+  getHeader() {
+    return this.queue[0]
+  }
+  getLength() {
+    return this.queue.length
+  }
+  isEmpty() {
+    return this.getLength() === 0
+  }
+}
+
+单向链表：
+class Node {
+  constructor(v, next) {
+    this.value = v
+    this.next = next
+  }
+}
+class LinkList {
+  constructor() {
+    // 链表长度
+    this.size = 0
+    // 虚拟头部
+    this.dummyNode = new Node(null, null)
+  }
+  find(header, index, currentIndex) {
+    if (index === currentIndex) return header
+    return this.find(header.next, index, currentIndex + 1)
+  }
+  addNode(v, index) {
+    this.checkIndex(index)
+    // 当往链表末尾插入时，prev.next 为空
+    // 其他情况时，因为要插入节点，所以插入的节点
+    // 的 next 应该是 prev.next
+    // 然后设置 prev.next 为插入的节点
+    let prev = this.find(this.dummyNode, index, 0)
+    prev.next = new Node(v, prev.next)
+    this.size++
+    return prev.next
+  }
+  insertNode(v, index) {
+    return this.addNode(v, index)
+  }
+  addToFirst(v) {
+    return this.addNode(v, 0)
+  }
+  addToLast(v) {
+    return this.addNode(v, this.size)
+  }
+  removeNode(index, isLast) {
+    this.checkIndex(index)
+    index = isLast ? index - 1 : index
+    let prev = this.find(this.dummyNode, index, 0)
+    let node = prev.next
+    prev.next = node.next
+    node.next = null
+    this.size--
+    return node
+  }
+  removeFirstNode() {
+    return this.removeNode(0)
+  }
+  removeLastNode() {
+    return this.removeNode(this.size, true)
+  }
+  checkIndex(index) {
+    if (index < 0 || index > this.size) throw Error('Index error')
+  }
+  getNode(index) {
+    this.checkIndex(index)
+    if (this.isEmpty()) return
+    return this.find(this.dummyNode, index, 0).next
+  }
+  isEmpty() {
+    return this.size === 0
+  }
+  getSize() {
+    return this.size
+  }
+}
+
+二叉树：
+class Node {
+  constructor(value) {
+    this.value = value
+    this.left = null
+    this.right = null
+  }
+}
+class BST {
+  constructor() {
+    this.root = null
+    this.size = 0
+  }
+  getSize() {
+    return this.size
+  }
+  isEmpty() {
+    return this.size === 0
+  }
+  addNode(v) {
+    this.root = this._addChild(this.root, v)
+  }
+  // 添加节点时，需要比较添加的节点值和当前
+  // 节点值的大小
+  _addChild(node, v) {
+    if (!node) {
+      this.size++
+      return new Node(v)
+    }
+    if (node.value > v) {
+      node.left = this._addChild(node.left, v)
+    } else if (node.value < v) {
+      node.right = this._addChild(node.right, v)
+    }
+    return node
+  }
+}
+```
 - 实现 memorize once 高阶函数
 - sum(2, 3)实现sum(2)(3)的效果
 - 实现Object.assign()函数

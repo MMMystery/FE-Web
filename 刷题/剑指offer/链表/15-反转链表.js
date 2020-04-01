@@ -9,6 +9,10 @@ function ReverseList(pHead) {
   }
   let pre = null;
   let next = null;
+  // 判断当前节点是否为空
+  // 不为空就先获取当前节点的下一节点
+  // 然后把当前节点的 next 设为上一个节点
+  // 然后把 current 设为下一个节点，pre 设为当前节点
   while (pHead !== null) {
     next = pHead.next;
     pHead.next = pre;

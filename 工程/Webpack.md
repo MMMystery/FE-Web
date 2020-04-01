@@ -379,27 +379,58 @@ module.exports = BuildEndPlugin
 
 
 
-- 使用 Webpack 优化项目
+- 减小Webpack打包的时间
 ``` 
-loader （使用include & exclude排除node_modules中的文件，减小 Loader 的文件搜索范围，那么需要去搜索的文件量就减小了）
+loader （使用include & exclude排除node_modules中的文件，减小 Loader 的文件搜索范围，那么需要去搜索的文件量就减小了），
+我们还可以将 Babel 编译过的文件缓存起来，下次只需要编译更改过的代码文件即可，这样可以大幅度加快打包时间 loader: 'babel-loader?cacheDirectory=true'
 
 DllPlugin
 DllPlugin 可以将特定的类库提前打包然后引入。这种方式可以极大的减少打包类库的次数，只有当类库更新版本才有需要重新打包，并且也实现了将公共代码抽离成单独文件的优化方案。
+// 单独配置在一个文件中
+// webpack.dll.conf.js
+const path = require('path')
+const webpack = require('webpack')
+module.exports = {
+  entry: {
+    // 想统一打包的类库
+    vendor: ['react'] -------------------这里是重点
+  },
+  output: {
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].dll.js',
+    library: '[name]-[hash]'
+  },
+  plugins: [
+    new webpack.DllPlugin({
+      // name 必须和 output.library 一致
+      name: '[name]-[hash]',
+      // 该属性需要与 DllReferencePlugin 中一致
+      context: __dirname,
+      path: path.join(__dirname, 'dist', '[name]-manifest.json')
+    })
+  ]
+}
+
 
 happypack
 受限于 Node 是单线程运行的，所以 Webpack 在打包的过程中也是单线程的，特别是在执行 Loader 的时候，长时间编译的任务很多，这样就会导致等待的情况。
 HappyPack 开启多个线程可以将 Loader 的同步执行转换为并行的
 
+
 压缩代码UglifyJS
 
-tree shaking树摇 （Tree Shaking 可以实现删除项目中未被引用的代码，uglifySPlugin来Tree-shaking JS，Css需要使用Purify-CSS）
 
-scope hoisting  （Scope Hoisting 会分析出模块之间的依赖关系，尽可能的把打包出来的模块合并到一个函数中去。）
-
-code splitting代码分割和按需加载 提取公共代码。webpack4移除了CommonsChunkPlugin (提取公共代码)，用optimization.splitChunks和optimization.runtimeChunk来代替
-按照路由或者组件拆分代码，实现按需加载
 
 ```
+- 减少 Webpack 打包后的文件体积
+``` 
+1. 按需加载
+2. Scope Hoisting （Scope Hoisting 会分析出模块之间的依赖关系，尽可能的把打包出来的模块合并到一个函数中去。） 在 Webpack4 中你希望开启这个功能，只需要启用 optimization.concatenateModules就可以了。
+3. tree shaking树摇 （Tree Shaking 可以实现删除项目中未被引用的代码，uglifySPlugin来Tree-shaking JS，Css需要使用Purify-CSS）
+4. code splitting代码分割和按需加载 提取公共代码。webpack4移除了CommonsChunkPlugin (提取公共代码)，用optimization.splitChunks和optimization.runtimeChunk来代替
+   按照路由或者组件拆分代码，实现按需加载
+```
+
 - 最后可以在聊聊webpack的优化，例如babel-loader的优化，gzip压缩等等
 - webpack配置用到webpack.optimize.UglifyJsPlugin这个插件，有没有觉得压缩速度很慢，有什么办法提升速度
 - 描述一下npm run dev / npm run build执行的是哪些文件
