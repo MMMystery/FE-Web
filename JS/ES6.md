@@ -206,39 +206,6 @@ let gs2 = Symbol.for('global_symbol_1')  //获取全局Symbol
 gs1 === gs2  // true
 
 ```
-- Iterator（迭代器，遍历器）、Generator（生成器）的用法？
-``` 
-一、Iterator（迭代器），yield表达式在generator中是作为一个暂停标志，当碰到yield时，函数暂停执行，等到下一次next()执行时
-let obj = {
-    name:'zhangsan',
-    age:18,
-    sex:'man'
-}
-obj[Symbol.iterator]=function* (){
-    for(var key in obj){
-        yield obj[key];
-    }
-}
-for(let value of obj){
-    console.log(value);//zhangsan 18 man
-}
-console.log([...obj]);//["zhangsan", 18, "man"]
-
-
-二、Generator原理（生成器）
-使用function关键字后加*的方式声明一个函数，该函数即为Generator函数
-let tell = function* (){
-    yield 1;
-    yield 2;
-    yield 3;
-}
-let k = tell();
-console.log(k.next());//{value: 1, done: false}
-console.log(k.next());//{value: 2, done: false}
-console.log(k.next());//{value: 3, done: false}
-console.log(k.next());//{value: undefined, done: true}
-
-```
 
 - Set、Map数据结构和weakset、WeakMap分别是什么
 
@@ -295,6 +262,55 @@ ArrayBuffer是一(大)块内存，但不能直接访问ArrayBuffer里面的字�
 简单说，ArrayBuffer对象代表原始的二进制数据，TypedArray视图用来读写简单类型的二进制数据，DataView视图用来读写复杂类型的二进制数据。
 
 ```
+
+
+- Iterator（迭代器，遍历器）、Generator（生成器）的用法？
+``` 
+一、Iterator（迭代器），yield表达式在generator中是作为一个暂停标志，当碰到yield时，函数暂停执行，等到下一次next()执行时
+let obj = {
+    name:'zhangsan',
+    age:18,
+    sex:'man'
+}
+obj[Symbol.iterator]=function* (){
+    for(var key in obj){
+        yield obj[key];
+    }
+}
+for(let value of obj){
+    console.log(value);//zhangsan 18 man
+}
+console.log([...obj]);//["zhangsan", 18, "man"]
+
+
+二、Generator原理（生成器）
+使用function关键字后加*的方式声明一个函数，该函数即为Generator函数
+let tell = function* (){
+    yield 1;
+    yield 2;
+    yield 3;
+}
+let k = tell();
+console.log(k.next());//{value: 1, done: false}
+console.log(k.next());//{value: 2, done: false}
+console.log(k.next());//{value: 3, done: false}
+console.log(k.next());//{value: undefined, done: true}
+
+```
+
+- generator 原理
+``` 
+Generator 是 ES6中新增的语法，和 Promise 一样，都可以用来异步编程
+
+generator:
+yield: 暂停代码
+next(): 继续执行代码                                            
+   
+yield怎么控制顺序 
+
+```
+
+
 - Decorator(装饰器), 实现原理
 ``` 
 装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数
@@ -360,17 +376,6 @@ set
 ```
 
 
-- generator 原理
-``` 
-Generator 是 ES6中新增的语法，和 Promise 一样，都可以用来异步编程
-
-generator:
-yield: 暂停代码
-next(): 继续执行代码                                            
-   
-yield怎么控制顺序 
-
-```
 
 
 - promise（promise A+规范）
@@ -393,6 +398,19 @@ Promise.race 接收一个promise对象数组为参数，只要有一个promise�
 
 - 实现promise
 ``` 
+var promise = new Promise((resolve,reject) => {
+    if (操作成功) {
+        resolve(value)
+    } else {
+        reject(error)
+    }
+})
+promise.then(function (value) {
+    // success
+},function (value) {
+    // failure
+})
+
 基础版本
     const PENDING = 'pending';
     const FULFILLED = 'fulfilled';
@@ -472,7 +490,7 @@ Promise.race = function(arr) {
 
 ```
 
-- 实现promise.retry
+- 实现promise.retry  （写一个函数，每隔1000ms发送一次请求，如果promise未正确返回则继续发送，最多5次。）
 ``` 
 Promise.retry = (fn, times, delay) => {
   return new Promise((resolve, reject)=>{
@@ -486,7 +504,7 @@ Promise.retry = (fn, times, delay) => {
                       error = e;
                       setTimeout(()=>
                         {
-                            attempt()  
+                           attempt()  
                         }, delay);
                   });
           }
@@ -499,24 +517,6 @@ Promise.retry = (fn, times, delay) => {
 
 - 实现 promise.all 并发限制，每次只能并发5个请求
 
-- 写一个函数，每隔1000ms发送一次请求，如果promise未正确返回则继续发送，最多5次。
-- 可以手写一些Promise么？不是写Promise怎么用哦，让你实现一下Promise。  
-
-```
-var promise = new Promise((resolve,reject) => {
-    if (操作成功) {
-        resolve(value)
-    } else {
-        reject(error)
-    }
-})
-promise.then(function (value) {
-    // success
-},function (value) {
-    // failure
-})
-
-```
 - Promise 构造函数是同步执行还是异步执行，那么 then 方法呢？
 ```   
 promise构造函数是同步执行的，then方法是异步执行的
@@ -534,25 +534,9 @@ reject 是用来抛出异常的，catch 才是用来处理异常的
 
 - promise是怎么实现的原理
 - Promise.then里抛出的错误能否被try...catch捕获，为什么
-
-- promise相关。resolve，reject，then，all，race了解过吗？
-- 现在有100个请求，怎么实现 Promise 串行化 。就是形如 [fn1, fn2, fn3] 这样， 然后 fn1 返回的是一个 promise ，resolve 之后再去执行 fn2
-- 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
-- Promise和Async处理失败的时候有什么区别
-- Async/await promise 和 generator区别。
 ``` 
+promise自己有catch去捕获，外部try..catch无法捕获，因为try catch只能处理同步的错误，对异步错误没有办法捕获
 
-Async/await是一个语法糖，内部实现还是generator + yield
-async function 代替了 function*，await 代替了 yield
-
-
-```
-- 写一个封装函数控制1000s访问一次，然后最多5次，直至拿到结果。
-- 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
-- 三个异步函数怎么知道彼此已经结束。不用promise.all
-- 用es5写promise
-- Promise 中抛出异常能否被 catch 捕获？
-```  
 let promise = new Promise((resolve, reject) => {
   throw new Error()
   reject()
@@ -561,7 +545,23 @@ promise.catch(err => {
   console.log(err)
 })
 
+
 ```
+
+- promise相关。resolve，reject，then，all，race了解过吗？
+- 现在有100个请求，怎么实现 Promise 串行化 。就是形如 [fn1, fn2, fn3] 这样， 然后 fn1 返回的是一个 promise ，resolve 之后再去执行 fn2
+- 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
+- Promise和Async处理失败的时候有什么区别
+- Async/await promise 和 generator区别。
+``` 
+Async/await是一个语法糖，内部实现还是generator + yield
+async function 代替了 function*，await 代替了 yield
+
+```
+- 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
+- 三个异步函数怎么知道彼此已经结束。不用promise.all
+- 用es5写promise
+
 - Promise.resolve(1)返回是一个什么
 - Promise.any()
 - Promise.reject()

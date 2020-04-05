@@ -1,26 +1,52 @@
+- vue 和 react 谈谈区别和选型考虑
+``` 
+学习曲线
+代码风格
+灵活性
+是否轻便
+
+一、生态系统：
+react生态系统丰富，比vue多很多，如果项目涉及到一些复杂组件，往往react生态圈更容易找到现成的。而不用手动去写一个。
+
+二、React与Vue最大的不同是模板的编写，jsx写法更符合正常的一个节点呈现逻辑，vue的模板引擎没那么直接的逻辑性
+
+
+Vue 2.0以后就是单项数据流了，双向绑定是语法糖，react也是单向数据流。vue和react也都是函数式编程+面向对象编程了。
+
+我认为单向数据流的好处在于所有的状态改变(mutation)可追溯。举个例子，父组件维护了一个状态，假设子组件可随意更改父组件甚至祖宗组件的状态，那各组件的状态改变就会变得难以追溯，父组件的状态也可能被子组件意外修改而不可察觉。而单向数据流保证了父组件的状态不会被子组件意外修改如果要修改，只能通过在子组件中dispatch一个action来对全局状态修改，全局状态在通过props分发给子组件；又或是调用父组件的方法；又或是发事件，这些操作是肉眼可见且可控的（用函数式来说，保证了组件就是无副作用的纯函数），不至于造成状态总被意外修改而导致难以维护的情况。
+
+
+vue 适合 webapp，适合做用户交互多、各种动态效果变化丰富的应用。特别是PC、手机的网页版 商城等页面。vue 实现逻辑复杂的功能比较简单，跟写js似的，而且一些效果、过度感觉很舒服。
+react 适合 oa系统，适合 大批量的数据展示、适合做大型应用。特别适合公司的后台操作系统。
+```
+
+
+
 - React的Dom的diff算法描述一下，diff算法是对树的深度优先遍历还是广度优先遍历？
 ```  
 ①用JS对象构建一颗虚拟DOM树，然后用虚拟树构建一颗真实的DOM树，然后插入到文档中。
 ②当状态变更时，重新构造一颗新的对象树，然后新树旧树进行比较，记录两树差异。
 ③把步骤2的差异应用到步骤1所构建的真实DOM树上，视图就更新了。
 
-diff算法：
+传统diff算法：
 
 传统Diff：diff算法即差异查找算法；对于Html DOM结构即为tree的差异查找算法；而对于计算两颗树的差异时间复杂度为O（n^3）,显然成本太高，React不可能采用这种传统算法；
-React Diff：
+其实传统算法就是对每个节点一一对比，循环遍历所有的子节点，然后判断子节点的更新状态，分别为remove、add、change。
+
+
+React Diff算法：
 
 之前说过，React采用虚拟DOM技术实现对真实DOM的映射，即React Diff算法的差异查找实质是对两个JavaScript对象的差异查找；
 基于三个策略：
 Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。（tree diff）
-拥有相同类的两个组件将会生成相似的树形结构，拥有不同类的两个组件将会生成不同的树形结（component diff）
+拥有相同类的两个组件将会生成相似的树形结构，拥有不同类的两个组件将会生成不同的树形结（component diff） （同一层只要出现不是同一类型的组件，就替换该组件的所有子节点。对于同一类型的组件，则通过shouldComponentUpdate去判断是否需要通过diff进行分析。shouldComponentUpdate默认为true。
 对于同一层级的一组子节点，它们可以通过唯一 id 进行区分。（element diff）
 
 
 基于中Diff的开发建议
 基于tree diff：
 
-开发组件时，注意保持DOM结构的稳定；即，尽可能少地动态操作DOM结构，尤其是移动操作。
-当节点数过大或者页面更新次数过多时，页面卡顿的现象会比较明显。
+开发组件时，注意保持DOM结构的稳定；即，尽可能少地动态操作DOM结构，尤其是移动操作。当节点数过大或者页面更新次数过多时，页面卡顿的现象会比较明显。
 这时可以通过 CSS 隐藏或显示节点，而不是真的移除或添加 DOM 节点。
 基于component diff：
 
@@ -33,6 +59,10 @@ Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。�
 ```
 - 虚拟dom的缺点
 - React的diff/patch算法原理, diff 和patch 的过程
+``` 
+patch
+patch是指遍历差异队列依次更新到真实dom上的操作。通过switch去匹配差异对象的type，然后进行对应的操作。
+```
 - diff （DIFF算法为什么是O(n)复杂度而不是O(n^3)）
 ```
 diff算法比较新旧节点的时候，比较只会在同层级比较，不会跨层级比较
@@ -67,9 +97,71 @@ element diff
 首先说说为什么要使用Virturl DOM，因为操作真实DOM的耗费的性能代价太高，所以react内部使用js实现了一套dom结构，在每次操作在和真实dom之前，使用实现好的diff算法，对虚拟dom进行比较，递归找出有变化的dom节点，然后对其进行更新操作。为了实现虚拟DOM，我们需要把每一种节点类型抽象成对象，每一种节点类型有自己的属性，也就是prop，每次进行diff的时候，react会先比较该节点类型，假如节点类型不一样，那么react会直接删除该节点，然后直接创建新的节点插入到其中，假如节点类型一样，那么会比较prop是否有更新，假如有prop不一样，那么react会判定该节点有更新，那么重渲染该节点，然后在对其子节点进行比较，一层一层往下，直到没有子节点
 
 ```
-- DIFF算法为什么是O(n)复杂度而不是O(n^3)
-- 写一下 diff 算法
+- react和vue的diff哪里不同？
+``` 
+vue 和 react 的 diff 算法有相同和有不同，相同是都是用同层比较，不同是 vue使用双指针比较，react 是用 key 集合级比较
+
+```
+
 - 知道react是怎么渲染虚拟dom的吗
+
+-  React V16 生命周期函数用法
+  ```   
+  链接：http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
+  
+  装载过程：
+  constructor()
+  static getDerivedStateFromProps(nextProps, prevState)
+  render()
+  componentDidMount()
+  
+  更新过程：
+  -> static getDerivedStateFromProps(nextProps, prevState)
+  -> shouldComponentUpdate 
+  -> render 
+  -> getSnapshotBeforeUpdate 
+  -> componentDidUpdate
+  
+  卸载过程
+  componentwillUnMount
+  
+  生命周期三个阶段：Render 渲染阶段和 Commit 阶段 （更新时存在Pre-Commit 阶段）
+  
+  
+  渲染的时候父组件和子组件的生命周期执行顺序：
+  装载过程：
+  componentWillMount 1
+  render 1
+  constructor 2
+  componentWillMount 2
+  render 2
+  constructor 3
+  componentWillMount 3
+  render 3
+  componentDidMount 1
+  componentDidMount 2
+  componentDidMount 3
+  
+  
+  错误处理(当组件发生错误的时候，用得极少)
+  getDerivedStateFromError(v16.6新增) -> componentDidCatch(未来将被废弃)
+  
+  ```
+- 能简单介绍一下 react 执行过程吗
+``` 
+performUnitOfWork
+beginWork
+completeUnitOfWork
+
+jsx 经过 babel 转变成 render 函数
+create update
+enqueueUpdate
+scheduleWork 更新 expiration time
+requestWork
+workLoop大循环
+Effect List
+commit
+```
 - 简述路由原理以及react-router的内部原理解释。
 
 ```   
@@ -164,50 +256,8 @@ promise.then(() => {
 该函数会在setState函数调用完成并且组件开始重渲染的时候被调用，我们可以用该函数来监听渲染是否完成
 ```
 - react的setState后发生了什么
-- React V16 生命周期函数用法
-```   
-链接：http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
 
-
-渲染的时候父组件和子组件的生命周期执行顺序：
-装载过程：
-componentWillMount 1
-render 1
-constructor 2
-componentWillMount 2
-render 2
-constructor 3
-componentWillMount 3
-render 3
-componentDidMount 1
-componentDidMount 2
-componentDidMount 3
-
-装载过程：
-constructor()
-static getDerivedStateFromProps(nextProps, prevState)
-componentWillMount()(将要废弃)
-render()
-componentDidMount()
-
-更新过程：
-componentWillReceiveProps(v17.0中将被弃用) 
--> static getDerivedStateFromProps(nextProps, prevState)
--> shouldComponentUpdate 
--> componentWillUpdate(v17.0中将被弃用) 
--> render 
--> getSnapshotBeforeUpdate 
--> componentDidUpdate
-
-卸载过程
-componentwillUnMount
-
-错误处理(当组件发生错误的时候，用得极少)
-getDerivedStateFromError(v16.6新增) -> componentDidCatch(未来将被废弃)
-
-```
-
-- 说说对React Hooks的理解
+- 说说对React Hooks的理解，React Hooks当中的useEffect是如何区分生命周期钩子的
 ``` 
 React Hooks 的设计目的，就是加强版函数组件，完全不使用"类"，就能写出一个全功能的组件。
 
@@ -225,10 +275,56 @@ Hooks还有的好处：
 useState()
 useContext()
 useReducer()
-useEffect() // 怎么保证是在Didmount之后使用？
+useEffect() // useEffect 会在每次渲染后都执行吗？ 是的，默认情况下，它在第一次渲染之后和每次更新之后都会执行。 
+useRef()
 
+一、useReducer
+// 这就是 Redux
+  function useReducer(reducer, initialState) {
+    const [state, setState] = useState(initialState);
+  
+    function dispatch(action) {
+      const nextState = reducer(state, action);
+      setState(nextState);
+    }
+  
+    return [state, dispatch];
+  }
+二、useEffect 可以在组件渲染后实现各种不同的副作用，它使得函数式组件同样具备编写类似类组件生命周期函数的功能。在这里我们仅仅介绍三个常用的生命周期替代方案，分别是：
+如果第二个参数传[ list ]，表示useEffect会在list发生改变时执行
+
+componentDidMount vs useEffect
+componentDidUpdate vs useEffect
+componentWillUnmount vs useEffect
+
+1、componentDidMount vs useEffect，怎么保证是在Didmount之后使用？，利用第二个参数
+function Example() {
+  // 注意不要省略第二个参数 []，这个参数保证函数只在挂载的时候进行，而不会在更新的时候执行。
+  useEffect(() => console.log('mounted'), []);  
+  return null;
+}
+// 举例网络请求，第二个参数空数组[]一定要带上。
+useEffect(async () => {
+    const result = await axios(
+      'http://hn.algolia.com/api/v1/search?query=redux',
+    );
+ 
+    setData(result.data);
+  }, []);
+
+
+2、componentDidUpdate vs useEffect
+useEffect(() => console.log('mounted or updated'));  // 不需要指定第二个参数
+3、componentWillUnmount vs useEffect
+useEffect(() => {
+  return () => {
+    console.log('will unmount');  // 直接使用return返回一个函数，这个函数在unmount时执行。
+  }
+}, []);
+
+
+优化 usecallback、useMemo
 ```
-- React Hooks当中的useEffect是如何区分生命周期钩子的
 
 - 在生命周期中的哪一步你应该发起 AJAX 请求
 ``` 
@@ -607,15 +703,7 @@ serve -s build
 ``` 
   作用域的问题，foo() {} 与 const foo = () => {}里面的this作用域不一样，foo() {}里面使用外部成员，需要bind(this)，直接使用的this作用域仅在该方法内部
 ```
-- vue 和 react 谈谈区别和选型考虑
-``` 
-Vue 的表单可以使用 v-model 支持双向绑定，相比于 React 来说开发上更加方便，当然了 v-model 其实就是个语法糖，本质上和 React 写表单的方式没什么区别
-改变数据方式不同，Vue 修改状态相比来说要简单许多，React 需要使用 setState 来改变状态，并且使用这个 API 也有一些坑点。并且 Vue 的底层使用了依赖追踪，页面更新渲染已经是最优的了，但是 React 还是需要用户手动去优化这方面的问题。
-React 16以后，有些钩子函数会执行多次，这是因为引入 Fiber 的原因
-React 需要使用 JSX，有一定的上手成本，并且需要一整套的工具链支持，但是完全可以通过 JS 来控制页面，更加的灵活。Vue 使用了模板语法，相比于 JSX 来说没有那么灵活，但是完全可以脱离工具链，通过直接编写 render 函数就能在浏览器中运行。
-在生态上来说，两者其实没多大的差距，当然 React的用户是远远高于Vue 的
 
-```
 - 路由懒加载原理
 - context本质是什么
 - React16新特性
@@ -650,7 +738,6 @@ React 需要使用 JSX，有一定的上手成本，并且需要一整套的工�
 - React的vdom如何实现？jsx是怎样解析的？
 - 手写一个 React 高阶组件
 - forceUpdate经历了哪些生命周期，子组件呢?
-- vue和react谈谈区别和选型考虑
 - Flux架构模式
 - 手写实现一个 Redux 中的 reducer (state, action) => newState？
 - 了解fiber吗，做了什么优化，描述一个使用fiber优化前后有区别的场景
@@ -705,6 +792,6 @@ class User extends React.Component {
 defaultProps 用来确保 this.props 在父组件没有指定的情况下有一个初始值。类型检查发生在 defaultProps 赋值之后，所以类型检查也会应用在 defaultProps 上。
 
 ```
-
+- 为何 react 点击事件放在 settimeout 会拿不到 event 对象
 - 谈谈如何封装组件
 - 说一下你对React的理解？React设计思想？

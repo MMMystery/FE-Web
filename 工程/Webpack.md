@@ -369,8 +369,10 @@ apply (compiler) {
 
 module.exports = BuildEndPlugin
 
+
+大概有哪些 compiler 钩子
+
 ```
-- 如何编写loaders和plugins
 - 自己写过什么loader和plugins？
 
 
@@ -441,7 +443,7 @@ webpack 递归地构建一个依赖图，这个依赖图包含着应用程序所
 - webpack打包的整个过程
 - webpack是按照什么进行分chunk打包的？
 - 抽取公共文件是怎么配置的
-- import { Button } from 'antd'，打包的时候只打包button，分模块加载，是怎么做到的
+- import { Button } from 'antd'，打包的时候只打包button，分模块加载，是怎么做到的。
 ``` 
 通过 babel-plugin-import 配置处理。
 

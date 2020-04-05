@@ -5,6 +5,14 @@
 5. Node构建网络服务（TCP、HTTP、Web Socket服务等）
 6. Node的进程
 
+nodejs 性能优化、nodejs 性能监控、
+
+nodejs压力测试，服务器容灾，ssr直出降级
+
+nodejs事件驱动
+
+nodejs的适用场景
+
 
 - 了解node吗？node在表现上和浏览器有什么不一样的地方
 - node中间件
@@ -38,3 +46,28 @@ api***
 
 - 如何用express搭建服务器
 - 说一说你了解的express中间件
+
+- koa2 和 express 区别
+``` 
+express 是大而全有路由等，koa2 小而精通过中间件
+koa2 能使用 async await，express 不能
+koa2 有洋葱模型和 ctx 上下文，express 没有
+```
+
+- koa2 和 egg 的区别
+``` 
+egg 是在 koa2 上的封装
+egg 有 controller，service，router
+约定了文件目录结构
+```
+
+- 鉴权有了解过了
+```
+Seesion/cookie
+Token
+OAuth
+SSO
+
+```
+
+
