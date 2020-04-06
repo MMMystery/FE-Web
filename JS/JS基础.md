@@ -455,12 +455,13 @@ function deepClone(obj) {
 ```
 
 - 数组中的forEach和map的区别
-- for in和for of,forEach的区别
+- for ,for in,for of,forEach的区别
 
 ```
-for in 一般常用来遍历对象或json  for in循环出的是key
-for of数组对象都可以遍历  for of循环出的是value
-forEach
+for循环在Array和Object中都可以使用
+for in在Array和Object中都可以使用  for in循环出的是key,注意：遍历对象会遍历包含原型上的属性
+for of在Array、Object、Set、Map中都可以使用 for of循环出的是value
+forEach循环在Array、Set、Map中都可以使用。
 ```
 - obj对象和map对象区别
 ``` 

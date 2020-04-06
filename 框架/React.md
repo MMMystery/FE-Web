@@ -334,6 +334,9 @@ React 下一代调和算法 Fiber 会通过开始或停止渲染的方式优化�
 
 - 介绍下 React Fiber 架构、调度原理(自己讲了下Fiber树中节点的具体数据结构、任务优先级、代码如何断开和重连)
 ``` 
+JS 运算、页面布局和页面绘制都是运行在浏览器的主线程当中，他们之间是互斥的关系。如果 JS 运算持续占用主线程，页面就没法得到及时的更新。
+如果页面元素很多，整个过程占用的时机就可能超过 16 毫秒，就容易出现掉帧的现象。
+
 在之前的版本中，如果你拥有一个很复杂的复合组件，然后改动了最上层组件的 state，那么调用栈可能会很长
 调用栈过长，再加上中间进行了复杂的操作，就可能导致长时间阻塞主线程，带来不好的用户体验。Fiber 就是为了解决该问题而生
 Fiber 本质上是一个虚拟的堆栈帧，新的调度器会按照优先级自由调度这些帧，从而将之前的同步渲染改成了异步渲染，在不影响体验的情况下去分段计算更新
@@ -344,20 +347,21 @@ Fiber 可以提升复杂React 应用的可响应性和性能。Fiber 即是React
 旧版：旧版 React 通过递归的方式进行渲染，使用的是 JS 引擎自身的函数调用栈，它会一直执行到栈空为止
 
 新版：Fiber实现了自己的组件调用栈，它以链表的形式遍历组件树，可以灵活的暂停、继续和丢弃执行的任务。实现方式是使用了浏览器的requestIdleCallback这一 API。
+而 Fiber Reconciler 每执行一段时间，都会将控制权交回给浏览器，可以分段执行
 
 每次有 state 的变化 React 重新计算，如果计算量过大，浏览器主线程来不及做其他的事情，比如 rerender 或者 layout，那例如动画就会出现卡顿现象。
 React 制定了一种名为 Fiber 的数据结构，加上新的算法，使得大量的计算可以被拆解，异步化，浏览器主线程得以释放，保证了渲染的帧率。从而提高响应性。
 
 对于如何区别优先级，React 有自己的一套逻辑。对于动画这种实时性很高的东西，也就是 16 ms 必须渲染一次保证不卡顿的情况下，React 会每 16 ms（以内） 暂停一下更新，返回来继续渲染动画
 对于异步渲染，现在渲染有两个阶段：reconciliation 和 commit 。前者过程是可以打断的，后者不能暂停，会一直更新界面直到完成。
-1. Reconciliation 阶段
 
+1. Reconciliation 阶段（可打断）
 componentWillMount
 componentWillReceiveProps
 shouldComponentUpdate
 componentWillUpdate
-2. Commit 阶段
 
+2. Commit 阶段（不可打断）
 componentDidMount
 componentDidUpdate
 componentWillUnmount
@@ -390,13 +394,31 @@ React patch、事件系统
 react的 Virtual Dom模型
 ```
 
-- 什么是高阶组件(HOC)，相比 mixins 有什么优点？
+- 什么是高阶组件(HOC)，相比 mixins 有什么优点？（https://blog.csdn.net/astonishqft/article/details/82870224）
 
 ```
+在多个不同的组件中需要用到相同的功能，其解决办法有两种：mixin和高阶组件。
+
+minxin的缺陷
+破坏了原有组件的封装：可能会带来新的state和props,意味着会有些“不可见”的状态需维护。
+命名冲突：不同mixin中的命名不可知，故非常容易发生冲突，需要花一定成本解决。
+增加了复杂性，难以维护。
+
+
 高阶组件(Higher Order Componennt)本身其实不是组件，而是一个函数，这个函数接收一个元组件作为参数，然后返回一个新的增强组件，高阶组件的出现本身也是为了逻辑复用
+一个公共逻辑写到高阶组件里面，然后高级组件包裹的组件都具备这些逻辑。
+
 const EnhancedComponent = higherOrderComponent(WrappedComponent) 
 
-里层原理，如何实现
+高阶组件允许你做：
+代码复用，逻辑抽象，抽离底层准备（bootstrap）代码
+渲染劫持
+State 抽象和更改
+Props 更改
+
+实现高阶组件的方法有两种
+属性代理(props proxy)。高阶组件通过被包裹的 React 组件来操作 props。
+反向继承(inheritance inversion)。高阶组件继承于被包裹的 React 组件。
 
 在高阶组件内，应避免对组件做任何修改。应使用组合技术，将输入的组件包裹到一个容器组件中。
 function logProps(WrappedComponent) {
@@ -424,6 +446,8 @@ function withLog (fn) {
 const withLogAdd = withLog(add)
 withLogAdd(1, 2)
 
+
+里层原理，如何实现
 
 其实 HOC 和 Vue 中的 mixins 作用是一致的，并且在早期 React 也是使用 mixins 的方式。但是在使用 class 的方式创建组件以后，mixins 的方式就不能使用了
 
@@ -709,7 +733,7 @@ serve -s build
 - React16新特性
 - 组件间的通信方式有哪几种
 - redux简单实现
-- 高阶函数和装饰器
+
 - immutable
 - 路由的动态加载模块
 - React组件中怎么做事件委托
@@ -736,7 +760,7 @@ serve -s build
 ```
 - React的生命周期中的isBatchingUpdates了解吗？Transaction知道吗
 - React的vdom如何实现？jsx是怎样解析的？
-- 手写一个 React 高阶组件
+
 - forceUpdate经历了哪些生命周期，子组件呢?
 - Flux架构模式
 - 手写实现一个 Redux 中的 reducer (state, action) => newState？
@@ -746,7 +770,6 @@ serve -s build
 - this.$refs中元素的排列顺序；
 - Redux有没有做过封装
 - react的redux是什么设计模式，react这里用了什么设计模式
-- 高阶组件和mixin的区别
 - 你们 abort 机制怎么设计的，了解过原理吗
 
 - react数据通信方式

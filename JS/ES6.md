@@ -266,7 +266,15 @@ ArrayBuffer是一(大)块内存，但不能直接访问ArrayBuffer里面的字�
 
 - Iterator（迭代器，遍历器）、Generator（生成器）的用法？
 ``` 
+迭代器是一个对象，它定义一个序列，并在终止时可能返回一个返回值。 更具体地说，迭代器是通过使用 next() 方法实现 Iterator protocol 的任何一个对象，该方法返回具有两个属性的对象： value，这是序列中的 next 值；和 done
 一、Iterator（迭代器），yield表达式在generator中是作为一个暂停标志，当碰到yield时，函数暂停执行，等到下一次next()执行时
+可迭代对象具有 Symbol.iterator 属性
+在ES6中有3种类型的集合对象：数组、Map集合与Set集合，为了更好地访问对象中的内容，这3种对象都内建了以下三种迭代器
+
+entries() 返回一个迭代器，其值为多个键值对
+values() 返回一个迭代器，其值为集合的值
+keys() 返回一个迭代器，其值为集合中的所有键名
+
 let obj = {
     name:'zhangsan',
     age:18,
@@ -284,6 +292,7 @@ console.log([...obj]);//["zhangsan", 18, "man"]
 
 
 二、Generator原理（生成器）
+生成器是一种返回迭代器的函数。 通过 function 关键字后面 加 * 来定义，使用 yield 关键字返回迭代器
 使用function关键字后加*的方式声明一个函数，该函数即为Generator函数
 let tell = function* (){
     yield 1;
@@ -313,8 +322,37 @@ yield怎么控制顺序
 
 - Decorator(装饰器), 实现原理
 ``` 
-装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数
-就是简单的将一个函数包装成另一个函数
+许多面向对象的语言都有修饰器（Decorator）函数，用来修改类的行为。修饰器不仅可以修饰类，还可以修饰类的属性。
+@decorator
+class A {};
+
+// 等同于
+class A {};
+A = decorator(A) || A;
+修饰器对类的行为的改变，是代码编译时发生的，而不是在运行时。这意味着，修饰器能在编译阶段运行代码。也就是说，修饰器本质就是编译时执行的函数。
+如果同一个方法有多个修饰器，会像剥洋葱一样，先从外到内进入，然后由内向外执行。
+
+修饰器只能用于类和类的方法，不能用于修饰函数，因为存在函数提升。
+如果一定要修饰函数，可以采用高阶函数的形式直接执行。
+function decoratorFn(fn) {
+    return function() {
+        const res = fn.apply(this, arguments);
+        return res;
+    }
+}
+
+function doSomething() {};
+const doSomething2 = decoratorFn(doSomething);
+
+core-decorators.js是一个第三方模块，提供了几个常见的修饰器，通过它可以更好地理解修饰器。
+（1）@autobind 修饰器使得方法中的this对象，绑定原始对象。
+（2）@readonly 修饰器使得属性或方法不可写。
+（3）@override 修饰器检查子类的方法，是否正确覆盖了父类的同名方法，如果不正确会报错。
+（4）@deprecate 或 @deprecated 修饰器在控制台显示一条警告，表示该方法将废除。
+（5）@suppressWarnings 修饰器抑制deprecated修饰器导致的console.warn()调用。但是，异步代码发出的调用除外。
+
+
+装饰器——Decorator函数，就是简单的将一个函数包装成另一个函数
 
 如何使用JavaScript装饰器
 JavaScript中装饰器使用特殊的语法，使用@作为标识符，且放置在被装饰代码之前。
