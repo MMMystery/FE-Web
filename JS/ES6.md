@@ -206,39 +206,6 @@ let gs2 = Symbol.for('global_symbol_1')  //获取全局Symbol
 gs1 === gs2  // true
 
 ```
-- Iterator（迭代器，遍历器）、Generator（生成器）的用法？
-``` 
-一、Iterator（迭代器），yield表达式在generator中是作为一个暂停标志，当碰到yield时，函数暂停执行，等到下一次next()执行时
-let obj = {
-    name:'zhangsan',
-    age:18,
-    sex:'man'
-}
-obj[Symbol.iterator]=function* (){
-    for(var key in obj){
-        yield obj[key];
-    }
-}
-for(let value of obj){
-    console.log(value);//zhangsan 18 man
-}
-console.log([...obj]);//["zhangsan", 18, "man"]
-
-
-二、Generator原理（生成器）
-使用function关键字后加*的方式声明一个函数，该函数即为Generator函数
-let tell = function* (){
-    yield 1;
-    yield 2;
-    yield 3;
-}
-let k = tell();
-console.log(k.next());//{value: 1, done: false}
-console.log(k.next());//{value: 2, done: false}
-console.log(k.next());//{value: 3, done: false}
-console.log(k.next());//{value: undefined, done: true}
-
-```
 
 - Set、Map数据结构和weakset、WeakMap分别是什么
 
@@ -295,6 +262,43 @@ ArrayBuffer是一(大)块内存，但不能直接访问ArrayBuffer里面的字�
 简单说，ArrayBuffer对象代表原始的二进制数据，TypedArray视图用来读写简单类型的二进制数据，DataView视图用来读写复杂类型的二进制数据。
 
 ```
+
+
+- Iterator（迭代器，遍历器）、Generator（生成器）的用法？
+``` 
+一、Iterator（迭代器），yield表达式在generator中是作为一个暂停标志，当碰到yield时，函数暂停执行，等到下一次next()执行时
+let obj = {
+    name:'zhangsan',
+    age:18,
+    sex:'man'
+}
+obj[Symbol.iterator]=function* (){
+    for(var key in obj){
+        yield obj[key];
+    }
+}
+for(let value of obj){
+    console.log(value);//zhangsan 18 man
+}
+console.log([...obj]);//["zhangsan", 18, "man"]
+
+
+二、Generator原理（生成器）
+使用function关键字后加*的方式声明一个函数，该函数即为Generator函数
+let tell = function* (){
+    yield 1;
+    yield 2;
+    yield 3;
+}
+let k = tell();
+console.log(k.next());//{value: 1, done: false}
+console.log(k.next());//{value: 2, done: false}
+console.log(k.next());//{value: 3, done: false}
+console.log(k.next());//{value: undefined, done: true}
+
+```
+
+
 - Decorator(装饰器), 实现原理
 ``` 
 装饰器——Decorator函数，当初刚开始学习ES6的时候其实并没有怎么关注它，但是随着很多的框架开始使用它，并且开始流行用它去写高阶函数

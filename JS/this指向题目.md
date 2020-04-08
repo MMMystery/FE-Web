@@ -70,3 +70,65 @@ const c = new foo() // undefined
 对于 new 的方式来说，this 被永远绑定在了 c 上面，不会被任何方式改变 this
 
 ```
+
+- this指向
+``` 
+var name = "The Window";
+  var object = {     name : "My Object",
+    getNameFunc : function(){       
+        return function(){         
+               return this.name;       
+        };
+    }
+  };
+  alert(object.getNameFunc()());
+object.getNameFunc()返回一个函数，这个function定义是在window上。this指向window
+所以输出：The Window
+
+var name = "The Window";
+  var object = {     
+    name : "My Object",
+    getNameFunc : function(){       
+    var that = this;       
+        return function(){         
+            return that.name; 
+      };
+    }
+  };
+  alert(object.getNameFunc()());
+
+输出：My Object
+```
+
+- promise输出题
+``` 
+function test(res) {
+    return Promise.resolve(res).then(res => {
+            console.log(res += '!');
+            return res;
+        }).then(res => {
+            console.log(res += '!');
+            return Promise.reject("end"); 
+        }).catch(res => {
+            console.log(res);
+            return res;  
+        }).then(res => {
+            console.log(res += '!');  
+        });
+}
+test("google");
+
+google!
+google!!
+end
+end!
+
+```
+- 数组reduce
+``` 
+let arr1 = [1, 2, 3, 4, 5];
+let arr2 = [1, 0, 1, 0, 1];
+arr1.reduce((acc, item, index) =>
+            (arr2[index] && acc.push(item),acc),[]);
+[1, 3, 5]
+```
