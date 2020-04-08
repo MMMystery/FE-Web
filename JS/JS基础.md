@@ -120,14 +120,38 @@ console.log(obj1.name); // 小鹿
 
 - js类型判断方式有哪些
 ``` 
-1.typeof
-2.instanceof
-3.constructor
+1.typeof //判断类型
+2.instanceof // a是否Array的实例
+3.constructor // arr.constructor === Array // a实例所对应的构造函数是否为Array
 4.Object.prototype.toString.call() === [object Array]  （这种方式最精准）
 
 typeof有什么不好的地方, typeof 与 instanceof 区别
 
 ```
+
+
+- 如何准确判断一个变量是否是数组类型
+
+``` 
+
+1.数组方法 isArray()
+Array.isArray(a)
+
+2.instanceof  
+
+var a = []
+a instanceof Array //a是否Array的实例？true or false 
+总结：判断实例对象的proto属性与构造函数的prototype是不是用一个引用。如果不是，他会沿着对象的proto向上查找的，直到顶端Object。
+f.proto 一层一层向上寻找，能否找到FOO.prototype，找到为true，否则为false
+
+3.利用构造函数constructor
+var arr = [1,2,3];
+arr.constructor === Array // a实例所对应的构造函数是否为Array
+
+4.Object.prototype.toString.call(obj)  （这种方式最精准）// “[object Number]”
+
+```
+
 
 - console.log(typeof null, typeof [])等等类型判断
 
@@ -158,27 +182,6 @@ alert(“is null”);
 
 ```
 
-- 如何准确判断一个变量是否是数组类型
-
-``` 
-
-1.数组方法 isArray()
-Array.isArray(a)
-
-2.instanceof  
-
-var a = []
-a instanceof Array //a是否Array的实例？true or false 
-总结：判断实例对象的proto属性与构造函数的prototype是不是用一个引用。如果不是，他会沿着对象的proto向上查找的，直到顶端Object。
-f.proto 一层一层向上寻找，能否找到FOO.prototype，找到为true，否则为false
-
-3.利用构造函数constructor
-var arr = [1,2,3];
-arr.constructor === Array // a实例所对应的构造函数是否为Array
-
-4.Object.prototype.toString.call(obj)  （这种方式最精准）// “[object Number]”
-
-```
 - 怎么判断对象类型？判断一个对象是否是函数
 ``` 
 typeof操作符
@@ -188,8 +191,6 @@ Object.prototype.toString.call() // “[object Number]”
 
 ```
 - 利用typeof instanceof来判断数组还是对象
-
-
 
 ---
 
@@ -362,7 +363,6 @@ for ( var i=1; i<=5; i++) {
 }
 
 ```
-- 实际中遇到的闭包问题
 
 - js this
 ```  
@@ -455,22 +455,19 @@ function deepClone(obj) {
 ```
 
 - 数组中的forEach和map的区别
-- for in和for of,forEach的区别
+- for ,for in,for of,forEach的区别
 
 ```
-for in 一般常用来遍历对象或json
-for of数组对象都可以遍历
-forEach
-
-for in循环出的是key，for of循环出的是value
+for循环在Array和Object中都可以使用
+for in在Array和Object中都可以使用  for in循环出的是key,注意：遍历对象会遍历包含原型上的属性
+for of在Array、Object、Set、Map中都可以使用 for of循环出的是value
+forEach循环在Array、Set、Map中都可以使用。
 ```
 - obj对象和map对象区别
 ``` 
 obj对象就是键必须是字符串，这给它的使用带来了很大的限制，所以引入了Map，它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
 ```
 
-
-- Map类型和obj的区别，什么时候只可以用map类型
 - 对象遍历 和 数组遍历
 ``` 
 
@@ -620,14 +617,7 @@ proxy
 [1, 2] + [2, 1] // '1,22,1'
 'a' + + 'b' // -> "aNaN"
 ```
-- JavaScript 创建构造函数的过程中发生了什么(其实问的就是new的过程)
-``` 
-创建一个新的对象 obj;
-将这个空对象的proto成员指向了Base函数对象prototype成员对象
-Base函数对象的this指针替换成obj, 相当于执行了Base.call(obj);
-如果构造函数显示的返回一个对象，那么则这个实例为这个返回的对象。 否则返回这个新创建的对象
 
-```
 - 定义函数的方式
 ```
 1.函数声明
@@ -769,6 +759,7 @@ class Child extends Parent {
 let child = new Child(1)
 child.getValue() // 1
 child instanceof Parent // true
+
 
 
 - 组合继承和寄生组合继承的优缺点
@@ -1026,10 +1017,6 @@ JSON.decycle 去除循环引用
 JSON.retrocycle 还原
 
 ```
-
-
-- 手写代码实现事件委托
-
 
 - rem基本设置
 

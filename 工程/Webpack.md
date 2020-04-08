@@ -347,12 +347,43 @@ SCSS 源代码会先交给 sass-loader 把 SCSS 转换成 CSS；
 
 
 
-- webpack里面的插件是怎么实现的
 - 实现webpack的vconsole的插件
-- 写过 webpack 插件吗？知道 webpack 插件的组成吗？
+- 写过 webpack 插件吗？知道 webpack 插件的组成吗？如何编写 loaders 和 plugins
 ``` 
-调用插件 apply 函数传入 compiler 对象
-通过 compiler 对象监听事件
+webpack 插件由以下组成：
+
+一个 JavaScript 命名函数。
+在插件函数的 prototype 上定义一个 apply 方法。
+指定一个绑定到 webpack 自身的事件钩子。
+处理 webpack 内部实例的特定数据。
+功能完成后调用 webpack 提供的回调。
+
+// 一个 JavaScript 命名函数。
+function MyExampleWebpackPlugin() {
+
+};
+
+// 在插件函数的 prototype 上定义一个 `apply` 方法。
+MyExampleWebpackPlugin.prototype.apply = function(compiler) {
+  // 指定一个挂载到 webpack 自身的事件钩子。
+  compiler.plugin('webpacksEventHook', function(compilation /* 处理 webpack 内部实例的特定数据。*/, callback) {
+    console.log("This is an example plugin!!!");
+    
+    // 功能完成后调用 webpack 提供的回调。
+    callback();
+  });
+  
+};
+
+//done：在成功构建并且输出了文件后，Webpack 即将退出时发生；
+//failed：在构建出现异常导致构建失败，Webpack 即将退出时发生；
+
+compiler 对象代表了完整的 webpack 环境配置。这个对象在启动 webpack 时被一次性建立，并配置好所有可操作的设置，包括 options，loader 和 plugin。当在 webpack 环境中应用一个插件时，插件将收到此 compiler 对象的引用。可以使用它来访问 webpack 的主环境。
+
+compilation 对象代表了一次资源版本构建。当运行 webpack 开发环境中间件时，每当检测到一个文件变化，就会创建一个新的 compilation，从而生成一组新的编译资源。一个 compilation 对象表现了当前的模块资源、编译生成资源、变化的文件、以及被跟踪依赖的状态信息。compilation 对象也提供了很多关键时机的回调，以供插件做自定义处理时选择使用。
+
+
+
 
 比如你想实现一个编译结束退出命令的插件
 apply (compiler) {
@@ -369,17 +400,16 @@ apply (compiler) {
 
 module.exports = BuildEndPlugin
 
+
+大概有哪些 compiler 钩子
+
 ```
-- 如何编写loaders和plugins
-- 自己写过什么loader和plugins？
 
 
 
 
 
-
-
-- 减小Webpack打包的时间
+- 减小Webpack打包的时间,webpack如何优化编译速度
 ``` 
 loader （使用include & exclude排除node_modules中的文件，减小 Loader 的文件搜索范围，那么需要去搜索的文件量就减小了），
 我们还可以将 Babel 编译过的文件缓存起来，下次只需要编译更改过的代码文件即可，这样可以大幅度加快打包时间 loader: 'babel-loader?cacheDirectory=true'
@@ -441,7 +471,7 @@ webpack 递归地构建一个依赖图，这个依赖图包含着应用程序所
 - webpack打包的整个过程
 - webpack是按照什么进行分chunk打包的？
 - 抽取公共文件是怎么配置的
-- import { Button } from 'antd'，打包的时候只打包button，分模块加载，是怎么做到的
+- import { Button } from 'antd'，打包的时候只打包button，分模块加载，是怎么做到的。
 ``` 
 通过 babel-plugin-import 配置处理。
 
@@ -467,9 +497,15 @@ module 就是没有被编译之前的代码，通过 webpack 的根据文件引�
 Bundle是由多个不同的模块生成，bundles是最终打包出来的源文件版本。
 
 ```
-- webpack如何优化编译速度
 - Webpack 打包出来的文件如何拆包？
-- 如何编写 loaders 和 plugins
+
+- webpack 给我们提供了三种哈希值计算方式，分别是 hash、chunkhash 和 contenthash。那么这三者有什么区别呢？
+``` 
+hash：跟整个项目的构建相关，构建生成的文件hash值都是一样的，只要项目里有文件更改，整个项目构建的hash值都会更改。
+chunkhash：根据不同的入口文件(Entry)进行依赖文件解析、构建对应的chunk，生成对应的hash值。
+contenthash：由文件内容产生的hash值，内容不同产生的contenthash值也不一样。
+```
+
 
 
 

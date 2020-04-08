@@ -14,16 +14,103 @@ class Animal2 {
 ```
 - es6 class怎么用es5实现
 ``` 
+1.ES5继承的实质是先创建了子类元素child的的实例对象，然后再把父类元素parent的原型对象中的属性赋值给子类元素child的实例对象里面，从而实现继承（Parent.apply(this)）.
+2.ES6的继承机制完全不同，实质上是先创建父类的实例对象this（所以必须先调用父类的super()方法），然后再用子类的构造函数修改this。
+
+
 var _createClass = (function() {
 
 })()
 
-
+```
+- es5的继承 实现一下（原型继承）
+``` 
+组合继承（组合构造和原型方式实现继承）
+function Super(){
+  this.name='ss1'
+}
+ 
+Super.prototype.getName=function () {
+  console.log('my name is ???')
+}
+ 
+function Child(){
+  this.age=1;
+  //继承属性
+  Super.call(this)
+}
+//继承方法
+Child.prototype=new Super();
 
 ```
-- es5的继承 实现一下
+
+- js实现继承的几种方式
+```  
+
+class继承
+
+class Son entends Father {
+  constructor(name){
+    super(name);
+    this.name = name;
+  
+  }
+}
+var s = new Son('son');
+console.log(s.name); // son
+console.log(s instanceof Father); // true
+console.log(s instanceof Son); // true
+
+ 实现Man继承People
+function People() {
+      this.type = 'prople'
+    }
+
+    People.prototype.eat = function () {
+      console.log('吃东西啦');
+    }
+
+    function Man(name) {
+      this.name = name;
+      this.color = 'black';
+    }
+
+原型继承：
+Man.prototype = new People();
+
+call、apply、bind都可以实现继承
+function Child(){
+    Person.call(this,'李端','26');
+};
+var child = new Child();
+
+构造继承：
+function Man(name) {
+      People.call(this);
+    }
+
+组合继承：
+function Man(name) {
+  People.call(this);
+}
+
+Man.prototype = People.prototype;
+
+寄生组合继承：
+function Man(name) {
+  People.call(this);
+}
+
+Man.prototype = Object.create(People.prototype, {
+  constructor: {
+    value: Man
+  }
+})
+
+```
+
 - 实现extend函数
-- 实现原型链继承
+- 原型链继承原理
 ``` 
 function myExtend(C, P) {
     var F = function(){};
@@ -953,64 +1040,6 @@ class EventEmitter {
 }
 ```
 
-- js实现继承的几种方式
-```  
-
-class 实现继承
-
-class Son entends Father {
-  constructor(name){
-    super(name);
-    this.name = name;
-  
-  }
-}
-var s = new Son('son');
-console.log(s.name); // son
-console.log(s instanceof Father); // true
-console.log(s instanceof Son); // true
-
-有下面两个类，下面实现Man继承People
-function People() {
-      this.type = 'prople'
-    }
-
-    People.prototype.eat = function () {
-      console.log('吃东西啦');
-    }
-
-    function Man(name) {
-      this.name = name;
-      this.color = 'black';
-    }
-
-原型继承：
-Man.prototype = new People();
-
-构造继承：
-function Man(name) {
-      People.call(this);
-    }
-
-组合继承：
-function Man(name) {
-  People.call(this);
-}
-
-Man.prototype = People.prototype;
-
-寄生组合继承：
-function Man(name) {
-  People.call(this);
-}
-
-Man.prototype = Object.create(People.prototype, {
-  constructor: {
-    value: Man
-  }
-})
-
-```
 - 手写实现观察者模式
 - new Queue().task(1000,()=>console.log(1)).task(2000,()=>console.log(2)).task(3000,()=>console.log(3)).start()实现该函数，start()后等1秒输出1，再等2秒2，再等3秒3.
 - ab-cd-ef=》ab-Cd-Ef（来个简单的题（你菜给你来个简单的嘤嘤嘤））
