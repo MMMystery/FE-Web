@@ -264,3 +264,125 @@ setTimeout1
 settimeout
 
 ```
+
+- 运算
+``` 
++true;
+!"Lydia";
+输出：1 ; false
+```
+- 相等
+``` 
+let a = 3
+let b = new Number(3)
+let c = 3
+
+console.log(a == b)   // true
+console.log(a === b)  // false
+console.log(b === c)  // false
+
+new Number() 是一个内建的函数构造器。虽然它看着像是一个 number，但它实际上并不是一个真实的 number：它有一堆额外的功能并且它是一个对象。
+```
+
+- 静态方法和实例
+``` 
+class Chameleon {
+  static colorChange(newColor) {
+    this.newColor = newColor
+    return this.newColor
+  }
+
+  constructor({ newColor = 'green' } = {}) {
+    this.newColor = newColor
+  }
+}
+
+const freddie = new Chameleon({ newColor: 'purple' })
+freddie.colorChange('orange')   // TypeError
+
+colorChange 是一个静态方法。静态方法被设计为只能被创建它们的构造器使用（也就是 Chameleon），并且不能传递给实例。
+因为 freddie 是一个实例，静态方法不能被实例使用，因此抛出了 TypeError 错误。
+
+```
+- 函数是对象，可以自由加属性
+``` 
+function bark() {
+  console.log('Woof!')
+}
+
+bark.animal = 'dog'
+正常运行!
+这在 JavaScript 中是可以的，因为函数是对象！（除了基本类型之外其他都是对象）
+函数是一个特殊的对象。你写的这个代码其实不是一个实际的函数。函数是一个拥有属性的对象，并且属性也可被调用。
+
+```
+- 但是构造函数，不可以直接自由加属性，应该使用原型来加属性。
+``` 
+function Person(firstName, lastName) {
+  this.firstName = firstName;
+  this.lastName = lastName;
+}
+
+const member = new Person("Lydia", "Hallie");
+Person.getFullName = function () {
+  return `${this.firstName} ${this.lastName}`;
+}
+
+console.log(member.getFullName()); // TypeError
+
+你不能像常规对象那样，给构造函数添加属性。如果你想一次性给所有实例添加特性，你应该使用原型，如下：
+Person.prototype.getFullName = function () {
+  return `${this.firstName} ${this.lastName}`;
+}
+这才会使 member.getFullName() 起作用。为什么这么做有益的？假设我们将这个方法添加到构造函数本身里。
+也许不是每个 Person 实例都需要这个方法。这将浪费大量内存空间，因为它们仍然具有该属性，这将占用每个实例的内存空间。
+相反，如果我们只将它添加到原型中，那么它只存在于内存中的一个位置，但是所有实例都可以访问它
+
+```
+
+-输出是什么？
+``` 
+function Person(firstName, lastName) {
+  this.firstName = firstName
+  this.lastName = lastName
+}
+
+const lydia = new Person('Lydia', 'Hallie')
+const sarah = Person('Sarah', 'Smith')
+
+console.log(lydia)
+console.log(sarah)
+输出是：Person {firstName: "Lydia", lastName: "Hallie"} and undefined
+
+当使用 new 时，this 引用我们创建的空对象。对于 sarah，我们没有使用 new 关键字，this 引用的是全局对象（global object）。
+
+我们说 this.firstName 等于 "Sarah"，并且 this.lastName 等于 "Smith"。实际上我们做的是，定义了 global.firstName = 'Sarah' 和 global.lastName = 'Smith'。而 sarah 本身是 undefined。
+```
+- 一元运算
+``` 
+let number = 0
+console.log(number++)
+console.log(++number)
+console.log(number)
+
+输出 0 2 2 
+```
+
+-字符模板的输出
+``` 
+function getPersonInfo(one, two, three) {
+  console.log(one)
+  console.log(two)
+  console.log(three)
+}
+
+const person = 'Lydia'
+const age = 21
+
+getPersonInfo`${person} is ${age} years old`
+
+
+输出：["", " is ", " years old"]  "Lydia"  21
+
+如果使用标记模板字面量，第一个参数的值总是包含字符串的数组。其余的参数获取的是传递的表达式的值！
+```

@@ -23,9 +23,24 @@ parse(生成AST)=> optimize(优化静态节点) => generate(生成render functio
 ```
 - 除了Object.defineProperty,还有什么能实现数据劫持（双向绑定，proxy和defineProperty对比），Proxy 相比于 defineProperty 的优势
 ``` 
-
+属性监听：
 Object.defineProperty只能对属性进行数据劫持，所以需要深度遍历整个对象 对于数组不能监听到数据的变化
+var Book = {}
+var name = '';
+Object.defineProperty(Book, 'name', {
+  set: function (value) {
+    name = value;
+    console.log('你取了一个书名叫做' + value);
+  },
+  get: function () {
+    return '《' + name + '》'
+  }
+})
+ 
+Book.name = 'vue权威指南';  // 你取了一个书名叫做vue权威指南
+console.log(Book.name);  // 《vue权威指南》
 
+Proxy
 数组变化也能监听到
 不需要深度遍历监听
 
