@@ -2,7 +2,7 @@
 ```
 表达式：声明、解构赋值
 内置对象：字符串扩展、数值扩展、对象扩展、数组扩展、函数扩展、正则扩展、Symbol、Set、Map、Proxy、Reflect
-语句与运算：Class、Module、Iterator
+语句与运算：Class、Module、Iterator、Decorator(装饰器)
 异步编程：Promise、Generator、Async
 ```
 
@@ -238,16 +238,35 @@ WeakMap
 Proxy 是 ES6 中新增的功能，可以用来自定义对象中的操作
 
 ```
-- Proxy对象能拦截什么
-```            
+- Proxy（代理）对象能拦截什么
+```  
+let p = new Proxy(target, habdler);
+target：用 Proxy 包装的目标对象（可以是数组对象，函数，或者另一个代理）；
+handler：一个对象，拦截过滤代理操作的函数。
+     
 
 ```
-- Reflect
+- Reflect（反射）（其实就是object的工具类来用）
 ``` 
 Reflect 是一个内置的对象，它提供拦截 JavaScript 操作的方法。
 与大多数全局对象不同，Reflect不是一个构造函数。你不能将其与一个new运算符一起使用，或者将Reflect对象作为一个函数来调用。Reflect的所有属性和方法都是静态的（就像Math对象）。
+
+Reflect对象的方法与Proxy对象的方法相同。
+
+区别：
+Proxy的函数负责的是：拦截并定义拦截时具体的操作
+Reflect的静态函数负责的是：最终执行对象的操作
+var obj = new Proxy({}, {
+    get: (target, key, receiver)=>{
+        console.log('这里可以记录访问日志。');
+        console.log('如果要设置私有属性，那么这里直接抛出一个错误不让访问。');
+        if(key !== "value") {
+            console.log('这里可以预警和拦截');
+        }
+    return Reflect.get(target, key, receiver);//这里也可以直接操作target[key]
+},
 ```
-- Iterator 和 for...of 循环
+
 
 - ArrayBuffer
 ```
@@ -263,6 +282,30 @@ ArrayBuffer是一(大)块内存，但不能直接访问ArrayBuffer里面的字�
 
 ```
 
+- Iterator 和 for...of 循环
+``` 
+遍历器（Iterator）是一种接口，为各种不同的数据结构提供统一的访问机制。任何数据结构只要部署Iterator接口，就可以完成遍历操作
+只要是一个对象部署了Symbol.interator接口，就可以用for...of遍历该对象，同时也可以调用该接口的Symbol.interator方法调用next()方法对对象进行遍历，不同的是for..of是对该对象的值的输出，而next()返回的是对象。
+
+原生具备 Iterator 接口的数据结构如下：
+
+Array
+Map
+Set
+String
+TypedArray
+函数的 arguments 对象
+NodeList 对象
+
+let arr = ['a', 'b', 'c'];
+let iter = arr[Symbol.iterator]();
+
+iter.next() // { value: 'a', done: false }
+iter.next() // { value: 'b', done: false }
+iter.next() // { value: 'c', done: false }
+iter.next() // { value: undefined, done: true }
+
+```
 
 - Iterator（迭代器，遍历器）、Generator（生成器）的用法？
 ``` 
@@ -416,7 +459,7 @@ set
 
 
 
-- promise（promise A+规范）
+- promise（promise A+规范）resolve，reject，then，all，race了解过吗？
 
 ``` 
 Promise 的三种状态：
@@ -427,7 +470,7 @@ rejected：任务完成，但是出现问题。
 
 Promise的静态方法：
 
-Promise.resolve 返回一个fulfilled状态的promise对象
+Promise.resolve 返回一个fulfilled状态的promise对象  Promise.resolve(value)方法返回一个以给定值解析后的Promise 对象。
 Promise.reject 返回一个rejected状态的promise对象
 Promise.all 接收一个promise对象数组为参数，只有全部为resolve才会调用 通常会用来处理 多个并行异步操作
 Promise.race 接收一个promise对象数组为参数，只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理。
@@ -481,16 +524,16 @@ promise.then(function (value) {
     }
 
 ```
-- 实现promise.all的polyfill
-- 实现promise.all
+
+- 实现promise.all (实现promise.all的polyfill)
 ``` 
 Promise.all = function(arr){
     if(!Array.isArray(arr)){
         throw new TypeError(`argument must be a array`)
     }
     return new Promise((resolve,reject) => {
-        var resolveNum = 0;
-        var resolveResult = [];
+        let resolveNum = 0;
+        let resolveResult = [];
         for(let i = 0; i < arr.length; i++){
            Promise.resolve(
                 arr[i].then((data) => {
@@ -516,8 +559,7 @@ Promise.race = function(arr) {
       }
     return new Promise(function(resolve, reject) {
       for (let i = 0; i < arr.length; i++) {
-         Promise.resolve(
-            arr[i]).then(data => {
+         Promise.resolve(arr[i]).then(data => {
                 return resolve(data);
             }, (e) => {
                 return reject(e);
@@ -551,17 +593,73 @@ Promise.retry = (fn, times, delay) => {
   });
 };
 
+
+Promise.retry = function(fn, times, delay){
+    return new Promise((resolve,reject)=>{
+    var attempt = () => {
+        fn().then(resolve).catch((e)=>V {
+            if(times<=0){
+                reject();
+            }else{
+                times--;
+                setTimeout(()=>{
+                    attempt();
+                },delay)
+            }
+
+        })
+     })
+    }
+    attempt();
+}
+
 ```
 
 - 实现 promise.all 并发限制，每次只能并发5个请求
+``` 
+这是自己写的
+Promise.all = function(arr){
+    let index = 0;
+      let newArr = arr.slice(index,index+4); // 利用slice
+      return new Promise((resolve,reject) => {
+         let count = 0;
+          let resultArr =[]
+         for(let i=0; i<newArr.length; i++ ){
+             Promise.resolve(
+                arr[i].then((res)=>{
+                   count++;
+                    resultArr.push(res)
+                   if(count==newArr.length){
+                      index = (index+1)*5;
+                     return resolve(resultArr)
+                 }
+             })
+             ,(e)=>{return reject(e)})
+         }
 
-- Promise 构造函数是同步执行还是异步执行，那么 then 方法呢？
-```   
-promise构造函数是同步执行的，then方法是异步执行的
+    })
+}
+```
+
+- 模拟实现一个 Promise.finally
+```  
+Promise.prototype.finally = function (callback) {
+  let P = this.constructor;
+  return this.then(
+    value  => P.resolve(callback()).then(() => value),
+    reason => P.resolve(callback()).then(() => { throw reason })
+  );
+};
 
 ```
 
-- 用promise 实现genetator
+- Promise 构造函数是同步执行还是异步执行，那么 then 方法呢？
+```   
+promise构造函数（new Promise）是同步执行的，then方法是异步执行的
+
+```
+
+- 用promise 实现 genetator
 
 - promise中第二个参数的reject中执行的方法和promise.catch()都是失败执行的，分别这么写有什么区别，什么情况下会两个都同时用到？
 
@@ -570,7 +668,6 @@ reject 是用来抛出异常的，catch 才是用来处理异常的
 
 ```                                                                                                                 
 
-- promise是怎么实现的原理
 - Promise.then里抛出的错误能否被try...catch捕获，为什么
 ``` 
 promise自己有catch去捕获，外部try..catch无法捕获，因为try catch只能处理同步的错误，对异步错误没有办法捕获
@@ -585,10 +682,36 @@ promise.catch(err => {
 
 
 ```
-
-- promise相关。resolve，reject，then，all，race了解过吗？
+- 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
 - 现在有100个请求，怎么实现 Promise 串行化 。就是形如 [fn1, fn2, fn3] 这样， 然后 fn1 返回的是一个 promise ，resolve 之后再去执行 fn2
+``` 
+最简单的方式：利用async/await
+async function runPromiseByQueue(myPromises) {
+    let result = []
+      for (let value of myPromises) {
+        result.push(await value());
+      }
+    return res;
+}
+
+reduce方式：
+function runPromiseByQueue(myPromises) {
+  myPromises.reduce(
+    (previousPromise, nextPromise) => previousPromise.then(() => nextPromise()),
+    Promise.resolve()
+  );
+}
+上一个 Promise 执行，完毕后调用下一个 Promise，并作为一个新的 Promise 返回，下次迭代继续这个循环。
+
+```
 - 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
+``` 
+出错了后面then就不会执行，知道catch捕获后返回新的promise，catch后面如果还有then的话就继续执行。
+
+答问题二：
+立即catch就行吧，catch后会返回新的promise，后面的then就可以继续执行
+
+```
 - Promise和Async处理失败的时候有什么区别
 - Async/await promise 和 generator区别。
 ``` 
@@ -596,37 +719,65 @@ Async/await是一个语法糖，内部实现还是generator + yield
 async function 代替了 function*，await 代替了 yield
 
 ```
-- 写一个函数，每个promise依赖于上一个promise返回的结果去请求，直到某个失败为止。
+
 - 三个异步函数怎么知道彼此已经结束。不用promise.all
 - 用es5写promise
 
-- Promise.resolve(1)返回是一个什么
 - Promise.any()
 - Promise.reject()
 - Promise.allSettled()
-- 模拟实现一个 Promise.finally
-```  
-Promise.prototype.finally = function (callback) {
-  let P = this.constructor;
-  return this.then(
-    value  => P.resolve(callback()).then(() => value),
-    reason => P.resolve(callback()).then(() => { throw reason })
-  );
-};
 
-```
-- 设计并实现 Promise.race()
-```  
-Promise._race = promises => new Promise((resolve, reject) => {
-	promises.forEach(promise => {
-		promise.then(resolve, reject)
-	})
-})
-```
 
 - new Promise(() => {throw new Error()})能否抛出异常？  
 - 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch
 
+
+- promise的链式调用
+``` 
+function start() {
+  return new Promise((resolve, reject) => {
+    resolve('start');
+  });
+}
+
+start()
+  .then(data => {
+    // promise start
+    console.log('result of start: ', data);
+    return Promise.resolve(1); // p1
+  })
+  .then(data => {
+    // promise p1
+    console.log('result of p1: ', data);
+    return Promise.reject(2); // p2
+  })
+  .then(data => {
+    // promise p2
+    console.log('result of p2: ', data);
+    return Promise.resolve(3); // p3
+  })
+  .catch(ex => {
+    // promise p3
+    console.log('ex: ', ex);
+    return Promise.resolve(4); // p4
+  })
+  .then(data => {
+    // promise p4
+    console.log('result of p4: ', data);
+  });
+上面的代码最终会输出：
+
+result of start:  start
+result of p1:  1
+ex:  2
+result of p4:  4
+
+promise 的 then 方法里面可以继续返回一个新的 promise 对象
+下一个 then 方法的参数是上一个 promise 对象的 resolve 参数
+catch 方法的参数是其之前某个 promise 对象的 rejecte 参数
+一旦某个 then 方法里面的 promise 状态改变为了 rejected，则promise 方法连会跳过后面的 then 直接执行 catch
+catch 方法里面依旧可以返回一个新的 promise 对象
+```
                                                   
 - 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换    
 

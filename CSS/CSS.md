@@ -79,8 +79,8 @@ ID选择器，权值为0100
 
 伪元素是真的有元素
 
-伪类： :hover :active :visited
-伪元素： ::after  ::before
+伪类： :hover :active :visited //伪类是添加类
+伪元素： ::after  ::before  //伪元素是添加元素
 
 ```
 
@@ -91,8 +91,7 @@ relative
 absolute  //相对于 static 定位以外的第一个父元素进行定位。相对于父元素的外边框定位
 fixed // 浏览器窗口进行定位
 static // 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明
-sticky // 粘性定位 结合了position:relative 和 position:fixed 两种定位功能于一体的特殊定位，适用于一些特殊场景，它的行为就像 position:relative; 而当页面滚动超出目标区域时，它的表现就像 position:fixed;，它会固定在目标位置。
-适用于滚动吸顶
+sticky // 粘性定位 结合了position:relative 和 position:fixed 两种定位功能于一体的特殊定位。当元素在屏幕内，表现为relative，就要滚出显示器屏幕的时候，表现为fixed。适用于滚动吸顶效果
 inherit // 规定应该从父元素继承 position 属性的值。
 
 ```
@@ -938,7 +937,7 @@ TODO
 
 - 写一个媒体查询
 - calc属性使用
-``` 
+```
 运算符前后都需要保留一个空格，例如：width: calc(100% - 10px)；
 calc()函数支持 "+", "-", "*", "/" 运算；
 ```
@@ -968,7 +967,7 @@ z-index 只适用于元素有定位的情况，表示层级 数值越大 层级�
 
 ```
 - 哪些可以导致3d加速
-``` 
+```
 .cube {
    -webkit-transform: translate3d(250px,250px,250px)
    rotate3d(250px,250px,250px,-120deg)
@@ -1050,7 +1049,7 @@ flex: 1或者都设置33.33%都行
 - 手写css3动画实现从左到右移动30px
 - p元素嵌套div标签
 - css4新特性？
-``` 
+```
 包含元素选择器 :has
 不包含元素选择器 :not
 块级样式scoped // 样式仅在内部生效
@@ -1073,14 +1072,14 @@ background-clip: // 规定背景的绘制区域
 - postcss配置
 - media-query用过吗？
 - css选择器“+”和“~”的区别
-```  
+```
 最大的区别是’+’指紧跟在后面的某同级元素，而’~’是匹配同级所有。
 ‘+’是指紧跟在后面的某同级元素
 ‘~’是指某些同级元素
 
 ```
 - 简述一下 `@media` 的媒体类型
-``` 
+```
 @media 是可根据一个或多个基于媒体特征、媒体类型等条件来使用样式的规则。其包含以下四种媒体类型：
 
 all：适用于所有设备，默认选项
@@ -1089,7 +1088,7 @@ screen：仅适用于台式机、平板电脑、手机等屏幕
 speech：仅适用于屏幕阅读器
 ```
 - 使用 flexbox，创建一个 3 列布局，其中每列占据容器的 col- {n} / 12 比率
-``` 
+```
 <style lang="scss">
 .row {
   display: flex;
@@ -1114,10 +1113,10 @@ speech：仅适用于屏幕阅读器
 </div>
 
 ```
-- 修改样式<img src="1.jpg" style="width:480px!important;”>为300px
-```  
+- 修改样式 style="width:480px!important;”为300px
+```
  1.css方法 max-width:300px;
- 2.覆盖其样式； transform: scale(0.625)；按比例缩放图片； 
+ 2.覆盖其样式； transform: scale(0.625)；按比例缩放图片；
  3.js方法 document.getElementsByTagName("img")[0].setAttribute("style","width:300px!important;")
 
 ```

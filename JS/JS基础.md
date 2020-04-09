@@ -123,7 +123,7 @@ console.log(obj1.name); // 小鹿
 1.typeof //判断类型
 2.instanceof // a是否Array的实例
 3.constructor // arr.constructor === Array // a实例所对应的构造函数是否为Array
-4.Object.prototype.toString.call() === [object Array]  （这种方式最精准）
+4.Object.prototype.toString.call(temp) === [object Array]  （这种方式最精准）
 
 typeof有什么不好的地方, typeof 与 instanceof 区别
 
@@ -133,7 +133,6 @@ typeof有什么不好的地方, typeof 与 instanceof 区别
 - 如何准确判断一个变量是否是数组类型
 
 ``` 
-
 1.数组方法 isArray()
 Array.isArray(a)
 
@@ -455,13 +454,13 @@ function deepClone(obj) {
 ```
 
 - 数组中的forEach和map的区别
-- for ,for in,for of,forEach的区别
 
+- for ,for in,for of,forEach的区别
 ```
 for循环在Array和Object中都可以使用
 for in在Array和Object中都可以使用  for in循环出的是key,注意：遍历对象会遍历包含原型上的属性
-for of在Array、Object、Set、Map中都可以使用 for of循环出的是value
-forEach循环在Array、Set、Map中都可以使用。
+forEach循环在Array、Set、Map中都可以使用。 缺点：无法使用 break 语句跳出循环，或者使用 return 从函数体内返回。
+for of在Array、Object、Set、Map中都可以使用 for of循环出的是value。 不同于 forEach()，可以使用 break, continue 和 return
 ```
 - obj对象和map对象区别
 ``` 
@@ -470,7 +469,6 @@ obj对象就是键必须是字符串，这给它的使用带来了很大的限�
 
 - 对象遍历 和 数组遍历
 ``` 
-
 -------------------对象遍历-------------------
 //for in的方式 遍历对象的每一个可枚举属性,包括原型链上面的可枚举属性
 
