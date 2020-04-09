@@ -132,3 +132,135 @@ arr1.reduce((acc, item, index) =>
             (arr2[index] && acc.push(item),acc),[]);
 [1, 3, 5]
 ```
+
+- 输出题
+``` 
+var A = function(){};
+A.prototype.n = 1;
+var b = new A(); // b.__proto__ = {n:1}
+A.prototype = {
+    n:2,
+    m:3
+}
+var c = new A(); // c.__proto__ = {n:2,m:3}
+console.log(b.n) 
+console.log(b.m)
+console.log(c.n)
+console.log(c.m)
+
+```
+
+- eventloop输出题
+``` 
+setTimeout(()=>console.log("a"),0)
+var p = new Promise((resolve)=>{
+    console.log("b");
+    resolve();
+})
+p.then(()=>console.log("c"));
+p.then(()=>console.log("d"));
+console.log("e");
+
+b
+e
+c
+d
+a
+
+
+```
+-eventloop输出题
+``` 
+https://segmentfault.com/a/1190000019494012
+
+console.log('1');
+async function async1() {
+    console.log('2');
+    await async2();
+    console.log('3');
+}
+async function async2() {
+    console.log('4');
+}
+
+process.nextTick(function() {
+    console.log('5');
+})
+
+setTimeout(function() {
+    console.log('6');
+    process.nextTick(function() {
+        console.log('7');
+    })
+    new Promise(function(resolve) {
+        console.log('8');
+        resolve();
+    }).then(function() {
+        console.log('9')
+    })
+})
+
+async1();
+
+new Promise(function(resolve) {
+    console.log('10');
+    resolve();
+}).then(function() {
+    console.log('11');
+});
+console.log('12'); 
+
+
+1   2 4 10  12
+宏任务      微任务
+setimeout1  nextTick1 await1 then1
+
+5 11 3
+宏任务       
+setimeout1 
+
+6 8
+宏任务    微任务
+         nextTick2  then2
+7 9
+
+
+
+
+async function async1() {
+    console.log("async1 start");
+    await  async2(); 执行到await async2();，会从右向左执行，先执行async2()，打印async2，看见await，会阻塞代码去执行同步任务。
+    console.log("async1 end");
+}
+
+async  function async2() {
+    console.log( 'async2');
+}
+
+console.log("script start");
+
+setTimeout(function () {
+    console.log("settimeout");
+},0);
+
+async1();
+
+new Promise(function (resolve) {
+    console.log("promise1");
+    resolve();
+}).then(function () {
+    console.log("promise2");
+});
+console.log('script end'); 
+
+scriptstart  async1start async2 promise1 script end
+宏任务        微任务
+setTimeout1   await1 then1
+
+async1 end    promise2
+宏任务        微任务
+setTimeout1 
+
+settimeout
+
+```

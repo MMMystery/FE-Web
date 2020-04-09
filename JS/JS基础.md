@@ -272,10 +272,11 @@ UI rendering (浏览器独有)
 
 
 微任务：
-process.nextTick (Node独有)
+process.nextTick (Node独有) 且process.nextTick优先级大于promise.then
 Promise
 Object.observe
 MutationObserver
+
 
 看链接；https://juejin.im/post/59e85eebf265da430d571f89
 

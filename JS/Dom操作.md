@@ -124,6 +124,40 @@ useCapture →Boolean值 设置事件是事件捕获执行还是事件冒泡执�
 2. 通过js脚本中绑定多个事件，只会执行最后一个事件；
 3. 用“addEventListener”绑定多个事件，按照绑定顺序都会执行。
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="box">
+
+    <a href="" id="btn" onclick="console.log(1)">btn</a>
+</div>
+
+</body>
+<script>
+    var box  = document.getElementById('box');
+    var btn  =  document.getElementById('btn');
+    btn.onclick = function () {
+        console.log(2)
+    }
+    box.addEventListener('click',function (e) {
+        console.log(3)
+    },true)
+    box.addEventListener('click',function (e) {
+        console.log(4)
+    })// 这个其实就是默认false，默认冒泡。
+    box.addEventListener('click',function (e) {
+        console.log(5)
+    },false)
+</script>
+</html>
+
+输出为：3 2 4 5 
+先输出捕获，然后输出js绑定的onclick事件，然后按照顺序输出注册事件里的值。
 ```
 - 解除绑定事件
 ``` 
