@@ -386,3 +386,138 @@ getPersonInfo`${person} is ${age} years old`
 
 如果使用标记模板字面量，第一个参数的值总是包含字符串的数组。其余的参数获取的是传递的表达式的值！
 ```
+- 所有对象都有原型？
+``` 
+false 
+除了基本对象（base object），所有对象都有原型。基本对象可以访问一些方法和属性，比如 .toString。这就是为什么你可以使用内置的 JavaScript 方法！所有这些方法在原型上都是可用的。虽然 JavaScript 不能直接在对象上找到这些方法，但 JavaScript 会沿着原型链找到它们，以便于你使用。
+
+```
+- ==,===比较
+``` 
+console.log({age:1}==={age:1}) // false
+console.log({age:1}=={age:1})  // false
+
+基础类型比较是比较他们的值
+
+对象比较的是他们的引用。所以==也是false
+
+```
+
+- 输出是什么？
+``` 
+const obj = { 1: 'a', 2: 'b', 3: 'c' }
+const set = new Set([1, 2, 3, 4, 5])
+
+obj.hasOwnProperty('1')
+obj.hasOwnProperty(1)
+set.has('1')
+set.has(1)
+
+输出: true true false true
+所有对象的键（不包括 Symbol）在底层都是字符串，即使你自己没有将其作为字符串输入。这就是为什么 obj.hasOwnProperty('1') 也返回 true。
+```
+- 输出是什么？
+``` 
+const obj = { a: 'one', b: 'two', a: 'three' }
+console.log(obj)
+
+输出： { a: "three", b: "two" }
+如果你有两个名称相同的键，则键会被替换掉。它仍然位于第一个键出现的位置，但是值是最后出现那个键的值
+```
+- 输出是什么？
+``` 
+const a = {}
+const b = { key: 'b' }
+const c = { key: 'c' }
+
+a[b] = 123
+a[c] = 456
+
+console.log(a[b])
+拿对象作为键时会转换变成 "[object Object]"
+a["[object Object]"] = 123
+a["[object Object]"] = 456
+所以后面a[b]等于a["[object Object]"] 也就是456了
+
+```
+
+- 输出是什么
+``` 
+const person = { name: 'Lydia' }
+
+function sayHi(age) {
+  console.log(`${this.name} is ${age}`)
+}
+
+sayHi.call(person, 21)
+sayHi.bind(person, 21)
+输出: Lydia is 21 function
+使用这两种方法，我们都可以传递我们希望 this 关键字引用的对象。但是，.call 是立即执行的。
+.bind 返回的是一个函数，但带有绑定上下文！它不是立即执行的。
+
+```
+
+- 输出是什么？
+``` 
+function sayHi() {
+  return () => 0
+}
+
+console.log(typeof sayHi()) // function
+
+function sayHi() {
+  return (() => 0)() 
+}
+
+console.log(typeof sayHi())  //因为返回的是一个立即执行函数，返回值是0，所以是number
+```
+
+- 输出是什么？
+``` 
+(() => {
+  let x, y
+  try {
+    throw new Error()
+  } catch (x) {
+    (x = 1), (y = 2)
+    console.log(x)
+  }
+  console.log(x)
+  console.log(y)
+})()
+
+catch 代码块接收参数 x。当我们传递参数时，这与之前定义的变量 x 不同 。这个 x 是属于 catch 块级作用域的。
+然后，我们将块级作用域中的变量赋值为 1，同时也设置了变量 y 的值。
+catch 块之外的变量 x 的值仍为 undefined， y 的值为 2
+```
+- reduce的使用
+``` 
+
+[[0, 1], [2, 3]].reduce(
+  (acc, cur) => {
+    return acc.concat(cur)
+  },
+  [1, 2]
+)
+
+[1, 2]是初始值。初始值将会作为首次调用时第一个参数 acc 的值。在第一次执行时， acc 的值是 [1, 2]， cur 的值是 [0, 1]。合并它们，结果为 [1, 2, 0, 1]。 第二次执行， acc 的值是 [1, 2, 0, 1]， cur 的值是 [2, 3]。合并它们，最终结果为 [1, 2, 0, 1, 2, 3]
+
+```
+
+- parseInt计算?
+``` 
+const num = parseInt("7*6", 10);
+设定了 进制 后 (也就是第二个参数，指定需要解析的数字是什么进制: 十进制、十六机制、八进制、二进制等等……),parseInt 检查字符串中的字符是否合法. 一旦遇到一个在指定进制中不合法的字符后，立即停止解析并且忽略后面所有的字符。
+*就是不合法的数字字符。所以只解析到"7"，并将其解析为十进制的7. num的值即为7.
+
+```
+- 输出是什么？
+``` 
+[1, 2, 3].map(num => {
+  if (typeof num === "number") return;
+  return num * 2;
+});
+对数组进行映射的时候,num就是当前循环到的元素. 在这个例子中，所有的映射都是number类型，所以if中的判断typeof num === "number"结果都是true.map函数创建了新数组并且将函数的返回值插入数组。
+
+但是，没有任何值返回。当函数没有返回任何值时，即默认返回undefined.对数组中的每一个元素来说，函数块都得到了这个返回值，所以结果中每一个元素都是undefined
+```

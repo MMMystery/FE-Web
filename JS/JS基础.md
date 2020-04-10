@@ -219,6 +219,15 @@ Javascript中所有对象基本都是先调用valueOf方法，如果不是数值
 
 所以值为："aNaN"
 
+6 种 falsy 值:
+undefined
+null
+NaN
+0
+'' (empty string)
+false
+
+new Number(0)和new Boolean(false)其实是一个对象，是truthy。
 ```
 - == 和 ===
 ``` 
