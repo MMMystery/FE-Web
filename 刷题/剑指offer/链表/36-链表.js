@@ -1,5 +1,6 @@
 //输入两个链表，找出它们的第一个公共结点。
 
+
 /*
         假定 List1长度: a+n  List2 长度:b+n, 且 a<b
         那么 p1 会先到链表尾部, 这时p2 走到 a+n位置,将p1换成List2头部
@@ -8,6 +9,7 @@
         时间复杂度O(n+a+b)
 
        */
+// 没理解
 function FindFirstCommonNode(pHead1, pHead2)
 {
   var p1=pHead1;

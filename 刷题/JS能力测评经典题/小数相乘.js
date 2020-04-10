@@ -8,10 +8,10 @@
 // 复制
 // 0.0003
 
-function multiply(a,b){
-  var stra=a.toString();
-  var strb=b.toString();
-  var len=Math.max(stra.length-stra.indexOf('.')-1,strb.length-strb.indexOf('.')-1);
+function multiply(a, b) {
+  var stra = a.toString();
+  var strb = b.toString();
+  var len = Math.max(stra.length - stra.indexOf('.') - 1, strb.length - strb.indexOf('.') - 1);
   //
-  return parseFloat(a*b).toFixed(len); //toFixed意识是精确到第几位
+  return parseFloat(a * b).toFixed(len); //toFixed意识是精确到第几位
 }

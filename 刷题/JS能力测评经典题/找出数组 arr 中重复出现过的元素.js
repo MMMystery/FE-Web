@@ -17,3 +17,15 @@ function duplicates(arr) {
   });
   return newArr;
 }
+
+
+// 下面这种的话会打印[4, 3, 1, 3]， 会有重复数字
+function duplicates(arr) {
+  var newArr = [];
+  arr.forEach((value, index) => {
+    if (arr.indexOf(value) !== index && arr.lastIndexOf(value)) {
+      newArr.push(value);
+    }
+  });
+  return newArr;
+}
