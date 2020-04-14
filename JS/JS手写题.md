@@ -122,7 +122,7 @@ function myExtend(C, P) {
 
 ```
 
-- new 实现和new 的过程
+- new 实现和new 的过程与Object.create的区别
 ``` 
 (1) 创建一个新对象；
 (2) 链接到原型（为这个新对象添加属性） ；
@@ -142,6 +142,17 @@ function myExtend(C, P) {
       return typeof res === 'object' ? res : obj;
   }
 ```
+- Object.create 的基本实现
+``` 
+_create = function (o) {
+    let F = function () {}
+    F.prototype = o
+    return new F()
+}
+
+```
+
+
 - 实现 instanceof 
 ```  
 // 思路：判断右边变量的原型是否存在于左边变量的原型链上
@@ -162,15 +173,7 @@ function instanceof(left, right) {
 }
 
 ```
-- Object.create 的基本实现
-``` 
-_create = function (o) {
-    let F = function () {}
-    F.prototype = o
-    return new F()
-}
 
-```
 
 - call、apply、bind 实现。
 
@@ -235,26 +238,17 @@ Function.prototype.mybind = function (context) {
 
 ```
 
-- getOwnPropertyNames 实现
+- 实现深拷贝
 ``` 
-// 不能拿到不可枚举的属性
-
-if (typeof Object.getOwnPropertyNames !== 'function') {
-  Object.getOwnPropertyNames = function(o) {
-    if (o !== Object(o)) {
-      throw TypeError('Object.getOwnPropertyNames called on non-object');
+function deepClone(obj) {
+  let copy = obj instanceof Array ? [] : {}
+  for (let i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      copy[i] = typeof obj[i] === 'object' ? deepClone(obj[i]) : obj[i]
     }
-    var props = [],
-      p;
-    for (p in o) {
-      if (Object.prototype.hasOwnProperty.call(o, p)) {
-        props.push(p);
-      }
-    }
-    return props;
-  };
+  }
+  return copy
 }
-
 ```
 
 - 手写一个防抖/节流函数
@@ -321,6 +315,30 @@ const throttle = (fn, delay = 500) => {
  }
 
 ```
+- Symbol内部实现原理，几道题目拆解实现Symbol
+- getOwnPropertyNames 实现
+``` 
+// 不能拿到不可枚举的属性
+
+if (typeof Object.getOwnPropertyNames !== 'function') {
+  Object.getOwnPropertyNames = function(o) {
+    if (o !== Object(o)) {
+      throw TypeError('Object.getOwnPropertyNames called on non-object');
+    }
+    var props = [],
+      p;
+    for (p in o) {
+      if (Object.prototype.hasOwnProperty.call(o, p)) {
+        props.push(p);
+      }
+    }
+    return props;
+  };
+}
+
+```
+
+
 - 能不能改写一个数组的push方法，不是重写，也不是新写，保持原来的逻辑之外，再添加一个consle.log（arguements）在控制台打印出来，比如pushA。在工作台把A打印出来，push什么就打印什么。原来的逻辑不能改？
 
 - 实现数组的flat函数（数组拍平）
@@ -903,6 +921,47 @@ function render(domNode) {
 
 
 ```
+
+- 手写发布订阅的EventEmitter类
+``` 
+class EventEmitter {
+    constructor(){
+        this.events = {}
+    }
+    on(name,cb){
+        if(!this.events[name]){
+            this.events[name] = [cb];
+        }else{
+            this.events[name].push(cb)
+        }
+    }
+    emit(name,...arg){
+        if(this.events[name]){
+            this.events[name].forEach(fn => {
+                fn.call(this,...arg)
+            })
+        }
+    }
+    off(name,cb){
+        if(this.events[name]){
+            this.events[name] = this.events[name].filter(fn => {
+                return fn != cb
+            })
+        }
+    }
+    once(name,fn){
+        var onlyOnce = () => {
+            fn.apply(this,arguments);
+            this.off(name,onlyOnce)
+        }
+        this.on(name,onlyOnce);
+        return this;
+    }
+}
+```
+
+- 手写实现观察者模式
+
 - 手写代码，实现原型式继承（看红宝书）
 - 手写代码，实现借用构造函数（看红宝书）
 - 编写一个函数将dom列表子元素顺序反转
@@ -1002,45 +1061,7 @@ console.log((5).add(3).minus(2))//6
 - 求一个对象的层级数（我写完后，又问如果不用递归，只用循环实现呢）
 - 纯js写一个动画，5s由快到慢，速度自定义
 
-- 手写发布订阅的EventEmitter类
-``` 
-class EventEmitter {
-    constructor(){
-        this.events = {}
-    }
-    on(name,cb){
-        if(!this.events[name]){
-            this.events[name] = [cb];
-        }else{
-            this.events[name].push(cb)
-        }
-    }
-    emit(name,...arg){
-        if(this.events[name]){
-            this.events[name].forEach(fn => {
-                fn.call(this,...arg)
-            })
-        }
-    }
-    off(name,cb){
-        if(this.events[name]){
-            this.events[name] = this.events[name].filter(fn => {
-                return fn != cb
-            })
-        }
-    }
-    once(name,fn){
-        var onlyOnce = () => {
-            fn.apply(this,arguments);
-            this.off(name,onlyOnce)
-        }
-        this.on(name,onlyOnce);
-        return this;
-    }
-}
-```
 
-- 手写实现观察者模式
 - new Queue().task(1000,()=>console.log(1)).task(2000,()=>console.log(2)).task(3000,()=>console.log(3)).start()实现该函数，start()后等1秒输出1，再等2秒2，再等3秒3.
 - ab-cd-ef=》ab-Cd-Ef（来个简单的题（你菜给你来个简单的嘤嘤嘤））
 - [1,2,3,4,6,7,9,13,15]=>['1->4',6->7,'9','13','15']实现一下

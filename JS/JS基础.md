@@ -251,6 +251,24 @@ JSON.stringify(obj)==JSON.stringify(obj2);//true
 
 ```
 
+- this指向
+``` 
+1、全局环境中的 this 
+在全局执行环境中（在任何函数体外部）this 都指向全局对象 window;
+
+2、是否是 new 绑定
+构造函数返回值不是 function 或 object。 newSuper() 返回的是 this 对象。
+构造函数返回值是 function 或 object， newSuper()是返回的是Super中返回的对象。
+
+3、函数是否通过 call,apply 调用，或者使用了 bind 绑定，如果是，那么this绑定的就是指定的对象【归结为显式绑定】
+
+4、 隐式绑定，函数的调用是在某个对象上触发的，即调用位置上存在上下文对象。典型的隐式调用为: xxx.fn()
+
+5、默认绑定，在不能应用其它绑定规则时使用的默认规则，通常是独立函数调用。
+非严格模式：node环境，执行全局对象 global，浏览器环境，执行全局对象 window。
+严格模式：执行 undefined
+```
+
 - js的单线程、EventLoop机制、宏队列、微队列
 ``` 
 JS的本质是单线程：
@@ -406,7 +424,7 @@ j();
 
 
 |      |和原数据是否指向同一对象  第一层数据为基本数据类型         原数据中包含子对象
-赋值    |是                    改变会使原数据一同改变           改变会使原数据一同改变
+赋值    |是                     改变会使原数据一同改变          改变会使原数据一同改变
 浅拷贝  |否                     改变不会使原数据一同改变        改变会使原数据一同改变
 深拷贝  |否                     改变不会使原数据一同改变        改变不会使原数据一同改变
 
@@ -419,9 +437,9 @@ j();
 let copy1 = {...{x:1}}
 
 // 2. Object.assign实现
-
 let copy2 = Object.assign({}, {x:1})
 
+// 3. Array.prototype.slice()、 Array.prototype.concat()等等
 
 
 
@@ -592,7 +610,6 @@ let a = { b: 1 }
 
 ```
 - Object.assign和Object.create相关
-- new和Object.create的区别
 - 构造函数的隐式原型是什么
 - 怎么监听对象属性值的改变（其实就是双向绑定的原理）
 ``` 
@@ -704,7 +721,7 @@ myObject = myFunction.call(myObject, 10, 2);
 
 
 
-- js继承的几种方式以及区别
+- js继承的几种方式以及区别 （这个要完善一下，很多种）
 ```
 组合继承：
 function Parent(value) {
@@ -1009,6 +1026,12 @@ bind会创建一个函数，称之为绑定函数，调用这个函数时，绑�
 
 
 
+- 如何让 (a == 1 && a == 2 && a == 3) 的值为true？（利用Symbol）
+``` 
+1、利用symbol
+2、利用利用数据劫持(Proxy/Object.definedProperty)
+
+```
 
 
 
@@ -1535,7 +1558,7 @@ valueof是返回最适合该对象类型的原始值，而tostring则是返回�
 
 ```
          
-- this指向的题目
+- this指向
 ```  
 
 var a = {
