@@ -473,13 +473,44 @@ Array.prototype.filter = function(fn,context){
     return result
 }
 ```
+
+- 实现lodash.isEqual
+``` 
+function isObject(obj){
+    return typeof ojb === 'object' && obj !== null
+}
+// 全相等
+function isEqual(obj1,obj2){
+    if(!isObject(obj1) || !isObject(obj2)) {
+        // 值类型
+        return obj1===obj2
+    }
+    if(obj1===obj2){
+        return true
+    }
+    // 两个都是对象或数组，而且不相等
+    const obj1key = Object.keys(obj1)
+    const obj2key = Object.keys(obj2)
+    
+    if(obj1key.length !== obj2key.length){
+        return false
+    }
+    for(let key in obj1){
+        const res = isEqual(obj1[key],obj2[key])
+        if(!res){
+            return false
+        }
+    }
+    return true
+}
+
+```
 - 手写reduce或者filter的polyfill
 - 手写parseInt的实现
 - 自己实现一个event类
 - 手写indexOf的实现
 - 手写 Proxy / Object.defineProperty
 - 写一个函数，可以控制最大并发数
-- 自己实现一个event类
 - 设计一个栈，不使用数组
 - js实现栈、队列、链表、二叉树
 ```  
@@ -756,7 +787,6 @@ input.addEventListener('keyup', function(e) {
 
 
 ```
-- 实现一个基本的Event Bus，如何实现一个事件的发布订阅
 - 手写代码实现一下Array.prototype.trim这个函数，并写个测试用例跑给我看下
 ``` 
 String.prototype.trim = function () {
@@ -922,17 +952,17 @@ function render(domNode) {
 
 ```
 
-- 手写发布订阅的EventEmitter类
+- 手写发布订阅的EventEmitter类、实现一个Event Bus。
 ``` 
 class EventEmitter {
     constructor(){
         this.events = {}
     }
-    on(name,cb){
+    on(name,callback){
         if(!this.events[name]){
-            this.events[name] = [cb];
+            this.events[name] = [callback];
         }else{
-            this.events[name].push(cb)
+            this.events[name].push(callback)
         }
     }
     emit(name,...arg){
@@ -958,6 +988,7 @@ class EventEmitter {
         return this;
     }
 }
+
 ```
 
 - 手写实现观察者模式
@@ -989,7 +1020,7 @@ String.prototype.f = function(){
 
 ```
 
-
+- 手写一个深拷贝函数，最好能处理循环引用和Date、Reg的
 
 - Thunk函数实现（结合Generator实现异步）
 - 实现一个方法遍历输出Object所有属性
@@ -1001,8 +1032,13 @@ String.prototype.f = function(){
 4. async实现原理（spawn函数）
 - 手写实现inherit函数
 - 手写实现以下事件委托函数 function delegate(parent, selector, handle) {}
+``` 
+var btn = document.getElementsByTagName('ul')[0]
+btn.onclick = function(e){
+var e = e ||window.event;
+console.log(e.target.innerHTML);
 
-
+```
 
 
 - 实现一个sleep函数
@@ -1230,6 +1266,8 @@ function LazyMan(name){
 
 ```
 - 写一个cookie并定义过期时间为一天
+
+
 - 使用ES6的Reflect来实现一个观察者模式
 ``` 
     // 观察者设计模式

@@ -282,11 +282,10 @@ promise.then(() => {
 ```
 - setState 函数的第二个参数的作用是什么？
 ``` 
-
 该函数会在setState函数调用完成并且组件开始重渲染的时候被调用，我们可以用该函数来监听渲染是否完成
 ```
 - react的setState后发生了什么
-
+- react中setState以后，是子树渲染还是整颗树渲染还是其他情况？
 - 说说对React Hooks的理解，React Hooks当中的useEffect是如何区分生命周期钩子的，为什么没有生命周期
 ``` 
 React Hooks 的设计目的，就是加强版函数组件，完全不使用"类"，就能写出一个全功能的组件。
@@ -354,6 +353,7 @@ useEffect(() => {
 
 
 优化 usecallback、useMemo
+
 ```
 
 - 在生命周期中的哪一步你应该发起 AJAX 请求
@@ -616,6 +616,8 @@ Context 主要为解决 React 组件树中被认为全局数据的共享。
 在 HTML 中，事件名称使用小写，而 React 中使用驼峰命名。
 React 中的事件机制分为两个阶段：事件注册、事件分发。所有的事件都会注册到 document 上，然后使用统一的回调函数 dispatchEvent 来执行分发。
 ```
+- react事件了解吗？ (合成事件) 和普通事件有什么区别，实现原理
+
 - 什么是Redux及其工作原理
 
 - redux中的reducer（纯函数）

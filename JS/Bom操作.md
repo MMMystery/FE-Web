@@ -26,7 +26,6 @@ window.navigator对象：常常用来获取浏览器信息、是否移动端访�
 
 - 网页内容高度
 
-
 ``` 
 页可见区域宽： document.body.clientWidth;
 网页可见区域高： document.body.clientHeight;

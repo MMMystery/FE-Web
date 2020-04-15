@@ -240,7 +240,7 @@ HappyPack 开启多个线程可以将 Loader 的同步执行转换为并行的
 4. code splitting代码分割和按需加载 提取公共代码。webpack4移除了CommonsChunkPlugin (提取公共代码)，用optimization.splitChunks和optimization.runtimeChunk来代替
    按照路由或者组件拆分代码，实现按需加载
 ```
-
+- treeshaking原理
 
 
 

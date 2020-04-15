@@ -855,8 +855,21 @@ require支持 动态导入，import不支持，正在提案 (babel 下可支持)
 require是 同步 导入，import属于 异步 导入
 require是 值拷贝，导出值变化不会影响导入值；import指向 内存地址，导入值会随导出值而变化
 ```
+- require 和 import 区别
+``` 
+import 是 ES6 的模块化语法，require() 在好几种模块规范中都有使用
 
+require是值拷贝， import传的是值引用
 
+–require是运行时调用，所以require理论上可以运用在代码的任何地方
+–import是编译时调用，所以必须放在文件开头
 
+–require是赋值过程，其实require的结果就是对象、数字、字符串、函数等，再把require的结果赋值给某个变量
+–import是解构过程，但是目前所有的引擎都还没有实现import，我们在node中使用babel支持ES6，也仅仅是将ES6转码为ES5再执行，import语法会被转码为require
+```
+- Nodejs可以通过import来引入模块吗、ES6中可以通过require来引入模块吗
+  
+  
+  
 
 

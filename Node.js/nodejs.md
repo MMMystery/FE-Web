@@ -36,14 +36,16 @@ api***
   测试
   Serverless
   
-  
+- nodejs事件循环
+  nodejs非阻塞io
+  nodejs事件驱动
   
 - 中间件原理
 - Node.js 的优缺点（擅长I/O密集、不擅长计算密集……）
 
 - 如果会点nodejs，入门级别（会写爬虫，简单搭建服务器，了解koa洋葱圈模型，express中间件写法和底层实现原理，Node创建进程的方法和区别）
 
-
+- node 的 cluster 机制大概说一下
 - 如何用express搭建服务器
 - 说一说你了解的express中间件
 
