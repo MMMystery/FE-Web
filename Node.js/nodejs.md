@@ -13,9 +13,18 @@ nodejs事件驱动
 
 nodejs的适用场景
 
+- nodejs最大的特点
+``` 
+1、单线程
+2、非阻塞I/O
+3、事件驱动 event-driven
+```
+
 
 - 了解node吗？node在表现上和浏览器有什么不一样的地方
 - node中间件
+
+
 
 - nodejs的应用（异步 非阻塞）
 ``` 

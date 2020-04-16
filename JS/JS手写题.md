@@ -326,10 +326,25 @@ const throttle = (fn, delay = 500) => {
 - 实现数组的flat函数（数组拍平）
 ``` 
 
+function flatter(arr){
+ let newArr = [];
+  arr.forEach((item)=>{
+    newArr.concat(Array.isArray(item)?flatter(item):item)
+  )
+ return newArr;
+}
+
+Function flatter(arr){
+ Return arr.reduce((acc,cur,index,array)=>{
+	Return acc.concat(Array.isArray(cur)?  flatter(acc) : cur
+}, [])
+}
+
+
 ```
 - 实现在原型链上重写 flat 函数 （链接：https://juejin.im/post/5dff18a4e51d455804256d31#heading-15）
 ``` 
-Array.prototype.myFlat = function(num = 1) {
+Array.prototype.myFlat = function(num = 3) {
   if (Array.isArray(this)) {
     let arr = [];
     if (!Number(num) || Number(num) < 0) {
