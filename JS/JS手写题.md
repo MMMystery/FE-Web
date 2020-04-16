@@ -389,7 +389,7 @@ arr.myFlat(arr)
 - 实现一个JS函数柯里化，函数柯里化使用场景
 ``` 
 function currying(fn, ...args) {
-      if (args.length >= fn.length) {
+      if (fn.length <= args.length) {
         return fn(...args);
       } else {
         return (...args2) => currying(fn, ...args, ...args2);
@@ -406,12 +406,53 @@ function currying(fn,...args){
         return currying(fn,...args,...args1)
     }
 }
+
 function add(a,b,c){
     return a + b + c
 }
 add(1,2,3) // 6
 var curryingAdd = currying(add);
 curryingAdd(1)(2)(3) // 6
+
+
+完整实现
+function curry(fn, args) {
+    var length = fn.length;
+
+    args = args || [];
+
+    return function() {
+
+        var _args = args.slice(0),
+
+            arg, i;
+
+        for (i = 0; i < arguments.length; i++) {
+
+            arg = arguments[i];
+
+            _args.push(arg);
+
+        }
+        if (_args.length < length) {
+            return curry.call(this, fn, _args);
+        }
+        else {
+            return fn.apply(this, _args);
+        }
+    }
+}
+
+
+var fn = curry(function(a, b, c) {
+    console.log([a, b, c]);
+});
+
+fn("a", "b", "c") // ["a", "b", "c"]
+fn("a", "b")("c") // ["a", "b", "c"]
+fn("a")("b")("c") // ["a", "b", "c"]
+fn("a")("b", "c") // ["a", "b", "c"]
+
 ```
 - 实现compose函数（实现函数compose，compose接受多个函数作为参数，并返回一个新的函数，新的函数会从右向左依次执行原函数， 并且上一次结果的返回值将会作为下一个函数的参数。）
 ``` 
