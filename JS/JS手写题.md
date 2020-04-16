@@ -122,7 +122,7 @@ function myExtend(C, P) {
 
 ```
 
-- new 实现和new 的过程
+- new 实现和new 的过程与Object.create的区别
 ``` 
 (1) 创建一个新对象；
 (2) 链接到原型（为这个新对象添加属性） ；
@@ -142,6 +142,17 @@ function myExtend(C, P) {
       return typeof res === 'object' ? res : obj;
   }
 ```
+- Object.create 的基本实现
+``` 
+_create = function (o) {
+    let F = function () {}
+    F.prototype = o
+    return new F()
+}
+
+```
+
+
 - 实现 instanceof 
 ```  
 // 思路：判断右边变量的原型是否存在于左边变量的原型链上
@@ -162,15 +173,7 @@ function instanceof(left, right) {
 }
 
 ```
-- Object.create 的基本实现
-``` 
-_create = function (o) {
-    let F = function () {}
-    F.prototype = o
-    return new F()
-}
 
-```
 
 - call、apply、bind 实现。
 
@@ -235,26 +238,17 @@ Function.prototype.mybind = function (context) {
 
 ```
 
-- getOwnPropertyNames 实现
+- 实现深拷贝
 ``` 
-// 不能拿到不可枚举的属性
-
-if (typeof Object.getOwnPropertyNames !== 'function') {
-  Object.getOwnPropertyNames = function(o) {
-    if (o !== Object(o)) {
-      throw TypeError('Object.getOwnPropertyNames called on non-object');
+function deepClone(obj) {
+  let copy = obj instanceof Array ? [] : {}
+  for (let i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      copy[i] = typeof obj[i] === 'object' ? deepClone(obj[i]) : obj[i]
     }
-    var props = [],
-      p;
-    for (p in o) {
-      if (Object.prototype.hasOwnProperty.call(o, p)) {
-        props.push(p);
-      }
-    }
-    return props;
-  };
+  }
+  return copy
 }
-
 ```
 
 - 手写一个防抖/节流函数
@@ -321,6 +315,30 @@ const throttle = (fn, delay = 500) => {
  }
 
 ```
+- Symbol内部实现原理，几道题目拆解实现Symbol
+- getOwnPropertyNames 实现
+``` 
+// 不能拿到不可枚举的属性
+
+if (typeof Object.getOwnPropertyNames !== 'function') {
+  Object.getOwnPropertyNames = function(o) {
+    if (o !== Object(o)) {
+      throw TypeError('Object.getOwnPropertyNames called on non-object');
+    }
+    var props = [],
+      p;
+    for (p in o) {
+      if (Object.prototype.hasOwnProperty.call(o, p)) {
+        props.push(p);
+      }
+    }
+    return props;
+  };
+}
+
+```
+
+
 - 能不能改写一个数组的push方法，不是重写，也不是新写，保持原来的逻辑之外，再添加一个consle.log（arguements）在控制台打印出来，比如pushA。在工作台把A打印出来，push什么就打印什么。原来的逻辑不能改？
 
 - 实现数组的flat函数（数组拍平）
@@ -470,13 +488,44 @@ Array.prototype.filter = function(fn,context){
     return result
 }
 ```
+
+- 实现lodash.isEqual
+``` 
+function isObject(obj){
+    return typeof ojb === 'object' && obj !== null
+}
+// 全相等
+function isEqual(obj1,obj2){
+    if(!isObject(obj1) || !isObject(obj2)) {
+        // 值类型
+        return obj1===obj2
+    }
+    if(obj1===obj2){
+        return true
+    }
+    // 两个都是对象或数组，而且不相等
+    const obj1key = Object.keys(obj1)
+    const obj2key = Object.keys(obj2)
+    
+    if(obj1key.length !== obj2key.length){
+        return false
+    }
+    for(let key in obj1){
+        const res = isEqual(obj1[key],obj2[key])
+        if(!res){
+            return false
+        }
+    }
+    return true
+}
+
+```
 - 手写reduce或者filter的polyfill
 - 手写parseInt的实现
 - 自己实现一个event类
 - 手写indexOf的实现
 - 手写 Proxy / Object.defineProperty
 - 写一个函数，可以控制最大并发数
-- 自己实现一个event类
 - 设计一个栈，不使用数组
 - js实现栈、队列、链表、二叉树
 ```  
@@ -753,7 +802,6 @@ input.addEventListener('keyup', function(e) {
 
 
 ```
-- 实现一个基本的Event Bus，如何实现一个事件的发布订阅
 - 手写代码实现一下Array.prototype.trim这个函数，并写个测试用例跑给我看下
 ``` 
 String.prototype.trim = function () {
@@ -918,6 +966,48 @@ function render(domNode) {
 
 
 ```
+
+- 手写发布订阅的EventEmitter类、实现一个Event Bus。
+``` 
+class EventEmitter {
+    constructor(){
+        this.events = {}
+    }
+    on(name,callback){
+        if(!this.events[name]){
+            this.events[name] = [callback];
+        }else{
+            this.events[name].push(callback)
+        }
+    }
+    emit(name,...arg){
+        if(this.events[name]){
+            this.events[name].forEach(fn => {
+                fn.call(this,...arg)
+            })
+        }
+    }
+    off(name,cb){
+        if(this.events[name]){
+            this.events[name] = this.events[name].filter(fn => {
+                return fn != cb
+            })
+        }
+    }
+    once(name,fn){
+        var onlyOnce = () => {
+            fn.apply(this,arguments);
+            this.off(name,onlyOnce)
+        }
+        this.on(name,onlyOnce);
+        return this;
+    }
+}
+
+```
+
+- 手写实现观察者模式
+
 - 手写代码，实现原型式继承（看红宝书）
 - 手写代码，实现借用构造函数（看红宝书）
 - 编写一个函数将dom列表子元素顺序反转
@@ -945,7 +1035,7 @@ String.prototype.f = function(){
 
 ```
 
-
+- 手写一个深拷贝函数，最好能处理循环引用和Date、Reg的
 
 - Thunk函数实现（结合Generator实现异步）
 - 实现一个方法遍历输出Object所有属性
@@ -957,8 +1047,13 @@ String.prototype.f = function(){
 4. async实现原理（spawn函数）
 - 手写实现inherit函数
 - 手写实现以下事件委托函数 function delegate(parent, selector, handle) {}
+``` 
+var btn = document.getElementsByTagName('ul')[0]
+btn.onclick = function(e){
+var e = e ||window.event;
+console.log(e.target.innerHTML);
 
-
+```
 
 
 - 实现一个sleep函数
@@ -1017,45 +1112,7 @@ console.log((5).add(3).minus(2))//6
 - 求一个对象的层级数（我写完后，又问如果不用递归，只用循环实现呢）
 - 纯js写一个动画，5s由快到慢，速度自定义
 
-- 手写发布订阅的EventEmitter类
-``` 
-class EventEmitter {
-    constructor(){
-        this.events = {}
-    }
-    on(name,cb){
-        if(!this.events[name]){
-            this.events[name] = [cb];
-        }else{
-            this.events[name].push(cb)
-        }
-    }
-    emit(name,...arg){
-        if(this.events[name]){
-            this.events[name].forEach(fn => {
-                fn.call(this,...arg)
-            })
-        }
-    }
-    off(name,cb){
-        if(this.events[name]){
-            this.events[name] = this.events[name].filter(fn => {
-                return fn != cb
-            })
-        }
-    }
-    once(name,fn){
-        var onlyOnce = () => {
-            fn.apply(this,arguments);
-            this.off(name,onlyOnce)
-        }
-        this.on(name,onlyOnce);
-        return this;
-    }
-}
-```
 
-- 手写实现观察者模式
 - new Queue().task(1000,()=>console.log(1)).task(2000,()=>console.log(2)).task(3000,()=>console.log(3)).start()实现该函数，start()后等1秒输出1，再等2秒2，再等3秒3.
 - ab-cd-ef=》ab-Cd-Ef（来个简单的题（你菜给你来个简单的嘤嘤嘤））
 - [1,2,3,4,6,7,9,13,15]=>['1->4',6->7,'9','13','15']实现一下
@@ -1224,6 +1281,8 @@ function LazyMan(name){
 
 ```
 - 写一个cookie并定义过期时间为一天
+
+
 - 使用ES6的Reflect来实现一个观察者模式
 ``` 
     // 观察者设计模式

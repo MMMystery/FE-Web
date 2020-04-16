@@ -33,6 +33,37 @@ new Foo().getName();//-> 3    此时是Foo的实例，原型上会有输出3这�
 
 ```
 
+- 求输出
+``` 
+var name = '123';
+ 
+var obj = {
+    name: '456',
+    getName: function () {
+        function printName() {
+            console.log(this.name)    ;
+        }
+ 
+        printName();
+        
+        //bind
+        printName.bind(this)();
+        //call
+        printName.call(this);
+        //apply
+        printName.apply(this);
+        //=>
+        printName = ()=>{
+            console.log(this.name);
+        }
+    }
+}
+ 
+obj.getName();
+
+
+```
+
 - this指向题目
 ``` 
 obj = {
@@ -521,3 +552,5 @@ const num = parseInt("7*6", 10);
 
 但是，没有任何值返回。当函数没有返回任何值时，即默认返回undefined.对数组中的每一个元素来说，函数块都得到了这个返回值，所以结果中每一个元素都是undefined
 ```
+
+

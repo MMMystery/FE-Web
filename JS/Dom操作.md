@@ -106,7 +106,7 @@ ele.style.styleName = styleValue;设置ele元素的CSS样式
 不相等的时候：
 当事件处理程序绑定在目标元素的父节点上时，currentTarget会指向绑定的父元素，而target依旧指向目标元素
 ```
-- DOM事件的绑定的几种方式以及区别
+- DOM事件的绑定的几种方式以及区别（dom0 级和 dom2 级事件有哪些）
 ```  
 1.DOM元素中直接绑定
 鼠标单击事件 onclick

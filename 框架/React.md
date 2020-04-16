@@ -157,6 +157,22 @@ vue 和 react 的 diff 算法有相同和有不同，相同是都是用同层比
   错误处理(当组件发生错误的时候，用得极少)
   getDerivedStateFromError(v16.6新增) -> componentDidCatch(未来将被废弃)
   
+  
+  几处改动：
+  fiber 架构
+  react生命周期为什么有Unsafe_*
+  静态函数：getDerivedStateFromProps
+  getSnapshotBeforeUpdate
+  减少声明周期，提高性能
+  
+  答案：
+  Fiber 架构下，reconciler 会进行多次，reconciler 过程又会调用多次之前的 willxxx ，造成了语意不明确，因此干掉
+  都次调用 willxxx 会导致一些性能安全/数据错乱等问题，因此 Unsafe
+  静态函数 getDerivedStateFromProps ，直接将其函数内的用户逻辑降低几个数量级，减少用户出错，提高性能，符合语意
+  getSnapshotBeforeUpdate 替换之前 willxxxx，给想读取 dom 的用户一些空间，强逼用户到 mount 阶段才能操作 dom
+  提高性能，减少 try catch 的使用
+  
+  
   ```
 - 能简单介绍一下 react 执行过程吗
 ``` 
@@ -223,6 +239,8 @@ Redux三大原则
 保持只读状态
 数据改变只能通过纯函数来执行
 
+dispatch的实现原理/redux流程（后来发现是想问源码的发布订阅都写在哪了：其实是想问createStore）
+
 ```
 
 - react setState 机制（setState什么时候异步、什么时候同步）
@@ -264,12 +282,11 @@ promise.then(() => {
 ```
 - setState 函数的第二个参数的作用是什么？
 ``` 
-
 该函数会在setState函数调用完成并且组件开始重渲染的时候被调用，我们可以用该函数来监听渲染是否完成
 ```
 - react的setState后发生了什么
-
-- 说说对React Hooks的理解，React Hooks当中的useEffect是如何区分生命周期钩子的
+- react中setState以后，是子树渲染还是整颗树渲染还是其他情况？
+- 说说对React Hooks的理解，React Hooks当中的useEffect是如何区分生命周期钩子的，为什么没有生命周期
 ``` 
 React Hooks 的设计目的，就是加强版函数组件，完全不使用"类"，就能写出一个全功能的组件。
 
@@ -336,6 +353,7 @@ useEffect(() => {
 
 
 优化 usecallback、useMemo
+
 ```
 
 - 在生命周期中的哪一步你应该发起 AJAX 请求
@@ -598,6 +616,8 @@ Context 主要为解决 React 组件树中被认为全局数据的共享。
 在 HTML 中，事件名称使用小写，而 React 中使用驼峰命名。
 React 中的事件机制分为两个阶段：事件注册、事件分发。所有的事件都会注册到 document 上，然后使用统一的回调函数 dispatchEvent 来执行分发。
 ```
+- react事件了解吗？ (合成事件) 和普通事件有什么区别，实现原理
+
 - 什么是Redux及其工作原理
 
 - redux中的reducer（纯函数）
