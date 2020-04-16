@@ -87,7 +87,7 @@ var child = new Child();
 构造继承：
 function Man(name) {
       People.call(this);
-    }
+}
 
 组合继承：
 function Man(name) {
@@ -132,7 +132,7 @@ function myExtend(C, P) {
 // v2 : 还需要判断返回的值是不是一个对象，如果是一个对象，我们就返回这个对象，如果没有，我们该返回什么就返回什么。
   function objectFactory() {
       var obj = new Object(),
-      // 因为 shift 会修改原数组，所以 arguments 会被去除第一个参数
+      // 因为 shift 会修改原数组，所以 arguments 会被去除第一个参数, 把第一个参数取出来
       Constructor = [].shift.call(arguments);
       // 建立继承关系(二者之间的关系)
       obj.__proto__ = Constructor.prototype;

@@ -1536,7 +1536,7 @@ encodeURI和encodeURIComponent的区别在于前者被设计来用于对完整UR
 
 - js传参是按值传递还是按照地址
 ``` 
-按值传递，不然如果是引用数据类型的话，修改了的话把原始数据给改了
+JS中的基本类型按值传递，对象类型按共享传递的(call by sharing，也叫按对象传递、按对象共享传递)。
 ```
 - tostring和valueof有什么区别
 ``` 

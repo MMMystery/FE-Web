@@ -147,7 +147,7 @@ console.log(rest);  // ["Iris", "Alex"]
 
 - 对象新增的方法
 ``` 
-Object.is()
+Object.is() // 判断两个对象相等
 Object.assign()
 Object.getOwnPropertyDescriptors() 
 __proto__属性，Object.setPrototypeOf()，Object.getPrototypeOf() 
@@ -859,7 +859,7 @@ require是 值拷贝，导出值变化不会影响导入值；import指向 内�
 ``` 
 import 是 ES6 的模块化语法，require() 在好几种模块规范中都有使用
 
-require是值拷贝， import传的是值引用
+require是值拷贝， import传的是值引用(只读)
 
 –require是运行时调用，所以require理论上可以运用在代码的任何地方
 –import是编译时调用，所以必须放在文件开头

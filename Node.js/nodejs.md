@@ -20,7 +20,7 @@ nodejs的适用场景
 3、事件驱动 event-driven
 ```
 
-
+- Node.js的加载机制（require和module.exports）
 - 了解node吗？node在表现上和浏览器有什么不一样的地方
 - node中间件
 

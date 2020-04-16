@@ -1,5 +1,109 @@
 new 的方式优先级最高，接下来是 bind 这些函数(不管我们给函数 bind 几次，fn 中的 this 永远由第一次 bind 决定)，然后是 obj.foo() 这种调用方式，最后是 foo 这种调用方式，同时，箭头函数的 this 一旦被绑定，就不会再被任何方式所改变
 
+
+- 作用域
+``` 
+静态作用域与动态作用域
+因为 JavaScript 采用的是词法作用域，函数的作用域在函数定义的时候就决定了。
+
+而与词法作用域相对的是动态作用域，函数的作用域是在函数调用的时候才决定的。
+
+让我们认真看个例子就能明白之间的区别：
+
+var value = 1;
+
+function foo() {
+    console.log(value);
+}
+
+function bar() {
+    var value = 2;
+    foo();
+}
+
+bar();
+
+// 结果是 ???
+假设JavaScript采用静态作用域，让我们分析下执行过程：
+
+执行 foo 函数，先从 foo 函数内部查找是否有局部变量 value，如果没有，就根据书写的位置，查找上面一层的代码，也就是 value 等于 1，所以结果会打印 1。
+
+假设JavaScript采用动态作用域，让我们分析下执行过程：
+
+执行 foo 函数，依然是从 foo 函数内部查找是否有局部变量 value。如果没有，就从调用函数的作用域，也就是 bar 函数内部查找 value 变量，所以结果会打印 2。
+
+前面我们已经说了，JavaScript采用的是静态作用域，所以这个例子的结果是 1。
+
+
+```
+
+- JavaScript深入之执行上下文栈
+``` 
+如果要问到 JavaScript 代码执行顺序的话，想必写过 JavaScript 的开发者都会有个直观的印象，那就是顺序执行，毕竟：
+
+var foo = function () {
+
+    console.log('foo1');
+
+}
+
+foo();  // foo1
+
+var foo = function () {
+
+    console.log('foo2');
+
+}
+
+foo(); // foo2
+然而去看这段代码：
+
+function foo() {
+
+    console.log('foo1');
+
+}
+
+foo();  // foo2
+
+function foo() {
+
+    console.log('foo2');
+
+}
+
+foo(); // foo2
+打印的结果却是两个 foo2。
+
+刷过面试题的都知道这是因为 JavaScript 引擎并非一行一行地分析和执行程序，而是一段一段地分析执行。当执行一段代码的时候，会进行一个“准备工作”，比如第一个例子中的变量提升，和第二个例子中的函数提升。
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- 求输出
+``` 
+var a = {n:1};
+var b = a;
+a.x = a ={n:2};
+console.log(a.x);  // undefined
+console.log(b.x);  // {n:2}
+
+首先，这两句令a和b同时引用了{n:2}对象，接着的a.x = a = {n：2}是关键。尽管赋值是从右到左的没错，但是.的优先级比=要高，所以这里首先执行a.x，相当于为a（或者b）所指向的{n:1}对象新增了一个属性x，即此时对象将变为{n:1;x:undefined}。之后按正常情况，从右到左进行赋值，此时执行a ={n:2}的时候，a重定向，指向了新对象{n：2},而b依然指向的是旧对象，这点是不变的。接着的关键来了：执行a.x = {n：2}的时候，并不会重新解析一遍a，而是沿用最初解析a.x时候的a，也即旧对象，故此时旧对象的x的值为{n：2}，旧对象为 {n:1;x:{n：2}}，它被b引用着。 后面输出a.x的时候，又要解析a了，此时的a当然是重定向后的指向新对象的a，而这个新对象是没有x属性的，故得到undefined；而输出b.x的时候，将输出旧对象的x属性的值，即{n:2}。
+```
 - 求输出
 ``` 
 
@@ -129,6 +233,24 @@ var name = "The Window";
   alert(object.getNameFunc()());
 
 输出：My Object
+```
+
+- 输出题
+``` 
+var max = 10,
+    fn = function(x){
+        console.log(max)
+        if(x>max){
+            console.log(x)
+        }
+    };
+(function(f){
+    var max = 100;
+    f(15)
+})(fn)
+
+静态作用域
+
 ```
 
 - promise输出题
