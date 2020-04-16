@@ -653,6 +653,26 @@ Promise.prototype.finally = function (callback) {
 
 ```
 
+- promise封装ajax
+``` 
+var  myNewAjax=function(url){
+  return new Promise(function(resolve,reject){
+      var xhr = new XMLHttpRequest();
+      xhr.open('get',url);
+      xhr.send(data);
+      xhr.onreadystatechange=function(){
+           if(xhr.readyState==4&&xhr.status==200){
+                var json=JSON.parse(xhr.responseText);
+                resolve(json)
+           }else if(xhr.readyState==4&&xhr.status!=200){
+                reject('error');
+           }
+      }
+  })
+}
+
+```
+
 - Promise 构造函数是同步执行还是异步执行，那么 then 方法呢？
 ```   
 promise构造函数（new Promise）是同步执行的，then方法是异步执行的

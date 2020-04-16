@@ -396,8 +396,34 @@ function currying(fn, ...args) {
       }
     }
 ```
-- 写一个curry函数，其实就是add(1,2,3) 改成 add(1)(2,3)
+
+
+- 写一个curry函数，其实就是add(1,2,3) 实现add(1)(2)(3)? 再升级为：add(1)(2,3)？
 ``` 
+
+
+function add (...args) {
+	return args.reduce((a, b) => a + b)
+}
+
+
+function currying (fn) {
+	let args = []
+	return function _c (...newArgs) {
+		if (newArgs.length) {
+			args = [
+				...args,
+				...newArgs
+			]
+			return _c
+		} else {
+			return fn.apply(this, args)
+		}
+	}
+}
+
+
+
 function currying(fn,...args){
     if(fn.length <= args.length){
         return fn(...args)
@@ -407,40 +433,25 @@ function currying(fn,...args){
     }
 }
 
-function add(a,b,c){
-    return a + b + c
-}
-add(1,2,3) // 6
-var curryingAdd = currying(add);
-curryingAdd(1)(2)(3) // 6
 
 
 完整实现
 function curry(fn, args) {
-    var length = fn.length;
-
-    args = args || [];
-
-    return function() {
-
-        var _args = args.slice(0),
-
-            arg, i;
-
-        for (i = 0; i < arguments.length; i++) {
-
-            arg = arguments[i];
-
-            _args.push(arg);
-
-        }
-        if (_args.length < length) {
-            return curry.call(this, fn, _args);
-        }
-        else {
-            return fn.apply(this, _args);
-        }
-    }
+    var args = Array.prototype.slice.call(arguments);
+    
+          var fn = function () {
+    　　　　　// 把参数都放在一个相当于全局变量的 args 里面　
+            args.push(...arguments)
+            return fn;
+          }
+    
+          fn.valueOf = function () {
+            return args.reduce(function(a, b) {
+              return a + b;
+            })
+          }
+    
+          return fn;
 }
 
 
@@ -727,25 +738,7 @@ class BST {
 - async/await 实现
 - reduce 实现
 - Iterator遍历器实现
-- promise封装ajax
-``` 
-var  myNewAjax=function(url){
-  return new Promise(function(resolve,reject){
-      var xhr = new XMLHttpRequest();
-      xhr.open('get',url);
-      xhr.send(data);
-      xhr.onreadystatechange=function(){
-           if(xhr.status==200&&readyState==4){
-                var json=JSON.parse(xhr.responseText);
-                resolve(json)
-           }else if(xhr.readyState==4&&xhr.status!=200){
-                reject('error');
-           }
-      }
-  })
-}
 
-```
 - 数据绑定最基本的实现
 ``` 
 题目：
