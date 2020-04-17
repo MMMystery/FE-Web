@@ -95,13 +95,17 @@ module.exports={
 
 - webpack构建流程
 ``` 
-初始化参数，从配置文件和shell语句中读到的参数合并，得到最后的参数
-开始编译：用合并得到的参数初始化complier对象，加载是所有配置的插件，执行run方法开始编译
-确定入口，通过entry找到入口文件
-编译模块，从入口文件出发，调用所有配置的loader对模块进行解析翻译，在找到该模块依赖的模块进行处理
-完成模块编译，得到每个模块被翻译之后的最终的内容和依赖关系
-输出资源，根据入口和模块之间的依赖关系，组装成一个个包含多个模块的chunk，在把每个chunk转换成一个单独的文件加载到输出列表
-输出完成，确定输出的路径和文件名，把内容写到文件系统中
+
+Webpack 源码是一个插件的架构，很多功能都是通过诸多的内置插件实现的。Webpack为此专门自己写一个插件系统，叫 Tapable 主要提供了注册和调用插件的功能。 
+
+通过 yargs 解析 config 与 shell 中的配置项
+webpack 初始化过程，首先会根据第一步的     options 生成 compiler 对象，然后初始化 webpack 的内置插件及 options 配置
+run 代表编译的开始，会构建 compilation 对象，用于存储这一次编译过程的所有数据
+make 执行真正的编译构建过程，从入口文件开始，构建模块，直到所有模块创建结束
+seal 生成 chunks，对 chunks 进行一系列的优化操作，并生成要输出的代码
+seal 结束后，Compilation 实例的所有工作到此也全部结束，意味着一次构建过程已经结束
+emit 被触发之后，webpack 会遍历 compilation.assets, 生成所有文件，然后触发任务点 done，结束构建流程
+
 ```
 
 - webpack哪里负责压缩js，哪里负责压缩css
@@ -241,7 +245,16 @@ HappyPack 开启多个线程可以将 Loader 的同步执行转换为并行的
    按照路由或者组件拆分代码，实现按需加载
 ```
 - treeshaking原理
+``` 
+通常用于描述移除 JavaScript 上下文中的未引用代码(dead-code)。它依赖于 ES2015 模块语法的 静态结构 特性，例如 import 和 export。
 
+
+使用 ES2015 模块语法（即 import 和 export）。
+确保没有 compiler 将 ES2015 模块语法转换为 CommonJS 模块（这也是流行的 Babel preset 中 @babel/preset-env 的默认行为 - 更多详细信息请查看 文档）。
+在项目 package.json 文件中，添加一个 "sideEffects" 属性。
+通过将 mode 选项设置为 production，启用 minification(代码压缩) 和 tree shaking。
+
+```
 
 
 
