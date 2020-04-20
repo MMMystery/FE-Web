@@ -388,11 +388,11 @@ arr.myFlat(arr)
 
 - 实现一个JS函数柯里化，函数柯里化使用场景
 ``` 
-function currying(fn, ...args) {
+function curry(fn, ...args) {
       if (fn.length <= args.length) {
         return fn(...args);
       } else {
-        return (...args2) => currying(fn, ...args, ...args2);
+        return (...args2) => curry(fn, ...args, ...args2);
       }
     }
 ```
@@ -401,13 +401,44 @@ function currying(fn, ...args) {
 - 写一个curry函数，其实就是add(1,2,3) 实现add(1)(2)(3)? 再升级为：add(1)(2,3)？
 ``` 
 
-
+实现：add(1,2,3)
 function add (...args) {
 	return args.reduce((a, b) => a + b)
 }
 
+简单珂里化
 
-function currying (fn) {
+function add(x){
+  return function(y){
+      return function(z){
+         return x + y +z;
+       }
+  }
+}
+
+实现真正的珂里化
+function curry(fn,...args){
+    if(fn.length <= args.length){
+        return fn(...args)
+    }
+    return function(...args1){
+        return curry(fn,...args,...args1)
+    }
+}
+var fn = curry(function(a, b, c) {
+    console.log(fn);
+});
+
+fn("a", "b", "c") // ["a", "b", "c"]
+fn("a", "b")("c") // ["a", "b", "c"]
+fn("a")("b")("c") // ["a", "b", "c"]
+fn("a")("b", "c") // ["a", "b", "c"]
+
+
+
+
+
+function curry (fn) {
 	let args = []
 	return function _c (...newArgs) {
 		if (newArgs.length) {
@@ -424,45 +455,29 @@ function currying (fn) {
 
 
 
-function currying(fn,...args){
-    if(fn.length <= args.length){
-        return fn(...args)
-    }
-    return function(...args1){
-        return currying(fn,...args,...args1)
-    }
-}
 
-
+// 实现一个add方法，使计算结果能够满足如下预期：
+add(1)(2)(3) = 6;
+add(1, 2, 3)(4) = 10;
 
 完整实现
-function curry(fn, args) {
-    var args = Array.prototype.slice.call(arguments);
-    
-          var fn = function () {
-    　　　　　// 把参数都放在一个相当于全局变量的 args 里面　
-            args.push(...arguments)
-            return fn;
-          }
-    
-          fn.valueOf = function () {
-            return args.reduce(function(a, b) {
-              return a + b;
-            })
-          }
-    
-          return fn;
+function add(){
+ let arr = [...arguments];
+
+     let fn = function(){
+        // 把参数都放在一个相当于全局变量的 args 里面　
+        arr.push(...arguments)
+        return fn;
+     }
+
+    fn.toString = function(){
+      return arr.reduce(function(preItem,curItem){return preItem+curItem})
+    }
+    return fn;
 }
+add(1)(2)(3)// 6
 
 
-var fn = curry(function(a, b, c) {
-    console.log([a, b, c]);
-});
-
-fn("a", "b", "c") // ["a", "b", "c"]
-fn("a", "b")("c") // ["a", "b", "c"]
-fn("a")("b")("c") // ["a", "b", "c"]
-fn("a")("b", "c") // ["a", "b", "c"]
 
 ```
 - 实现compose函数（实现函数compose，compose接受多个函数作为参数，并返回一个新的函数，新的函数会从右向左依次执行原函数， 并且上一次结果的返回值将会作为下一个函数的参数。）
