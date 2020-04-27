@@ -22,6 +22,9 @@ var _createClass = (function() {
 
 })()
 
+ES5 实现 B 继承 A【编程】
+为了表现，肯定是直接写寄生组合继承啦
+
 ```
 - es5的继承 实现一下（原型继承）
 ``` 
@@ -537,6 +540,31 @@ setTimeout (function () {
 }, 500)
 
 
+
+(() => {
+  const list = new Set();
+  function myInterval(fn, ms) {
+    const ref = {};
+    const exec = () => {
+      return setTimeout(() => {
+        fn.apply(null);
+        const timer = exec();
+        ref.current = timer;
+      }, ms);
+    };
+    ref.current = exec();
+    list.add(ref);
+    return ref;
+  }
+ 
+  function myClearInterval(ref) {
+    clearTimeout(ref.current);
+    list.delete(ref);
+  }
+  window.myInterval = myInterval;
+  window.myClearInterval = myClearInterval;
+})()
+
 ```
 - 原生js实现filter函数。
 ``` 
@@ -933,6 +961,7 @@ xhr.onreadystatechange = function(){
 
 xhr.send(null)
 
+readyState五中状态的含义
 如何发送同步ajax
 
 ```
@@ -1085,7 +1114,7 @@ String.prototype.f = function(){
 ```
 
 - 手写一个深拷贝函数，最好能处理循环引用和Date、Reg的
-
+- 怎样以对象为构造函数创建一个对象
 - Thunk函数实现（结合Generator实现异步）
 - 实现一个方法遍历输出Object所有属性
 - js实现before，after这样的钩子函数
