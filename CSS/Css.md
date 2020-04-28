@@ -825,7 +825,7 @@ transform: scaleY(0.5); 缩放
   background: none;
   box-shadow: 0 0.5px 0 #000;
 
-4. 采用order-image的方式，需要自己制作一个0.5px的图片
+4. 采用border-image的方式，需要自己制作一个0.5px的图片
 
 5. 利用hr标签，设置元素属性为0.5px
 

@@ -372,7 +372,6 @@ JS 运算、页面布局和页面绘制都是运行在浏览器的主线程当�
 
 Fiber 本质上是一个虚拟的堆栈帧，新的调度器会按照优先级自由调度这些帧，从而将之前的同步渲染改成了异步渲染，在不影响体验的情况下去分段计算更新
 
-
 Fiber 可以提升复杂React 应用的可响应性和性能。Fiber 即是React新的调度算法
 
 旧版：旧版 React 通过递归的方式进行渲染，使用的是 JS 引擎自身的函数调用栈，它会一直执行到栈空为止
@@ -614,7 +613,30 @@ Context 主要为解决 React 组件树中被认为全局数据的共享。
 ```
 - React 和 HTML 的事件处理有什么不同？
 ``` 
-在 HTML 中，事件名称使用小写，而 React 中使用驼峰命名。
+React 事件的命名采用小驼峰式（camelCase），而不是纯小写。
+使用 JSX 语法时你需要传入一个函数作为事件处理函数，而不是一个字符串。
+
+SyntheticEvent 实例将被传递给你的事件处理函数，它是浏览器的原生事件的跨浏览器包装器。除兼容所有浏览器外，它还拥有和浏览器原生事件相同的接口，包括 stopPropagation() 和 preventDefault()。
+如果因为某些原因，当你需要使用浏览器的底层事件时，只需要使用 nativeEvent 属性来获取即可。每个 SyntheticEvent 对象都包含以下属性：
+
+boolean bubbles
+boolean cancelable
+DOMEventTarget currentTarget
+boolean defaultPrevented
+number eventPhase
+boolean isTrusted
+DOMEvent nativeEvent
+void preventDefault()
+boolean isDefaultPrevented()
+void stopPropagation()
+boolean isPropagationStopped()
+void persist()
+DOMEventTarget target
+number timeStamp
+string type
+
+
+
 React 中的事件机制分为两个阶段：事件注册、事件分发。所有的事件都会注册到 document 上，然后使用统一的回调函数 dispatchEvent 来执行分发。
 ```
 - react事件了解吗？ (合成事件) 和普通事件有什么区别，实现原理
