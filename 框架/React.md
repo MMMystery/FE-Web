@@ -879,3 +879,13 @@ defaultProps 用来确保 this.props 在父组件没有指定的情况下有一�
 es提供的import(), webpack提供的require.ensure()
 直接script创建
 ```
+-react的合成事件【描述】
+- react升到16，有什么坑需要解决【描述】
+为什么16的性能好，fiber流程是怎样的【描述】
+为什么两个will生命周期要被标记为danger【描述】
+用了react的哪些新特性，带来什么收益【举例】
+-scope如何实现
+
+muatable和shouldupdate配合、immuatable数据一些对比问题【描述】
+3. react 17要做什么规划，concurrent mode【描述】
+concurrent mode、去掉危险的生命周期。concurrent mode是react重点面试题了，基于requestidlecallback实现(考虑兼容性，官方自己实现了一个)——浏览器空闲的时候做事情
