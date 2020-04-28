@@ -1,3 +1,5 @@
+http://juejin.im/post/5e7dae3c6fb9a03c98430f52
+
 - 手写一个ES6的类
 ``` 
 // ES5普通写法
