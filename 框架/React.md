@@ -372,7 +372,9 @@ JS 运算、页面布局和页面绘制都是运行在浏览器的主线程当�
 
 Fiber 本质上是一个虚拟的堆栈帧，新的调度器会按照优先级自由调度这些帧，从而将之前的同步渲染改成了异步渲染，在不影响体验的情况下去分段计算更新
 
-Fiber 可以提升复杂React 应用的可响应性和性能。Fiber 即是React新的调度算法
+Fiber 改进思路是将调度阶段拆分成一系列小任务，每次加入一个节点至任务中，做完看是否还有时间继续下一个任务，有的话继续，没有的话把自己挂起，主线程不忙的时候再继续。
+每次只做一小段，做完一段就把时间控制权交还给主线程，而不像之前长时间占用，从而实现对任务的暂停、恢复、复用灵活控制，这样主线程上的用户交互及动画可以快速响应，从而解决卡顿的问题。
+在 react 生成的 Virtual Dom 基础上增加的一层数据结构，主要是为了将递归遍历转变成循环遍历，配合 requestIdleCallback API, 实现任务拆分、中断与恢复。
 
 旧版：旧版 React 通过递归的方式进行渲染，使用的是 JS 引擎自身的函数调用栈，它会一直执行到栈空为止
 
@@ -577,12 +579,6 @@ render() {
   );
 }
 
-
-作者：Vanessa
-链接：https://hacpai.com/article/1552611002890
-来源：黑客派
-协议：CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
-
 ```
 - 什么是 Context
 ``` 
@@ -652,6 +648,8 @@ Redux数据流里，reduces其实是根据之前的状态（previous state）和
 进而返回最新的state,这也就是典型reduce函数的用法：state ->  action ->  state
 
 
+Provider内部其实就是利用Context去做的处理。
+
 ```
 - redux主要做什么的，用过redux的一些中间件吗，简单说一下(redux怎么处理异步操作) ,说说中间件的意义
 
@@ -686,7 +684,34 @@ State是只读的
 - createElement 与 cloneElement 的区别是什么
 ``` 
 createElement 函数是 JSX 编译之后使用的创建 React Element 的函数，而 cloneElement 则是用于复制某个元素并传入新的 Props
+```
 
+- Profiler
+``` 
+Profiler 能添加在 React 树中的任何地方来测量树中这部分渲染所带来的开销。 它需要两个 prop ：一个是 id(string)，一个是当组件树中的组件“提交”更新的时候被React调用的回调函数 onRender(function)。
+
+
+为了分析 Navigation 组件和它的子代：
+render(
+  <App>
+    <Profiler id="Navigation" onRender={callback}>
+      <Navigation {...props} />
+    </Profiler>
+    <Main {...props} />
+  </App>
+);
+
+function callback(
+  id, // 发生提交的 Profiler 树的 “id”
+  phase, // "mount" （如果组件树刚加载） 或者 "update" （如果它重渲染了）之一
+  actualDuration, // 本次更新 committed 花费的渲染时间
+  baseDuration, // 估计不使用 memoization 的情况下渲染整颗子树需要的时间
+  startTime, // 本次更新中 React 开始渲染的时间
+  commitTime, // 本次更新中 React committed 的时间
+  interactions // 属于本次更新的 interactions 的集合
+) {
+  // 合计或记录渲染时间。。。
+}
 ```
 
 - 用react/vue写一个组件，功能是反馈鼠标在整个页面的的位置
@@ -889,3 +914,4 @@ es提供的import(), webpack提供的require.ensure()
 muatable和shouldupdate配合、immuatable数据一些对比问题【描述】
 3. react 17要做什么规划，concurrent mode【描述】
 concurrent mode、去掉危险的生命周期。concurrent mode是react重点面试题了，基于requestidlecallback实现(考虑兼容性，官方自己实现了一个)——浏览器空闲的时候做事情
+

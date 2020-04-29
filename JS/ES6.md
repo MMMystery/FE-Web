@@ -559,7 +559,8 @@ Promise.race = function(arr) {
       }
     return new Promise(function(resolve, reject) {
       for (let i = 0; i < arr.length; i++) {
-         Promise.resolve(arr[i]).then(data => {
+         Promise.resolve(
+            arr[i].then(data => {
                 return resolve(data);
             }, (e) => {
                 return reject(e);
@@ -669,7 +670,6 @@ var  myNewAjax=function(url){
            }
       }
   })
-}
 
 ```
 

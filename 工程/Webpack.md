@@ -60,7 +60,7 @@ module.exports={
 
     babel-loader： 让下一代的js文件转换成现代浏览器能够支持的JS文件。
     scss-loader,css-loader,style-loader,postcss-loader。 //postcss-loader里有用autoprefixer插件,主要是对css文件添加兼容性前缀，压缩文件
-    file-loader,url-loader，eslint-loader
+    file-loader,url-loader，eslint-loader。
 
 
     //插件，插件的范围包括，从打包优化和压缩，一直到重新定义环境中的变量。插件接口功能极其强大，可以用来处理各种各样的任务。
@@ -106,17 +106,12 @@ seal 生成 chunks，对 chunks 进行一系列的优化操作，并生成要输
 seal 结束后，Compilation 实例的所有工作到此也全部结束，意味着一次构建过程已经结束
 emit 被触发之后，webpack 会遍历 compilation.assets, 生成所有文件，然后触发任务点 done，结束构建流程
 
-```
 
-- webpack哪里负责压缩js，哪里负责压缩css
-
-``` 
-分别是：
-uglifyjs-webpack-plugin
-optimize-css-assets-webpack-plugin
+初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler。
+编译：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理。
+输出：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到文件系统。
 
 ```
-
 
 - webpack 原理和机制
 ```  
@@ -139,37 +134,6 @@ webpack做的就是分析代码，转换代码，编译代码，输出代码
 智能解析
 快速运行
 
-```
-
-- Webpack热更新实现原理（dev-server是怎么跑起来）
-
-```  
-指当你对代码修改并保存后，webpack将会对代码进行重新打包，并将改动的模块发送到浏览器端，浏览器用新的模块替换掉旧的模块，去实现局部更新页面而非整体刷新页面。
-
-除了 Webpack，还需要 webpack-dev-server
-使用webpack-dev-server去启动本地服务，内部实现主要使用了webpack、express、websocket。
-
-使用express启动本地服务，当浏览器访问资源时对此做响应。
-服务端和客户端使用websocket实现长连接
-webpack监听源文件的变化，即当开发者保存文件时触发webpack的重新编译。
-
-每次编译都会生成hash值、已改动模块的json文件、已改动模块代码的js文件
-编译完成后通过socket向客户端推送当前编译的hash戳
-客户端的websocket监听到有文件改动推送过来的hash戳，会和上一次对比
-
-一致则走缓存
-不一致则通过ajax和jsonp向服务端获取最新资源
-使用内存文件系统去替换有修改的内容实现局部刷新
-
-```
-
-
-- webpack执行的过程
-
-```
-初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler。
-编译：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理。
-输出：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到文件系统。
 ```
 
 - webpack的代码分割
@@ -255,6 +219,41 @@ HappyPack 开启多个线程可以将 Loader 的同步执行转换为并行的
 通过将 mode 选项设置为 production，启用 minification(代码压缩) 和 tree shaking。
 
 ```
+
+
+- webpack哪里负责压缩js，哪里负责压缩css
+
+``` 
+分别是：
+uglifyjs-webpack-plugin
+optimize-css-assets-webpack-plugin
+```
+
+
+- Webpack热更新实现原理（dev-server是怎么跑起来）
+
+```  
+指当你对代码修改并保存后，webpack将会对代码进行重新打包，并将改动的模块发送到浏览器端，浏览器用新的模块替换掉旧的模块，去实现局部更新页面而非整体刷新页面。
+
+除了 Webpack，还需要 webpack-dev-server
+使用webpack-dev-server去启动本地服务，内部实现主要使用了webpack、express、websocket。
+
+使用express启动本地服务，当浏览器访问资源时对此做响应。
+服务端和客户端使用websocket实现长连接
+webpack监听源文件的变化，即当开发者保存文件时触发webpack的重新编译。
+
+每次编译都会生成hash值、已改动模块的json文件、已改动模块代码的js文件
+编译完成后通过socket向客户端推送当前编译的hash戳
+客户端的websocket监听到有文件改动推送过来的hash戳，会和上一次对比
+
+一致则走缓存
+不一致则通过ajax和jsonp向服务端获取最新资源
+使用内存文件系统去替换有修改的内容实现局部刷新
+
+```
+
+
+
 
 
 

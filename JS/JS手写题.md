@@ -164,7 +164,7 @@ function instanceof(left, right) {
     // 获得类型的原型
     let prototype = right.prototype
     // 获得对象的原型
-    left = left.__proto__
+    let left = left.__proto__
     // 判断对象的类型是否等于类型的原型
     while (true) {
     	if (left === null)
@@ -269,7 +269,7 @@ const debounce = (fn, delay) => {
 };
 
 // 节流函数  间隔一段时间内触发一次。
-const throttle = (fn, delay = 500) => {
+const throttle = (fn, delay) => {
   let flag = true;
   return (...args) => {
     if (!flag) return;
