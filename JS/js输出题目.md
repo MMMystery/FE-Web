@@ -1,5 +1,6 @@
 new 的方式优先级最高，接下来是 bind 这些函数(不管我们给函数 bind 几次，fn 中的 this 永远由第一次 bind 决定)，然后是 obj.foo() 这种调用方式，最后是 foo 这种调用方式，同时，箭头函数的 this 一旦被绑定，就不会再被任何方式所改变
 
+经典题：https://segmentfault.com/a/1190000008547888
 
 - 作用域
 ``` 
@@ -81,19 +82,261 @@ foo(); // foo2
 
 ```
 
+- this指向
+``` 
+function logName(){
+        console.log(this.name);
+    }
+    function doFun1(fn){
+        fn();
+    }
+    function doFun2(o){
+        o.logName();
+    }
+    var obj = {
+        name: "LiLei",
+        logName: logName
+    };
+    var name = "HanMeiMei";
+    doFun1(obj.logName);
+    doFun2(obj);
+    
+doFun1(obj.logName)。
+
+向函数传递了obj对象内部的_logName，而_logName是指向logName的。所以实际上doFun1接收的是指向logName函数的变量。即等价于doFun1(logName)。
+
+而在doFun1内部是直接执行logName的。没有明确的调用者。则这时等价于由window对象去调用，等价于window.logName。
+
+而再由于所有在全局作用域(注意仅仅是全局作用域)中定义的变量都是window对象下的变量。都可以通过window对象进行访问。
+所以这时访问到的就是name。
+
+所以输出的是HanMeiMei。
+
+doFun2(obj)。
+
+传递给doFun2的是obj的地址值，即doFun2中的o指向的就是obj，等价于obj。
+
+o.logName是由o去调用logName。相当于obj.logName。
+
+所以找到的是obj内部的name（即我们假定的_name）。
+
+所以打印出的是LiLei。
+
+答案
+HanMeiMei
+LiLei
+    
+
+```
+
+
+- 变量提升和函数提升
+``` 
+ test();
+    var test = 0;
+    function test() {
+        console.log(1);
+    }
+    test();
+    test = function () {
+        console.log(2);
+    };
+    test();
+解析
+声明提前的题，把背后的代码执行顺序理顺就好。
+
+首先将声明都放到代码的最上面：
+
+var test;//定义变量
+
+function test(){console.log(1)}//定义函数
+
+然后执行的操作：
+
+test();//函数调用操作
+
+test = 0;//赋值操作
+
+test();//函数调用操作
+
+test = function(){console.log(2)}//赋值操作，将test赋值为函数
+
+test();//函数调用操作
+
+所以上述代码等价于(声明提前，先定义，后执行)：
+
+var test;
+
+function test(){console.log(1)}
+
+test();//调用函数，输出1
+
+test = 0;
+
+test();//此时test为0，不是函数，将报错test is not a function
+
+test = function(){console.log(2)}//由于JS报错，后面的代码将不被运行
+
+test();//由于JS报错，后面的代码将不被运行
+
+综合来说，这里设置了三个考点：
+
+声明提前。
+
+函数的定义与函数赋值的区别，function xx为函数定义，将整体上移。
+
+JS报错后，后面的代码将不被运行。
+
+```
+
+
+- 基本类型与引用类型传递
+``` 
+var name = "LiLei";
+    var people = {name: "HanMeiMei"};
+    function test1(name) {
+        name = "LaoWang";
+    }
+    function test2(obj) {
+        obj.name = "LaoWang";
+    }
+    test1(name);
+    test2(people);
+    console.log("name    " + name);
+    console.log("name    " + people.name);
+解析
+题目首先定义了两个函数：
+【】test1：接受一个参数，并修改该参数的值。
+【】test2：接收一个对象，并修改该对象的属性的值。
+而后定义了两个变量：
+【】name是一个字符串参数，值为'LiLei'
+【】people是一个对象，包含一个name属性。值为'HanMeiMei'
+然后分别对两个函数进行调用：
+test1(name)：即将name作为参数，调用test1函数。
+
+这时函数的内部将产生一个新的参数name（记作_name）,它的值等于外部的name的值（LiLei);
+
+test1函数将_name的值修改为'LaoWang'，但是由于_name和name是两份独立的变量。所以name的值不受改变。
+
+test2(people)：将people作为参数，调用test1函数。
+
+这时函数的内部将产生一个新的参数obj,它的值等于外部的people的值;
+
+而people是引用类型，其值为对象{name:"HanMeiMei"}的地址值。所以obj也为对象{name:"HanMeiMei"}的地址值。
+
+test2对对象{name:"HanMeiMei"}的name属性进行修改，改为'LaoWang'
+所以obj和people的name值都发生了改变。
+
+这里涉及到两个知识点
+
+基本数据类型是按值访问的，即该变量就存在了实际值。而引用数据类型保存的是则是对实际值的引用（即指向实际值的指针）。
+
+函数形参（即在函数中实际使用的值，如test函数里面的name）和参数的实参(即往调用函数时调用的参数，如test(name)中的name)的值相同，但并不是"同一个值"(在内存中的地址是不同的，相当于var a = b =0;)。
+
+在函数参数的传递，是通过按值传递的。
+
+答案
+LiLei
+LaoWang
+
+```
+
+- 经典闭包处理题
+``` 
+
+
+1.改为let（而es6却可以使用let声明一个具有块级作用域的i，在这里也就是for循环体；
+在这里let本质上就是形成了一个闭包）
+for (let i=1; i<=5; i++) { 
+
+        setTimeout( function timer() {
+            console.log(i);
+        }, i*1000 );
+}
+
+2.利用闭包
+如果我们直接这样写，根据setTimeout定义的操作在函数调用栈清空之后才会执行的特点，for循环里定义了5个setTimeout操作。而当这些操作开始执行时，for循环的i值，已经先一步变成了6。因此输出结果总为6。而我们想要让输出结果依次执行，我们就必须借助闭包的特性，每次循环时，将i值保存在一个闭包中，当setTimeout中定义的操作执行时，则访问对应闭包保存的i值即可。
+
+而我们知道在函数中闭包判定的准则，即执行时是否在内部定义的函数中访问了上层作用域的变量。因此我们需要包裹一层自执行函数为闭包的形成提供条件。
+
+因此，我们只需要2个操作就可以完成题目需求，一是使用自执行函数提供闭包条件，二是传入i值并保存在闭包中。
+
+通过自执行函数返回一个函数，形成一个闭包，内部函数调用的参数是自执行函数的参数，而不是外部的元素。
+for (var i=1; i<=5; i++) { 
+
+    (function(i) {
+        setTimeout( function timer() {
+            console.log(i);
+        }, i*1000 );
+    })(i)
+}
+
+
+```
 
 
 
 
+- 题目七(作用域陷阱)
+``` 
+    function logName(){
+        console.log(name);
+    }
+    function test () {
+        var name = 3;
+        logName();
+    }
+    var name = 2;
+    test();
+解析
+一句话可以解释完：作用域的层级关系与函数定义时所处的层级关系相同
+注意是，函数定义时的层级关系，而不是调用时的层级关系。
+在这里，logName函数,test函数以及外部的name变量（值为2）处于同一个层级。
+所以调用logName时，找到的是外部的name变量。
+所以打印出2
+```
 
 
+- 原型和原型链
+``` 
 
 
+请写出如下代码的打印结果
+function Foo() {
+  Foo.a = function() {
+    console.log(1)
+  }
+  this.a = function() {
+    console.log(2)
+  }
+}
+Foo.prototype.a = function() {
+  console.log(3)
+}
+Foo.a = function() {
+  console.log(4)
+}
+Foo.a()
+let obj = new Foo()
+obj.a()
+Foo.a()
+// 4 , 2 , 1
+复制代码分析
 
+定义了 Foo 构造函数
+在 Foo 构造函数上挂载了原型方法 a
+在 Foo 构造函数上挂载了直接方法 a
 
+Foo.a()
+// 立刻执行了 Foo 上的 直接方法 a，输出 4
+let obj = new Foo()
+// 这里调用了 Foo 的构建方法。Foo 的构建方法主要做了两件事：
+obj.a()
+// 因为有直接方法 a ，不需要访问原型链，使用构建方法里所定义的 this.a，输出 2
+Foo.a()
+// 构建方法里已经替换了全局 Foo 上的 a 方法，输出 1
 
-
-
+```
 - 求输出
 ``` 
 var a = {n:1};
