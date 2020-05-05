@@ -48,7 +48,7 @@ function Child(){
 Child.prototype=new Super();
 
 ```
-
+- 写一个原型链继承
 - js实现继承的几种方式
 ```  
 
@@ -1424,6 +1424,7 @@ let tree = {
 ```
 
 - 获取URL上的值
+- 写一个url参数解析函数（写完面试官不太满意，说有特殊情况没考虑）
 - 代码实现题Url参数转换为对象
 ``` 
 题目：
@@ -1455,5 +1456,7 @@ console.log(queryString(urlStr));
 ```
 - 5个fetch请求，请求完成后要求立即执行，但最终的输出顺序要按照要求输出ABCDE
 
+-  实现两个对象的深比较(deep-compare)
 
-
+- 写个转换函数，把一个JSON对象的key从横杠形式（Pascal）转换到小驼峰形式（Camel），即{“a_b”:1}——>{“aB”:1}
+- 实现一个JSON.stringfy()，要支持循环引用，并记录循环引用的路径

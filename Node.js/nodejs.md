@@ -80,5 +80,11 @@ OAuth
 SSO
 
 ```
-
-
+- 事件循环机制，node 和浏览器的事件循环机制区别。
+-了解nodejs么，koa中间件原理，koa和express区别
+node的evenloop
+io流
+文件读取。
+说下node的模块，会多少说多少。各个模块干什么的？
+说然后抓住网络模块，要我说一下原生建立连接过程。
+说下common.js原理。

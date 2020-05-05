@@ -724,6 +724,7 @@ function runPromiseByQueue(myPromises) {
 上一个 Promise 执行，完毕后调用下一个 Promise，并作为一个新的 Promise 返回，下次迭代继续这个循环。
 
 ```
+- 实现Promise.limit()，实现对promise数组的限制运行。
 - 一个promise有多个then，如果第一个then出错，后面的还会执行吗，如何捕获异常。 如果第一个then出错了，我还想要后面的继续执行，应该怎么做。
 ``` 
 出错了后面then就不会执行，知道catch捕获后返回新的promise，catch后面如果还有then的话就继续执行。
@@ -751,7 +752,7 @@ async function 代替了 function*，await 代替了 yield
 - new Promise(() => {throw new Error()})能否抛出异常？  
 - 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch
 
-
+- 写一个promise的底层实现
 - promise的链式调用
 ``` 
 function start() {
@@ -798,7 +799,7 @@ catch 方法的参数是其之前某个 promise 对象的 rejecte 参数
 一旦某个 then 方法里面的 promise 状态改变为了 rejected，则promise 方法连会跳过后面的 then 直接执行 catch
 catch 方法里面依旧可以返回一个新的 promise 对象
 ```
-                                                  
+- promise并发请求 但是按序输出                                             
 - 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换    
 
 
@@ -889,7 +890,7 @@ require是值拷贝， import传的是值引用(只读)
 ```
 - Nodejs可以通过import来引入模块吗、ES6中可以通过require来引入模块吗
   
-  
-  
+  - 不声明async，可以用await吗
+- ES6 的 Set 内部实现。
 
 

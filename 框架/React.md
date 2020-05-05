@@ -351,8 +351,12 @@ useEffect(() => {
   }
 }, []);
 
+- useEffect 怎么清除副作用
+  用过useCallback吗
 
 优化 usecallback、useMemo
+
+- 自定义 Hook
 
 ```
 
@@ -814,7 +818,7 @@ serve -s build
 - 组件间的通信方式有哪几种
 - redux简单实现
 
-- immutable
+- immutable是什么？
 - 路由的动态加载模块
 - React组件中怎么做事件委托
 - react异步渲染的概念,介绍Time Slicing 和 Suspense
@@ -915,3 +919,5 @@ muatable和shouldupdate配合、immuatable数据一些对比问题【描述】
 3. react 17要做什么规划，concurrent mode【描述】
 concurrent mode、去掉危险的生命周期。concurrent mode是react重点面试题了，基于requestidlecallback实现(考虑兼容性，官方自己实现了一个)——浏览器空闲的时候做事情
 
+- forceUpdate 经历了哪些生命周期，子组件呢?
+-顺势讲到了closure，以及他的其他应用场景；接着讲到了scope chain，VO，execution context

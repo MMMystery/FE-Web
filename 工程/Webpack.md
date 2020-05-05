@@ -136,6 +136,7 @@ webpack做的就是分析代码，转换代码，编译代码，输出代码
 
 ```
 
+- webpack实现代码拆分的方式有哪些
 - webpack的代码分割
 ``` 
 Code Splitting 一般需要做这些事情：
@@ -506,6 +507,12 @@ mode/–mode参数: 新增了mode/--mode参数来表示是开发还是生产（d
 
 ```
 
+- 作者：白沐沐沐沐
+  链接：https://www.nowcoder.com/discuss/415514
+  来源：牛客网
+  
+  介绍一下babel-loader,怎么配置，它除了编译class还能干什么？loader是个什么概念？插件在webpack中是什么概念，依赖的是什么？babel-loader离开webpack能单独使用吗？
+- 路由懒加载怎么实现的
 - 实现webpack的vconsole的插件
 - 最后可以在聊聊webpack的优化，例如babel-loader的优化，gzip压缩等等
 - 描述一下npm run dev / npm run build执行的是哪些文件
