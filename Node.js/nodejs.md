@@ -10,7 +10,7 @@ nodejs 性能优化、nodejs 性能监控、
 nodejs压力测试，服务器容灾，ssr直出降级
 
 nodejs事件驱动
-
+谈谈 node 的内存泄漏
 nodejs的适用场景
 
 - nodejs最大的特点

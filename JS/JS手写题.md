@@ -14,6 +14,7 @@ class Animal2 {
   }
 }
 ```
+- class B 继承 class A 翻译成 es5 应该是什么样子
 - es6 class怎么用es5实现
 ``` 
 1.ES5继承的实质是先创建了子类元素child的的实例对象，然后再把父类元素parent的原型对象中的属性赋值给子类元素child的实例对象里面，从而实现继承（Parent.apply(this)）.
