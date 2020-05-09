@@ -31,6 +31,27 @@ ES5 实现 B 继承 A【编程】
 ```
 - es5的继承 实现一下（原型继承）
 ``` 
+构造函数继承
+
+function Super(){
+  this.name='ss1'
+}
+function Child(){
+  this.age=1;
+  //继承属性
+  Super.call(this)
+}
+
+
+原型继承
+function Super(){
+    this.name = 'aaa'
+}
+
+Child.prototype = new Super();// 原型继承的关键
+
+
+
 组合继承（组合构造和原型方式实现继承）
 function Super(){
   this.name='ss1'
@@ -42,14 +63,12 @@ Super.prototype.getName=function () {
  
 function Child(){
   this.age=1;
-  //继承属性
-  Super.call(this)
+  Super.call(this) //继承属性
 }
-//继承方法
-Child.prototype=new Super();
+
+Child.prototype=new Super();//继承方法
 
 ```
-- 写一个原型链继承
 - js实现继承的几种方式
 ```  
 
@@ -84,11 +103,6 @@ function People() {
 原型继承：
 Man.prototype = new People();
 
-call、apply、bind都可以实现继承
-function Child(){
-    Person.call(this,'李端','26');
-};
-var child = new Child();
 
 构造继承：
 function Man(name) {
@@ -112,6 +126,12 @@ Man.prototype = Object.create(People.prototype, {
     value: Man
   }
 })
+
+call、apply、bind都可以实现继承:
+function Child(){
+    Person.call(this,'李端','26');
+};
+var child = new Child();
 
 ```
 
