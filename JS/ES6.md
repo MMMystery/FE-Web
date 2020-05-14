@@ -528,9 +528,6 @@ promise.then(function (value) {
 - 实现promise.all (实现promise.all的polyfill)
 ``` 
 Promise.all = function(arr){
-    if(!Array.isArray(arr)){
-        throw new TypeError(`argument must be a array`)
-    }
     return new Promise((resolve,reject) => {
         let resolveNum = 0;
         let resolveResult = [];

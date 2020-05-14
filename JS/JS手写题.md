@@ -379,8 +379,8 @@ function flatter(arr){
 }
 
 Function flatter(arr){
- Return arr.reduce((acc,cur,index,array)=>{
-	Return acc.concat(Array.isArray(cur)?  flatter(acc) : cur
+ Return arr.reduce((pre,cur,index,array)=>{
+	Return pre.concat(Array.isArray(cur)?  flatter(cur) : cur
 }, [])
 }
 

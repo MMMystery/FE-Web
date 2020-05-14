@@ -518,5 +518,11 @@ mode/–mode参数: 新增了mode/--mode参数来表示是开发还是生产（d
 
 - webpack怎么做到防止js冲突
 
+-  sourceMap、代码压缩、dll、codeSpliting 等性能优化
+   多核、缓存等构建效率提升
+   手写 loader 与 plugin
+   同步文件异步文件打包方案
+   持久化缓存、更好的打包优化
+
 
 
