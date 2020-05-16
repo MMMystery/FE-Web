@@ -241,3 +241,4 @@ js获取offsetTop这些属性值活引起回流，因为要计算定位。
 ```
 - 了解prefetch和preload么
 - 获取页面所有图片的src，得注意css部分的获取，有个dom方法，但我当时没想到说按行读文件
+- link标签会阻塞DOM的解析吗？script呢？
