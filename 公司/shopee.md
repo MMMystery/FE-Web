@@ -15,7 +15,20 @@ Object.key
 - 大数相乘
 - XMLHttpRequest和fetch的区别
 - 实现斐波那契数列并利用缓存进行优化（利用闭包），实现一个斐波那契数列实现输入第n项输出相应的值，优化这个函数，让被查找过的下标值下次再次访问的时候能够立马找到并输出
+``` 
 
+function fibonacci(n, map = {}){
+if(n == 1 || n == 2){
+map[n] = 1;
+return 1;
+}
+if(!map[n]){
+map[n] = fibonacci(n-1, map) + fibonacci(n-2, map)
+}
+return map[n];
+}
+
+```
 - JS 中字符串的存储方法，当声明一个字符串并给它赋值的时候内存会发生什么变化
 - 做了一道笔试的变形题，找出字符串中第一个连续三个递增的数字并返回
 - 手写实现几种继承

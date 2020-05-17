@@ -205,6 +205,7 @@ browserHistory 模式（Browser路由，history模式） （路径是真实的UR
 高版本浏览器: 通过html5里面的history，对应createBrowserHistory
 createBrowserHistory: pushState、replaceState
 
+window.onpopstate可以监听前进和后退操作
 解释一下为什么browserHistory需要服务端配置，因为真实URL其实是指向服务器资源，比如我们经常使用的API接口，也是一个真实URL的资源路径，当通过真实URL访问网站的时候，第一次访问的是网站的域名，这个时候可以正常加载我们的网站js等文件，而用户手动刷新网页时，由于路径是指向服务器的真实路径，服务器端没有做路由配置，就会导致资源不存在，用户访问的资源不存在，返回给用户的是404错误。
 
 
@@ -900,7 +901,7 @@ defaultProps 用来确保 this.props 在父组件没有指定的情况下有一�
 - 为何 react 点击事件放在 settimeout 会拿不到 event 对象
 - 谈谈如何封装组件
 - 说一下你对React的理解？React设计思想？
-
+- 实现一个redux【编程】10几行经典redux
 - 懒加载
 ``` 
 es提供的import(), webpack提供的require.ensure()
@@ -919,3 +920,5 @@ concurrent mode、去掉危险的生命周期。concurrent mode是react重点面
 
 - forceUpdate 经历了哪些生命周期，子组件呢?
 -顺势讲到了closure，以及他的其他应用场景；接着讲到了scope chain，VO，execution context
+- react 17要做什么规划，concurrent mode【描述】
+  concurrent mode、去掉危险的生命周期。concurrent mode是react重点面试题了，基于requestidlecallback实现(考虑兼容性，官方自己实现了一个)——浏览器空闲的时候做事情

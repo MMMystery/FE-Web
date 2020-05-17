@@ -242,3 +242,26 @@ js获取offsetTop这些属性值活引起回流，因为要计算定位。
 - 了解prefetch和preload么
 - 获取页面所有图片的src，得注意css部分的获取，有个dom方法，但我当时没想到说按行读文件
 - link标签会阻塞DOM的解析吗？script呢？
+- 事件带理，通用写法
+ 
+  function on(parent, className, eventName, cb) {
+   
+    parent.addEventListener(eventName, function (evt) {
+      var target = evt.target;
+      var currentTarget;
+      while (target) {
+        if (target.tagName === 'BODY') break; // 找到body还没找到(说明点击的位置已经是目标元素的父级了)
+        if (target.getAttribute('class') === className) {
+          currentTarget = target;
+          break;
+        } else {
+          target = target.parentNode;
+        }
+      }
+   
+      if (currentTarget) {
+        cb.apply(currentTarget);
+      }
+    });
+   
+  }

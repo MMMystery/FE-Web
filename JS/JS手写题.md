@@ -638,6 +638,8 @@ function isEqual(obj1,obj2){
 }
 
 ```
+- 输出一个字符串全排列
+- 实现_.[2,3,4].increase(1).reverse().val()
 - 手写reduce或者filter的polyfill
 - 手写parseInt的实现
 - 自己实现一个event类
@@ -645,6 +647,7 @@ function isEqual(obj1,obj2){
 - 手写 Proxy / Object.defineProperty
 - 写一个函数，可以控制最大并发数
 - 设计一个栈，不使用数组
+- 给 10 亿的数据的 url 去重，思路（现场写部分代码）
 - js实现栈、队列、链表、二叉树
 ```  
 栈：

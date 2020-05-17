@@ -798,8 +798,8 @@ catch 方法里面依旧可以返回一个新的 promise 对象
 ```
 - promise并发请求 但是按序输出                                             
 - 问我那个场景要用generator，而不适合用async，不断提示我，我还是没有答出来，他说是数据交换    
-
-
+- catch和then的第二个参数的区别？
+- catch后面的then还能不能执行，拿到的数据是catch return的还是catch之前的then return的
 - 模块化Commonjs,AMD,CMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义（这些要弄清楚）
 
 ``` 
