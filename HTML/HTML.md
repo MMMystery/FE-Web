@@ -242,6 +242,7 @@ js获取offsetTop这些属性值活引起回流，因为要计算定位。
 - 了解prefetch和preload么
 - 获取页面所有图片的src，得注意css部分的获取，有个dom方法，但我当时没想到说按行读文件
 - link标签会阻塞DOM的解析吗？script呢？
+- 点击右键出现目录，用到哪些html元素
 - 事件带理，通用写法
  
   function on(parent, className, eventName, cb) {
@@ -265,3 +266,25 @@ js获取offsetTop这些属性值活引起回流，因为要计算定位。
     });
    
   }
+  
+  
+- 访问dianping.com，得到当前页面的所有种类的TagName。尽可能短的写代码，先让说了思路，有点懵说深搜。..经过提示"*"可以获取所有dom元素，写了如下代码。
+``` 
+    var nodeList = document.querySelectorAll("*");
+    var res = {}
+    for(let i =0;i<nodeList.length;i++) {
+        if(!(nodeList[i].tagName in res)) {
+            res[nodeList[i].tagName] = 1
+        }
+    }
+    console.log(Object.keys(res))
+    
+    
+    
+   或者：
+    
+    var nodeList = document.querySelectorAll("*");
+    var s = new Set()
+    nodeList.forEach(x => s.add(x.tagName))
+    console.log(Array.from(s))
+    ```

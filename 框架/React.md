@@ -907,6 +907,7 @@ defaultProps 用来确保 this.props 在父组件没有指定的情况下有一�
 es提供的import(), webpack提供的require.ensure()
 直接script创建
 ```
+- redux中dispatch原理
 -react的合成事件【描述】
 - react升到16，有什么坑需要解决【描述】
 为什么16的性能好，fiber流程是怎样的【描述】
