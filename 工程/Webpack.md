@@ -515,7 +515,7 @@ mode/–mode参数: 新增了mode/--mode参数来表示是开发还是生产（d
 - webpack.then原理
 - require懒加载
 - max-chunk啥的
-
+- Webpack Chunk中加载远程JS文件的方法
 - webpack怎么做到防止js冲突
 - postcss 配置
 -  sourceMap、代码压缩、dll、codeSpliting 等性能优化
