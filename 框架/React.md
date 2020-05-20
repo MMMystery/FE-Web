@@ -923,3 +923,5 @@ concurrent mode、去掉危险的生命周期。concurrent mode是react重点面
 -顺势讲到了closure，以及他的其他应用场景；接着讲到了scope chain，VO，execution context
 - react 17要做什么规划，concurrent mode【描述】
   concurrent mode、去掉危险的生命周期。concurrent mode是react重点面试题了，基于requestidlecallback实现(考虑兼容性，官方自己实现了一个)——浏览器空闲的时候做事情
+- react钩子函数为什么不能循环调用
+- React.memo 原理

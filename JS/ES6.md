@@ -748,7 +748,7 @@ async function 代替了 function*，await 代替了 yield
 
 - new Promise(() => {throw new Error()})能否抛出异常？  
 - 如何捕获new Promise((reject) => {reject()})的异常呢？除了catch和try，catch
-
+- promise全链路捕获异常
 - 写一个promise的底层实现
 - promise的链式调用
 ``` 
@@ -890,4 +890,4 @@ require是值拷贝， import传的是值引用(只读)
   - 不声明async，可以用await吗
 - ES6 的 Set 内部实现。
 
-
+- Symbol.iterator是做什么的？

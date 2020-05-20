@@ -288,7 +288,8 @@ js获取offsetTop这些属性值活引起回流，因为要计算定位。
     var s = new Set()
     nodeList.forEach(x => s.add(x.tagName))
     console.log(Array.from(s))
-    ```
+```
 
   
 - 异步 js 脚本在执行的时候主线程会停止吗
+- css文件加载的话会阻塞dom树渲染吗？会阻塞渲染树吗？

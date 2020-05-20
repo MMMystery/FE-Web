@@ -518,6 +518,8 @@ mode/–mode参数: 新增了mode/--mode参数来表示是开发还是生产（d
 - Webpack Chunk中加载远程JS文件的方法
 - webpack怎么做到防止js冲突
 - postcss 配置
+- webpack 两个文件中的同名变量不会污染
+- webpack怎么把一堆文件打包成一个文件，那一个文件的内部结构是怎么样
 -  sourceMap、代码压缩、dll、codeSpliting 等性能优化
    多核、缓存等构建效率提升
    手写 loader 与 plugin
