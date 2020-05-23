@@ -31,6 +31,17 @@ ES5 实现 B 继承 A【编程】
 ```
 - es5的继承 实现一下（原型继承）
 ``` 
+
+
+原型继承
+function Super(){
+    this.name = 'aaa'
+}
+
+Child.prototype = new Super();// 原型继承的关键
+
+
+
 构造函数继承
 
 function Super(){
@@ -41,14 +52,6 @@ function Child(){
   //继承属性
   Super.call(this)
 }
-
-
-原型继承
-function Super(){
-    this.name = 'aaa'
-}
-
-Child.prototype = new Super();// 原型继承的关键
 
 
 
@@ -68,6 +71,10 @@ function Child(){
 
 Child.prototype=new Super();//继承方法
 
+
+寄生组合继承(重点掌握!)
+
+ES6的继承是哪种继承?Babel成ES5之后是什么样的?
 ```
 - js实现继承的几种方式
 ```  
@@ -646,6 +653,7 @@ function isEqual(obj1,obj2){
 - 手写indexOf的实现
 - 手写 Proxy / Object.defineProperty
 - 写一个函数，可以控制最大并发数
+- 计算dom节点的叶子节点个数
 - 设计一个栈，不使用数组
 - 给 10 亿的数据的 url 去重，思路（现场写部分代码）
 - js实现栈、队列、链表、二叉树
@@ -1487,3 +1495,4 @@ console.log(queryString(urlStr));
 
 - 写个转换函数，把一个JSON对象的key从横杠形式（Pascal）转换到小驼峰形式（Camel），即{“a_b”:1}——>{“aB”:1}
 - 实现一个JSON.stringfy()，要支持循环引用，并记录循环引用的路径
+- 代码题：给定矩形的顶点坐标和宽高，判断两个矩形是否碰撞

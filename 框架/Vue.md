@@ -21,6 +21,7 @@ vue编译Compile的过程主要分以下几步
 parse(生成AST)=> optimize(优化静态节点) => generate(生成render function)
 
 ```
+- defineProperty可以定义哪些属性(configurable, writable, value, enumerable, get, set)
 - 除了Object.defineProperty,还有什么能实现数据劫持（双向绑定，proxy和defineProperty对比），Proxy 相比于 defineProperty 的优势
 ``` 
 属性监听：

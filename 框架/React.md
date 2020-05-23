@@ -402,7 +402,7 @@ componentDidUpdate
 componentWillUnmount
 因为 Reconciliation 阶段是可以被打断的，所以 Reconciliation 阶段会执行的生命周期函数就可能会出现调用多次的情况，从而引起 Bug。由此对于 Reconciliation 阶段调用的几个函数，除了 shouldComponentUpdate 以外，其他都应该避免去使用，并且 V16 中也引入了新的 API 来解决这个问题。
 
-getDerivedStateFromProps 用于替换 componentWillReceiveProps ，该函数会在初始化和 update 时被调用
+getDerivedStateFromProps 用于替换 componentWillReceiveProps ，该函数会在初始化和 update 时被调用。
 getSnapshotBeforeUpdate 用于替换 componentWillUpdate ，该函数会在 update 后 DOM 更新前被调用，用于读取最新的 DOM 数据
 
 
@@ -923,3 +923,5 @@ concurrent mode、去掉危险的生命周期。concurrent mode是react重点面
 -顺势讲到了closure，以及他的其他应用场景；接着讲到了scope chain，VO，execution context
 - react 17要做什么规划，concurrent mode【描述】
   concurrent mode、去掉危险的生命周期。concurrent mode是react重点面试题了，基于requestidlecallback实现(考虑兼容性，官方自己实现了一个)——浏览器空闲的时候做事情
+- react钩子函数为什么不能循环调用
+- React.memo 原理

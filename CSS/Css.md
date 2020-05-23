@@ -81,8 +81,10 @@ ID选择器，权值为0100
 
 伪元素是真的有元素
 
-伪类： :hover :active :visited //伪类是添加类
+伪类： :hover :active :visited //伪类是添加类 
 伪元素： ::after  ::before  //伪元素是添加元素
+
+CSS有哪些伪类，实现选择偶数个对象元素的伪类是什么？
 
 ```
 
