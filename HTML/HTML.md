@@ -287,4 +287,9 @@ js获取offsetTop这些属性值活引起回流，因为要计算定位。
     var s = new Set()
     nodeList.forEach(x => s.add(x.tagName))
     console.log(Array.from(s))
-    ```
+   
+   
+   
+ ```
+ 
+- 怎么实现跟随鼠标移动

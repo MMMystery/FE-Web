@@ -13,7 +13,7 @@ Object.key
 使用Promise.all()让多个await操作并行
 ```
 - 大数相乘
-- XMLHttpRequest和fetch的区别
+- XMLHttpRequest(ajax)实现原理和fetch的区别
 - 实现斐波那契数列并利用缓存进行优化（利用闭包），实现一个斐波那契数列实现输入第n项输出相应的值，优化这个函数，让被查找过的下标值下次再次访问的时候能够立马找到并输出
 ``` 
 
