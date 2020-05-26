@@ -13,7 +13,7 @@ Object.key
 使用Promise.all()让多个await操作并行
 ```
 - 大数相乘
-- XMLHttpRequest和fetch的区别
+- XMLHttpRequest(ajax)实现原理和fetch的区别
 ``` 
 但是同复杂的XMLHTTPRequest API相比，Fetch使用了Promise，这让它使用起来更加简洁，从而避免陷入“回调旋涡”
 ```

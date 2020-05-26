@@ -1490,7 +1490,7 @@ console.log(queryString(urlStr));
 
 ```
 - 5个fetch请求，请求完成后要求立即执行，但最终的输出顺序要按照要求输出ABCDE
-
+- 代码题，promise实现延时
 -  实现两个对象的深比较(deep-compare)
 
 - 写个转换函数，把一个JSON对象的key从横杠形式（Pascal）转换到小驼峰形式（Camel），即{“a_b”:1}——>{“aB”:1}
