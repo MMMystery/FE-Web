@@ -885,9 +885,10 @@ require是值拷贝， import传的是值引用(只读)
 –require是赋值过程，其实require的结果就是对象、数字、字符串、函数等，再把require的结果赋值给某个变量
 –import是解构过程，但是目前所有的引擎都还没有实现import，我们在node中使用babel支持ES6，也仅仅是将ES6转码为ES5再执行，import语法会被转码为require
 ```
+- 我们知道node导出模块有两种方式，一种是exports.xxx=xxx和Module.exports={}有什么区别吗
 - Nodejs可以通过import来引入模块吗、ES6中可以通过require来引入模块吗
   
-  - 不声明async，可以用await吗
+- 不声明async，可以用await吗
 - ES6 的 Set 内部实现。
 
 - Symbol.iterator是做什么的？

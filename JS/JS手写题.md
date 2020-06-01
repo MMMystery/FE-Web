@@ -645,6 +645,7 @@ function isEqual(obj1,obj2){
 }
 
 ```
+- js转换驼峰命名
 - 输出一个字符串全排列
 - 实现_.[2,3,4].increase(1).reverse().val()
 - 手写reduce或者filter的polyfill
@@ -1147,6 +1148,7 @@ String.prototype.f = function(){
 
 ```
 - 给定一个字符串如下，请统计字符串中出现最多的字母和次数
+- 请实现一个函数，找出这个树形结构中所有child的name，返回数组
 - 用 Javascript 构造一个双向链表，并且实现它的插入和删除方法
 - 手写一个深拷贝函数，最好能处理循环引用和Date、Reg的
 - 怎样以对象为构造函数创建一个对象
