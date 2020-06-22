@@ -609,10 +609,6 @@ running: 继续播放动画;
 
 
 
-
-
-
-
 - 如何实现一个最大的正方形
 
 ```
@@ -624,7 +620,7 @@ running: 继续播放动画;
 ```
 
 
-- 手写圆、半圆、三角形、梯形、平行四边形、椭圆形、扇形、贪吃蛇蛇头、五角星、箭头
+- 手写圆、半圆、三角形、梯形、平行四边形、椭圆形、扇形、贪吃蛇蛇头、五角星、箭头，圆环
 ```
 
   .div{
@@ -693,6 +689,13 @@ running: 继续播放动画;
               border-right :140px solid transparent;
       }
 
+// 圆环
+.demo{
+        width : 160px;
+        height : 160px;
+        border: 20px solid green;
+        border-radius : 50%;
+    }
 
   ```
 - 实现一个朝左的三角形
@@ -749,6 +752,29 @@ box-shadow:2px 2px 5px #333333
 
 
 - 用css3写一个环形进度条
+``` 
+先实现一个右半圆环，然后加入旋转动画，左半圆环也是同理。（理解实现方式即可）
+.circle__right {
+  width : 200px;
+  height : 200px;
+  border: 12px solid transparent;
+  border-top: 12px solid #bfd1ff;
+  border-right: 12px solid #bfd1ff;
+  border-radius : 50%;
+  transform: rotate(-135deg);
+  animation: circle__right 3s linear infinite;
+}
+@keyframes circle__right {
+  50% {
+    transform: rotate(45deg);
+  }
+  100% {
+    transform: rotate(45deg);
+  }
+}
+
+
+```
 
 - css禁用鼠标事件
 ```
